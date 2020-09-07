@@ -1,6 +1,6 @@
 # CHESS
 
-## THIS. IS. IT.
+## IN PROGRESS
 
 ### Assignment:
 
