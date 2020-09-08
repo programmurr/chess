@@ -38,13 +38,24 @@ describe Board do
       @board = Board.new
       @board.set_cell_coordinates
     end
+
     it 'places white pawns along the 6th row' do
       expect { @board.place_pawns }.to change { @board.grid[6][2].value }.from(nil).to be_instance_of WhitePawn
     end
 
     it 'places black pawns along the 2nd row' do
       expect { @board.place_pawns }.to change { @board.grid[1][5].value }.from(nil).to be_instance_of BlackPawn
-      @board.display
+    end
+  end
+
+  context '#place_royalty' do
+    before do
+      @board = Board.new
+      @board.set_cell_coordinates
+    end
+
+    it 'places the royal black pieces on the first row' do
+      expect { @board.place_royalty }.to change { @board.grid[0][4].value }.from(nil).to be_instance_of BlackKing
     end
   end
 end

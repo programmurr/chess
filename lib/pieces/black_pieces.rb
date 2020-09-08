@@ -25,6 +25,10 @@ class BlackRook < BlackPiece
   def display
     "\u265C"
   end
+
+  def initial_co_ords
+    %w[a8 h8]
+  end
 end
 
 class BlackBishop < BlackPiece
@@ -34,6 +38,10 @@ class BlackBishop < BlackPiece
 
   def display
     "\u265D"
+  end
+
+  def initial_co_ords
+    %w[c8 f8]
   end
 end
 
@@ -45,6 +53,10 @@ class BlackKnight < BlackPiece
   def display
     "\u265E"
   end
+
+  def initial_co_ords
+    %w[b8 g8]
+  end
 end
 
 class BlackQueen < BlackPiece
@@ -55,6 +67,10 @@ class BlackQueen < BlackPiece
   def display
     "\u265B"
   end
+
+  def initial_co_ords
+    'd8'
+  end
 end
 
 class BlackKing < BlackPiece
@@ -64,5 +80,9 @@ class BlackKing < BlackPiece
 
   def display
     "\u265A"
+  end
+
+  def initial_co_ords
+    'e8'
   end
 end

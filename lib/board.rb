@@ -11,6 +11,11 @@ class Board
     @grid = grid
   end
 
+  def place_royalty
+    place_black_royalty
+    place_white_royalty
+  end
+
   def place_pawns
     grid[6].each { |cell| cell.value = WhitePawn.new }
     grid[1].each { |cell| cell.value = BlackPawn.new }
@@ -30,6 +35,28 @@ class Board
   end
 
   private
+
+  def place_black_royalty
+    grid[0][0].value = BlackRook.new
+    grid[0][1].value = BlackKnight.new
+    grid[0][2].value = BlackBishop.new
+    grid[0][3].value = BlackQueen.new
+    grid[0][4].value = BlackKing.new
+    grid[0][5].value = BlackBishop.new
+    grid[0][6].value = BlackKnight.new
+    grid[0][7].value = BlackRook.new
+  end
+
+  def place_white_royalty
+    grid[7][0].value = WhiteRook.new
+    grid[7][1].value = WhiteKnight.new
+    grid[7][2].value = WhiteBishop.new
+    grid[7][3].value = WhiteQueen.new
+    grid[7][4].value = WhiteKing.new
+    grid[7][5].value = WhiteBishop.new
+    grid[7][6].value = WhiteKnight.new
+    grid[7][7].value = WhiteRook.new
+  end
 
   def set_columns
     grid.each do |row|
@@ -56,3 +83,9 @@ class Board
     Array.new(8) { Array.new(8) { Cell.new } }
   end
 end
+
+board = Board.new
+board.set_cell_coordinates
+board.place_pawns
+board.place_royalty
+board.display
