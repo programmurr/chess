@@ -32,4 +32,19 @@ describe Board do
       expect { board.set_cell_coordinates }.to change { board.grid[7][0].co_ord }.from(nil).to('a1')
     end
   end
+
+  context '#place_pawns' do
+    before do
+      @board = Board.new
+      @board.set_cell_coordinates
+    end
+    it 'places white pawns along the 6th row' do
+      expect { @board.place_pawns }.to change { @board.grid[6][2].value }.from(nil).to be_instance_of WhitePawn
+    end
+
+    it 'places black pawns along the 2nd row' do
+      expect { @board.place_pawns }.to change { @board.grid[1][5].value }.from(nil).to be_instance_of BlackPawn
+      @board.display
+    end
+  end
 end
