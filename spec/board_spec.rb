@@ -52,10 +52,48 @@ describe Board do
     before do
       @board = Board.new
       @board.set_cell_coordinates
+      @board.place_royalty
+      @test_row = [Cell.new, Cell.new, Cell.new, Cell.new, Cell.new, Cell.new, Cell.new, Cell.new]
+      @test_row[0].value = BlackRook.new
+      @test_row[1].value = BlackKnight.new
+      @test_row[2].value = BlackBishop.new
+      @test_row[3].value = BlackQueen.new
+      @test_row[4].value = BlackKing.new
+      @test_row[5].value = BlackBishop.new
+      @test_row[6].value = BlackKnight.new
+      @test_row[7].value = BlackRook.new
     end
 
-    it 'places the royal black pieces on the first row' do
-      expect { @board.place_royalty }.to change { @board.grid[0][4].value }.from(nil).to be_instance_of BlackKing
+    it 'puts a black rook in a1' do
+      expect(@board.grid[0][0].value.class).to eql @test_row[0].value.class
+    end
+
+    it 'puts a black knight in b1' do
+      expect(@board.grid[0][1].value.class).to eql @test_row[1].value.class
+    end
+
+    it 'puts a black bishop in c1' do
+      expect(@board.grid[0][2].value.class).to eql @test_row[2].value.class
+    end
+
+    it 'puts a black queen in d1' do
+      expect(@board.grid[0][3].value.class).to eql @test_row[3].value.class
+    end
+
+    it 'puts a black king in e1' do
+      expect(@board.grid[0][4].value.class).to eql @test_row[4].value.class
+    end
+
+    it 'puts a black bishop in f1' do
+      expect(@board.grid[0][5].value.class).to eql @test_row[5].value.class
+    end
+
+    it 'puts a black knight in g1' do
+      expect(@board.grid[0][6].value.class).to eql @test_row[6].value.class
+    end
+
+    it 'puts a black rook in h1' do
+      expect(@board.grid[0][7].value.class).to eql @test_row[7].value.class
     end
   end
 end

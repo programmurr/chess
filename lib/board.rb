@@ -100,10 +100,9 @@ class Board
   end
 end
 
-board = Board.new
-board.set_cell_coordinates
-board.place_pawns
-board.place_royalty
-board.display
-
-# google how to test array elements in rspec
+# board = Board.new
+# board.set_cell_coordinates
+# board.place_pawns
+# board.place_royalty
+# board.display
+# p board.grid
