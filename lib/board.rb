@@ -26,16 +26,31 @@ class Board
     set_rows
   end
 
+  # TODO: - Make it DRY
   def display
-    puts 'a b c d e f g h '
-    grid.each do |row|
-      puts row.map { |cell| cell.value ? cell.value.display.to_s : '-' }.join(' ')
-    end
-    puts 'a b c d e f g h '
+    puts '  a b c d e f g h '
+    print '1 '
+    puts grid[0].map { |cell| cell.value ? cell.value.display.to_s : '-' }.join(' ').concat(' 1')
+    print '2 '
+    puts grid[1].map { |cell| cell.value ? cell.value.display.to_s : '-' }.join(' ').concat(' 2')
+    print '3 '
+    puts grid[2].map { |cell| cell.value ? cell.value.display.to_s : '-' }.join(' ').concat(' 3')
+    print '4 '
+    puts grid[3].map { |cell| cell.value ? cell.value.display.to_s : '-' }.join(' ').concat(' 4')
+    print '5 '
+    puts grid[4].map { |cell| cell.value ? cell.value.display.to_s : '-' }.join(' ').concat(' 5')
+    print '6 '
+    puts grid[5].map { |cell| cell.value ? cell.value.display.to_s : '-' }.join(' ').concat(' 6')
+    print '7 '
+    puts grid[6].map { |cell| cell.value ? cell.value.display.to_s : '-' }.join(' ').concat(' 7')
+    print '8 '
+    puts grid[7].map { |cell| cell.value ? cell.value.display.to_s : '-' }.join(' ').concat(' 8')
+    puts '  a b c d e f g h '
   end
 
   private
 
+  # TODO: - Make it DRY
   def place_black_royalty
     grid[0][0].value = BlackRook.new
     grid[0][1].value = BlackKnight.new
@@ -47,6 +62,7 @@ class Board
     grid[0][7].value = BlackRook.new
   end
 
+  # TODO: - Make it DRY
   def place_white_royalty
     grid[7][0].value = WhiteRook.new
     grid[7][1].value = WhiteKnight.new
@@ -89,3 +105,5 @@ board.set_cell_coordinates
 board.place_pawns
 board.place_royalty
 board.display
+
+# google how to test array elements in rspec
