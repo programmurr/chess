@@ -26,52 +26,26 @@ class Board
     set_rows
   end
 
-  # TODO: - Make it DRY
   def display
+    row_numbers = %w[1 2 3 4 5 6 7 8]
     puts '  a b c d e f g h '
-    print '1 '
-    puts grid[0].map { |cell| cell.value ? cell.value.display.to_s : '-' }.join(' ').concat(' 1')
-    print '2 '
-    puts grid[1].map { |cell| cell.value ? cell.value.display.to_s : '-' }.join(' ').concat(' 2')
-    print '3 '
-    puts grid[2].map { |cell| cell.value ? cell.value.display.to_s : '-' }.join(' ').concat(' 3')
-    print '4 '
-    puts grid[3].map { |cell| cell.value ? cell.value.display.to_s : '-' }.join(' ').concat(' 4')
-    print '5 '
-    puts grid[4].map { |cell| cell.value ? cell.value.display.to_s : '-' }.join(' ').concat(' 5')
-    print '6 '
-    puts grid[5].map { |cell| cell.value ? cell.value.display.to_s : '-' }.join(' ').concat(' 6')
-    print '7 '
-    puts grid[6].map { |cell| cell.value ? cell.value.display.to_s : '-' }.join(' ').concat(' 7')
-    print '8 '
-    puts grid[7].map { |cell| cell.value ? cell.value.display.to_s : '-' }.join(' ').concat(' 8')
+    grid.each do |row|
+      current_row_number = row_numbers.shift
+      puts "#{current_row_number} " + row.map { |cell| cell.value ? cell.value.display.to_s : '-' }.join(' ') + " #{current_row_number}"
+    end
     puts '  a b c d e f g h '
   end
 
   private
 
-  # TODO: - Make it DRY
   def place_black_royalty
-    grid[0][0].value = BlackRook.new
-    grid[0][1].value = BlackKnight.new
-    grid[0][2].value = BlackBishop.new
-    grid[0][3].value = BlackQueen.new
-    grid[0][4].value = BlackKing.new
-    grid[0][5].value = BlackBishop.new
-    grid[0][6].value = BlackKnight.new
-    grid[0][7].value = BlackRook.new
+    royalty = [BlackRook.new, BlackKnight.new, BlackBishop.new, BlackQueen.new, BlackKing.new, BlackBishop.new, BlackKnight.new, BlackRook.new]
+    grid[0].map { |cell| cell.value = royalty.shift }
   end
 
-  # TODO: - Make it DRY
   def place_white_royalty
-    grid[7][0].value = WhiteRook.new
-    grid[7][1].value = WhiteKnight.new
-    grid[7][2].value = WhiteBishop.new
-    grid[7][3].value = WhiteQueen.new
-    grid[7][4].value = WhiteKing.new
-    grid[7][5].value = WhiteBishop.new
-    grid[7][6].value = WhiteKnight.new
-    grid[7][7].value = WhiteRook.new
+    royalty = [WhiteRook.new, WhiteKnight.new, WhiteBishop.new, WhiteQueen.new, WhiteKing.new, WhiteBishop.new, WhiteKnight.new, WhiteRook.new]
+    grid[7].map { |cell| cell.value = royalty.shift }
   end
 
   def set_columns

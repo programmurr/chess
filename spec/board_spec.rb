@@ -62,38 +62,80 @@ describe Board do
       @test_row[5].value = BlackBishop.new
       @test_row[6].value = BlackKnight.new
       @test_row[7].value = BlackRook.new
+      @test_row2 = [Cell.new, Cell.new, Cell.new, Cell.new, Cell.new, Cell.new, Cell.new, Cell.new]
+      @test_row2[0].value = WhiteRook.new
+      @test_row2[1].value = WhiteKnight.new
+      @test_row2[2].value = WhiteBishop.new
+      @test_row2[3].value = WhiteQueen.new
+      @test_row2[4].value = WhiteKing.new
+      @test_row2[5].value = WhiteBishop.new
+      @test_row2[6].value = WhiteKnight.new
+      @test_row2[7].value = WhiteRook.new
     end
 
-    it 'puts a black rook in a1' do
+    it 'puts a black rook in a8' do
       expect(@board.grid[0][0].value.class).to eql @test_row[0].value.class
     end
 
-    it 'puts a black knight in b1' do
+    it 'puts a black knight in b8' do
       expect(@board.grid[0][1].value.class).to eql @test_row[1].value.class
     end
 
-    it 'puts a black bishop in c1' do
+    it 'puts a black bishop in c8' do
       expect(@board.grid[0][2].value.class).to eql @test_row[2].value.class
     end
 
-    it 'puts a black queen in d1' do
+    it 'puts a black queen in d8' do
       expect(@board.grid[0][3].value.class).to eql @test_row[3].value.class
     end
 
-    it 'puts a black king in e1' do
+    it 'puts a black king in e8' do
       expect(@board.grid[0][4].value.class).to eql @test_row[4].value.class
     end
 
-    it 'puts a black bishop in f1' do
+    it 'puts a black bishop in f8' do
       expect(@board.grid[0][5].value.class).to eql @test_row[5].value.class
     end
 
-    it 'puts a black knight in g1' do
+    it 'puts a black knight in g8' do
       expect(@board.grid[0][6].value.class).to eql @test_row[6].value.class
     end
 
-    it 'puts a black rook in h1' do
+    it 'puts a black rook in h8' do
       expect(@board.grid[0][7].value.class).to eql @test_row[7].value.class
+    end
+
+    it 'puts a white rook in a1' do
+      expect(@board.grid[7][0].value.class).to eql @test_row2[0].value.class
+    end
+
+    it 'puts a white knight in b1' do
+      expect(@board.grid[7][1].value.class).to eql @test_row2[1].value.class
+    end
+
+    it 'puts a white bishop in c1' do
+      expect(@board.grid[7][2].value.class).to eql @test_row2[2].value.class
+    end
+
+    it 'puts a white queen in d1' do
+      expect(@board.grid[7][3].value.class).to eql @test_row2[3].value.class
+    end
+
+    it 'puts a white king in e1' do
+      expect(@board.grid[7][4].value.class).to eql @test_row2[4].value.class
+    end
+
+    it 'puts a white bishop in f1' do
+      expect(@board.grid[7][5].value.class).to eql @test_row2[5].value.class
+    end
+
+    it 'puts a white knight in g1' do
+      expect(@board.grid[7][6].value.class).to eql @test_row2[6].value.class
+    end
+
+    it 'puts a white rook in h1' do
+      expect(@board.grid[7][7].value.class).to eql @test_row2[7].value.class
+      @board.display
     end
   end
 end
