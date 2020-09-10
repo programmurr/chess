@@ -1,6 +1,7 @@
 # frozen_string_literal: false
 
 require 'pry'
+require 'colorize'
 require_relative 'cell'
 require_relative 'pieces/white_pieces'
 require_relative 'pieces/black_pieces'
@@ -30,8 +31,8 @@ class Board
     row_numbers = %w[1 2 3 4 5 6 7 8]
     puts '  a b c d e f g h '
     grid.each do |row|
-      current_row_number = row_numbers.shift
-      puts "#{current_row_number} " + row.map { |cell| cell.value ? cell.value.display.to_s : '-' }.join(' ') + " #{current_row_number}"
+      current_row = row_numbers.shift
+      puts "#{current_row} " + row.map { |cell| cell.value ? cell.value.display.to_s : '-' }.join(' ') + " #{current_row}"
     end
     puts '  a b c d e f g h '
   end
@@ -79,4 +80,11 @@ end
 # board.place_pawns
 # board.place_royalty
 # board.display
-# p board.grid
+String.color_samples
+
+# white piece
+puts " \u2654 ".colorize(color: :black, background: :light_white)
+puts " \u2654 ".colorize(color: :black, background: :light_black)
+# black piece
+puts " \u265A ".colorize(color: :black, background: :light_white)
+puts " \u265A ".colorize(color: :black, background: :light_black)
