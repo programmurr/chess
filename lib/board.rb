@@ -55,7 +55,6 @@ class Board
           else
             '   '.colorize(background: :light_black)
           end
-          # cell.value ? cell.value.display.to_s : '-'
         end.join('')
       ).concat(" #{current_row}")
     end
@@ -100,15 +99,8 @@ class Board
   end
 end
 
-board = Board.new
-board.set_cell_coordinates
-board.place_pawns
-board.place_royalty
-board.display
-
-# white piece
-puts " \u2654 ".colorize(color: :black, background: :light_white)
-puts " \u2654 ".colorize(color: :black, background: :light_black)
-# black piece
-puts " \u265A ".colorize(color: :black, background: :light_white)
-puts " \u265A ".colorize(color: :black, background: :light_black)
+# board = Board.new
+# board.set_cell_coordinates
+# board.place_pawns
+# board.place_royalty
+# board.display

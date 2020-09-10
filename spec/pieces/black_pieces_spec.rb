@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'colorize'
 require_relative '../../lib/pieces/black_pieces'
 
 describe BlackPiece do
@@ -25,7 +26,7 @@ describe BlackPawn do
 
   context '#display' do
     it 'can display a unicode character representing a Black chess pawn' do
-      expect(pawn.display).to eq "\u265F"
+      expect(pawn.display).to eq " \u265F ".colorize(color: :black)
     end
   end
 end
@@ -44,7 +45,7 @@ describe BlackRook do
 
   context '#display' do
     it 'can display a unicode character representing a Black chess rook' do
-      expect(rook.display).to eq '♜'
+      expect(rook.display).to eq ' ♜ '.colorize(color: :black)
     end
   end
 end
@@ -63,7 +64,7 @@ describe BlackBishop do
 
   context '#display' do
     it 'can display a unicode character representing a Black chess bishop' do
-      expect(bishop.display).to eq '♝'
+      expect(bishop.display).to eq ' ♝ '.colorize(color: :black)
     end
   end
 end
@@ -82,7 +83,7 @@ describe BlackKnight do
 
   context '#display' do
     it 'can display a unicode character representing a Black chess knight' do
-      expect(knight.display).to eq '♞'
+      expect(knight.display).to eq ' ♞ '.colorize(color: :black)
     end
   end
 end
@@ -101,7 +102,7 @@ describe BlackQueen do
 
   context '#display' do
     it 'can display a unicode character representing a Black chess queen' do
-      expect(queen.display).to eq '♛'
+      expect(queen.display).to eq ' ♛ '.colorize(color: :black)
     end
   end
 end
@@ -120,7 +121,7 @@ describe BlackKing do
 
   context '#display' do
     it 'can display a unicode character representing a Black chess king' do
-      expect(king.display).to eq '♚'
+      expect(king.display).to eq ' ♚ '.colorize(color: :black)
     end
   end
 end

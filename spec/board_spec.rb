@@ -135,7 +135,6 @@ describe Board do
 
     it 'puts a white rook in h1' do
       expect(@board.grid[7][7].value.class).to eql @test_row2[7].value.class
-      @board.display
     end
   end
 end

@@ -25,7 +25,7 @@ describe WhitePawn do
 
   context '#display' do
     it 'can display a unicode character representing a white chess pawn' do
-      expect(pawn.display).to eq '♙'
+      expect(pawn.display).to eq ' ♙ '.colorize(color: :black)
     end
   end
 end
@@ -44,7 +44,7 @@ describe WhiteRook do
 
   context '#display' do
     it 'can display a unicode character representing a white chess rook' do
-      expect(rook.display).to eq '♖'
+      expect(rook.display).to eq ' ♖ '.colorize(color: :black)
     end
   end
 end
@@ -63,7 +63,7 @@ describe WhiteBishop do
 
   context '#display' do
     it 'can display a unicode character representing a white chess bishop' do
-      expect(bishop.display).to eq '♗'
+      expect(bishop.display).to eq ' ♗ '.colorize(color: :black)
     end
   end
 end
@@ -82,7 +82,7 @@ describe WhiteKnight do
 
   context '#display' do
     it 'can display a unicode character representing a white chess knight' do
-      expect(knight.display).to eq '♘'
+      expect(knight.display).to eq ' ♘ '.colorize(color: :black)
     end
   end
 end
@@ -101,7 +101,7 @@ describe WhiteQueen do
 
   context '#display' do
     it 'can display a unicode character representing a white chess queen' do
-      expect(queen.display).to eq '♕'
+      expect(queen.display).to eq ' ♕ '.colorize(color: :black)
     end
   end
 end
@@ -120,7 +120,7 @@ describe WhiteKing do
 
   context '#display' do
     it 'can display a unicode character representing a white chess king' do
-      expect(king.display).to eq '♔'
+      expect(king.display).to eq ' ♔ '.colorize(color: :black)
     end
   end
 end
