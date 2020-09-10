@@ -13,7 +13,7 @@ class BlackPawn < BlackPiece
   end
 
   def display
-    "\u265F"
+    " \u265F ".colorize(color: :black)
   end
 end
 
@@ -23,7 +23,7 @@ class BlackRook < BlackPiece
   end
 
   def display
-    "\u265C"
+    " \u265C ".colorize(color: :black)
   end
 
   def initial_co_ords
@@ -37,7 +37,7 @@ class BlackBishop < BlackPiece
   end
 
   def display
-    "\u265D"
+    " \u265D ".colorize(color: :black)
   end
 
   def initial_co_ords
@@ -51,7 +51,7 @@ class BlackKnight < BlackPiece
   end
 
   def display
-    "\u265E"
+    " \u265E ".colorize(color: :black)
   end
 
   def initial_co_ords
@@ -65,7 +65,7 @@ class BlackQueen < BlackPiece
   end
 
   def display
-    "\u265B"
+    " \u265B ".colorize(color: :black)
   end
 
   def initial_co_ords
@@ -79,7 +79,7 @@ class BlackKing < BlackPiece
   end
 
   def display
-    "\u265A"
+    " \u265A ".colorize(color: :black)
   end
 
   def initial_co_ords

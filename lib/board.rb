@@ -8,8 +8,20 @@ require_relative 'pieces/black_pieces'
 
 class Board
   attr_accessor :grid
+
   def initialize(grid: default_grid)
     @grid = grid
+  end
+
+  def white_cells
+    [grid[0][0], grid[0][2], grid[0][4], grid[0][6],
+     grid[1][1], grid[1][3], grid[1][5], grid[1][7],
+     grid[2][0], grid[2][2], grid[2][4], grid[2][6],
+     grid[3][1], grid[3][3], grid[3][5], grid[3][7],
+     grid[4][0], grid[4][2], grid[4][4], grid[4][6],
+     grid[5][1], grid[5][3], grid[5][5], grid[5][7],
+     grid[6][0], grid[6][2], grid[6][4], grid[6][6],
+     grid[7][1], grid[7][3], grid[7][5], grid[7][7]]
   end
 
   def place_royalty
@@ -29,12 +41,25 @@ class Board
 
   def display
     row_numbers = %w[1 2 3 4 5 6 7 8]
-    puts '  a b c d e f g h '
+    puts '   a  b  c  d  e  f  g  h '
     grid.each do |row|
       current_row = row_numbers.shift
-      puts "#{current_row} " + row.map { |cell| cell.value ? cell.value.display.to_s : '-' }.join(' ') + " #{current_row}"
+      puts "#{current_row} ".concat(
+        row.map do |cell|
+          if cell.value && white_cells.include?(cell)
+            cell.value.display.to_s.colorize(background: :light_white)
+          elsif cell.value
+            cell.value.display.to_s.colorize(background: :light_black)
+          elsif cell.value.nil? && white_cells.include?(cell)
+            '   '.colorize(background: :light_white)
+          else
+            '   '.colorize(background: :light_black)
+          end
+          # cell.value ? cell.value.display.to_s : '-'
+        end.join('')
+      ).concat(" #{current_row}")
     end
-    puts '  a b c d e f g h '
+    puts '   a  b  c  d  e  f  g  h '
   end
 
   private
@@ -75,12 +100,11 @@ class Board
   end
 end
 
-# board = Board.new
-# board.set_cell_coordinates
-# board.place_pawns
-# board.place_royalty
-# board.display
-String.color_samples
+board = Board.new
+board.set_cell_coordinates
+board.place_pawns
+board.place_royalty
+board.display
 
 # white piece
 puts " \u2654 ".colorize(color: :black, background: :light_white)

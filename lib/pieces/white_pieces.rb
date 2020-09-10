@@ -13,7 +13,7 @@ class WhitePawn < WhitePiece
   end
 
   def display
-    "\u2659"
+    " \u2659 ".colorize(color: :black)
   end
 end
 
@@ -23,7 +23,7 @@ class WhiteRook < WhitePiece
   end
 
   def display
-    "\u2656"
+    " \u2656 ".colorize(color: :black)
   end
 
   def initial_co_ords
@@ -37,7 +37,7 @@ class WhiteBishop < WhitePiece
   end
 
   def display
-    "\u2657"
+    " \u2657 ".colorize(color: :black)
   end
 
   def initial_co_ords
@@ -51,7 +51,7 @@ class WhiteKnight < WhitePiece
   end
 
   def display
-    "\u2658"
+    " \u2658 ".colorize(color: :black)
   end
 
   def initial_co_ords
@@ -65,7 +65,7 @@ class WhiteQueen < WhitePiece
   end
 
   def display
-    "\u2655"
+    " \u2655 ".colorize(color: :black)
   end
 
   def initial_co_ords
@@ -79,7 +79,7 @@ class WhiteKing < WhitePiece
   end
 
   def display
-    "\u2654"
+    " \u2654 ".colorize(color: :black)
   end
 
   def initial_co_ords
