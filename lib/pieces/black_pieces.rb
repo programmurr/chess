@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Consider making an overall Piece class. Move WhitePiece/BlackPiece methods into that
 class BlackPiece
   attr_accessor :color
   def initialize
