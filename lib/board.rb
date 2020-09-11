@@ -13,6 +13,7 @@ class Board
     @grid = grid
   end
 
+  # TODO: DRY
   def white_cells
     [grid[0][0], grid[0][2], grid[0][4], grid[0][6],
      grid[1][1], grid[1][3], grid[1][5], grid[1][7],
@@ -39,6 +40,7 @@ class Board
     set_rows
   end
 
+  # TODO: Reduce ABC & Cyclomatic complexity
   def display
     row_numbers = %w[1 2 3 4 5 6 7 8]
     puts '   a  b  c  d  e  f  g  h '
@@ -99,8 +101,8 @@ class Board
   end
 end
 
-board = Board.new
-board.set_cell_coordinates
-board.place_pawns
-board.place_royalty
-board.display
+# board = Board.new
+# board.set_cell_coordinates
+# board.place_pawns
+# board.place_royalty
+# board.display
