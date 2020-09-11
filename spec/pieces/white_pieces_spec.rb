@@ -28,6 +28,12 @@ describe WhitePawn do
       expect(pawn.display).to eq ' ♙ '.colorize(color: :black)
     end
   end
+
+  context '#algebraic_name' do
+    it 'has an algebraic name of P' do
+      expect(pawn.algebraic_name).to eq 'P'
+    end
+  end
 end
 
 describe WhiteRook do
@@ -45,6 +51,12 @@ describe WhiteRook do
   context '#display' do
     it 'can display a unicode character representing a white chess rook' do
       expect(rook.display).to eq ' ♖ '.colorize(color: :black)
+    end
+  end
+
+  context '#algebraic_name' do
+    it 'has an algebraic name of R' do
+      expect(rook.algebraic_name).to eq 'R'
     end
   end
 end
@@ -66,6 +78,12 @@ describe WhiteBishop do
       expect(bishop.display).to eq ' ♗ '.colorize(color: :black)
     end
   end
+
+  context '#algebraic_name' do
+    it 'has an algebraic name of B' do
+      expect(bishop.algebraic_name).to eq 'B'
+    end
+  end
 end
 
 describe WhiteKnight do
@@ -83,6 +101,12 @@ describe WhiteKnight do
   context '#display' do
     it 'can display a unicode character representing a white chess knight' do
       expect(knight.display).to eq ' ♘ '.colorize(color: :black)
+    end
+  end
+
+  context '#algebraic_name' do
+    it 'has an algebraic name of N' do
+      expect(knight.algebraic_name).to eq 'N'
     end
   end
 end
@@ -104,6 +128,12 @@ describe WhiteQueen do
       expect(queen.display).to eq ' ♕ '.colorize(color: :black)
     end
   end
+
+  context '#algebraic_name' do
+    it 'has an algebraic name of Q' do
+      expect(queen.algebraic_name).to eq 'Q'
+    end
+  end
 end
 
 describe WhiteKing do
@@ -121,6 +151,12 @@ describe WhiteKing do
   context '#display' do
     it 'can display a unicode character representing a white chess king' do
       expect(king.display).to eq ' ♔ '.colorize(color: :black)
+    end
+  end
+
+  context '#algebraic_name' do
+    it 'has an algebraic name of K' do
+      expect(king.algebraic_name).to eq 'K'
     end
   end
 end

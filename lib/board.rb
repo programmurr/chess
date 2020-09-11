@@ -99,8 +99,8 @@ class Board
   end
 end
 
-# board = Board.new
-# board.set_cell_coordinates
-# board.place_pawns
-# board.place_royalty
-# board.display
+board = Board.new
+board.set_cell_coordinates
+board.place_pawns
+board.place_royalty
+board.display

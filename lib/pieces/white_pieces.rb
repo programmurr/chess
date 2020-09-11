@@ -1,27 +1,35 @@
 # frozen_string_literal: true
 
+require 'colorize'
+
 class WhitePiece
   attr_accessor :color
   def initialize
     @color = 'White'
   end
-end
 
-class WhitePawn < WhitePiece
   def name
     self.class.to_s
   end
 
+  def algebraic_name
+    self.class.to_s.split(//).each.with_index do |letter, index|
+      if ('A'..'Z').include?(letter) && !index.zero?
+        return letter
+      elsif is_a? WhiteKnight
+        return 'N'
+      end
+    end
+  end
+end
+
+class WhitePawn < WhitePiece
   def display
     " \u2659 ".colorize(color: :black)
   end
 end
 
 class WhiteRook < WhitePiece
-  def name
-    self.class.to_s
-  end
-
   def display
     " \u2656 ".colorize(color: :black)
   end
@@ -32,10 +40,6 @@ class WhiteRook < WhitePiece
 end
 
 class WhiteBishop < WhitePiece
-  def name
-    self.class.to_s
-  end
-
   def display
     " \u2657 ".colorize(color: :black)
   end
@@ -46,10 +50,6 @@ class WhiteBishop < WhitePiece
 end
 
 class WhiteKnight < WhitePiece
-  def name
-    self.class.to_s
-  end
-
   def display
     " \u2658 ".colorize(color: :black)
   end
@@ -60,10 +60,6 @@ class WhiteKnight < WhitePiece
 end
 
 class WhiteQueen < WhitePiece
-  def name
-    self.class.to_s
-  end
-
   def display
     " \u2655 ".colorize(color: :black)
   end
@@ -74,10 +70,6 @@ class WhiteQueen < WhitePiece
 end
 
 class WhiteKing < WhitePiece
-  def name
-    self.class.to_s
-  end
-
   def display
     " \u2654 ".colorize(color: :black)
   end

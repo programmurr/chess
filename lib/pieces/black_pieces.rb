@@ -5,23 +5,29 @@ class BlackPiece
   def initialize
     @color = 'Black'
   end
-end
 
-class BlackPawn < BlackPiece
   def name
     self.class.to_s
   end
 
+  def algebraic_name
+    self.class.to_s.split(//).each.with_index do |letter, index|
+      if ('A'..'Z').include?(letter) && !index.zero?
+        return letter
+      elsif is_a? BlackKnight
+        return 'N'
+      end
+    end
+  end
+end
+
+class BlackPawn < BlackPiece
   def display
     " \u265F ".colorize(color: :black)
   end
 end
 
 class BlackRook < BlackPiece
-  def name
-    self.class.to_s
-  end
-
   def display
     " \u265C ".colorize(color: :black)
   end
@@ -32,10 +38,6 @@ class BlackRook < BlackPiece
 end
 
 class BlackBishop < BlackPiece
-  def name
-    self.class.to_s
-  end
-
   def display
     " \u265D ".colorize(color: :black)
   end
@@ -46,10 +48,6 @@ class BlackBishop < BlackPiece
 end
 
 class BlackKnight < BlackPiece
-  def name
-    self.class.to_s
-  end
-
   def display
     " \u265E ".colorize(color: :black)
   end
@@ -60,10 +58,6 @@ class BlackKnight < BlackPiece
 end
 
 class BlackQueen < BlackPiece
-  def name
-    self.class.to_s
-  end
-
   def display
     " \u265B ".colorize(color: :black)
   end
@@ -74,10 +68,6 @@ class BlackQueen < BlackPiece
 end
 
 class BlackKing < BlackPiece
-  def name
-    self.class.to_s
-  end
-
   def display
     " \u265A ".colorize(color: :black)
   end
