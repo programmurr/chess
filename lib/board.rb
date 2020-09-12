@@ -1,4 +1,4 @@
-# frozen_string_literal: false
+# frozen_string_literal: true
 
 require 'pry'
 require 'colorize'
@@ -7,6 +7,8 @@ require_relative 'pieces/white_pieces'
 require_relative 'pieces/black_pieces'
 
 class Board
+  ROW_NUMBERS = %w[1 2 3 4 5 6 7 8].freeze
+
   attr_accessor :grid
 
   def initialize(grid: default_grid)
@@ -42,10 +44,9 @@ class Board
 
   # TODO: Reduce ABC & Cyclomatic complexity
   def display
-    row_numbers = %w[1 2 3 4 5 6 7 8]
     puts '   a  b  c  d  e  f  g  h '
     grid.each do |row|
-      current_row = row_numbers.shift
+      current_row = ROW_NUMBERS.shift
       puts "#{current_row} ".concat(
         row.map do |cell|
           if cell.value && white_cells.include?(cell)
@@ -101,8 +102,8 @@ class Board
   end
 end
 
-# board = Board.new
-# board.set_cell_coordinates
-# board.place_pawns
-# board.place_royalty
-# board.display
+board = Board.new
+board.set_cell_coordinates
+board.place_pawns
+board.place_royalty
+board.display
