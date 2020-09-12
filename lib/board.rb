@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+# frozen_string_literal: false
 
 require 'pry'
 require 'colorize'
@@ -7,8 +7,6 @@ require_relative 'pieces/white_pieces'
 require_relative 'pieces/black_pieces'
 
 class Board
-  ROW_NUMBERS = %w[1 2 3 4 5 6 7 8].freeze
-
   attr_accessor :grid
 
   def initialize(grid: default_grid)
@@ -43,9 +41,10 @@ class Board
   end
 
   def display
+    row_numbers = %w[1 2 3 4 5 6 7 8]
     puts '   a  b  c  d  e  f  g  h '
     grid.each do |row|
-      current_row = ROW_NUMBERS.shift
+      current_row = row_numbers.shift
       puts "#{current_row} ".concat(
         row.map do |cell|
           display_checks(cell)

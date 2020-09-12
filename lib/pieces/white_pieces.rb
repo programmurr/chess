@@ -2,6 +2,7 @@
 
 require 'colorize'
 
+# Consider making an overall Piece class. Move WhitePiece/BlackPiece methods into that
 class WhitePiece
   attr_accessor :color
   def initialize
