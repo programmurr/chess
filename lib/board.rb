@@ -40,7 +40,6 @@ class Board
     set_rows
   end
 
-  # TODO: Reduce ABC & Cyclomatic complexity
   def display
     row_numbers = %w[1 2 3 4 5 6 7 8]
     puts '   a  b  c  d  e  f  g  h '
@@ -48,15 +47,7 @@ class Board
       current_row = row_numbers.shift
       puts "#{current_row} ".concat(
         row.map do |cell|
-          if cell.value && white_cells.include?(cell)
-            cell.value.display.to_s.colorize(background: :light_white)
-          elsif cell.value
-            cell.value.display.to_s.colorize(background: :light_black)
-          elsif cell.value.nil? && white_cells.include?(cell)
-            '   '.colorize(background: :light_white)
-          else
-            '   '.colorize(background: :light_black)
-          end
+          display_checks(cell)
         end.join('')
       ).concat(" #{current_row}")
     end
@@ -64,6 +55,46 @@ class Board
   end
 
   private
+
+  def display_checks(cell)
+    if cell_has_a_piece_and_tile_is_white?(cell)
+      display_piece_on_white_tile(cell)
+    elsif cell_has_a_piece_and_tile_is_black?(cell)
+      display_piece_on_black_tile(cell)
+    elsif cell_is_empty_and_tile_is_white?(cell)
+      display_empty_white_tile
+    else
+      display_empty_black_tile
+    end
+  end
+
+  def display_empty_black_tile
+    '   '.colorize(background: :light_black)
+  end
+
+  def display_empty_white_tile
+    '   '.colorize(background: :light_white)
+  end
+
+  def cell_is_empty_and_tile_is_white?(cell)
+    cell.value.nil? && white_cells.include?(cell)
+  end
+
+  def display_piece_on_black_tile(cell)
+    cell.value.display.to_s.colorize(background: :light_black)
+  end
+
+  def cell_has_a_piece_and_tile_is_black?(cell)
+    return true if cell.value
+  end
+
+  def display_piece_on_white_tile(cell)
+    cell.value.display.to_s.colorize(background: :light_white)
+  end
+
+  def cell_has_a_piece_and_tile_is_white?(cell)
+    return true if cell.value && white_cells.include?(cell)
+  end
 
   def place_black_royalty
     royalty = [BlackRook.new, BlackKnight.new, BlackBishop.new, BlackQueen.new, BlackKing.new, BlackBishop.new, BlackKnight.new, BlackRook.new]
@@ -101,8 +132,8 @@ class Board
   end
 end
 
-# board = Board.new
-# board.set_cell_coordinates
-# board.place_pawns
-# board.place_royalty
-# board.display
+board = Board.new
+board.set_cell_coordinates
+board.place_pawns
+board.place_royalty
+board.display
