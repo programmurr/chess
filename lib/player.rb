@@ -37,28 +37,20 @@ class Player
     return false if character_is_not_a_valid_letter?(char, index)
     return false if character_is_not_a_valid_number?(char, index)
     return false if third_character_is_a_space?(char, index)
-
-    true
   end
 
   def character_is_not_a_valid_number?(char, index)
     return true if index == 1 && !('1'..'8').include?(char)
     return true if index == 4 && !('1'..'8').include?(char)
-
-    false
   end
 
   def character_is_not_a_valid_letter?(char, index)
     return true if index.zero? && !('a'..'h').include?(char)
     return true if index == 3 && !('a'..'h').include?(char)
-
-    false
   end
 
   def third_character_is_a_space?(char, index)
     return true if index == 2 && char != ' '
-
-    false
   end
 
   def convert_to_move(move)

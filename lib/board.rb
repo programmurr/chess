@@ -13,6 +13,14 @@ class Board
     @grid = grid
   end
 
+  def get_cell(co_ord)
+    grid.each do |row|
+      row.each do |cell|
+        return cell if cell.co_ord == co_ord
+      end
+    end
+  end
+
   # TODO: DRY
   def white_cells
     [grid[0][0], grid[0][2], grid[0][4], grid[0][6],
@@ -132,9 +140,9 @@ class Board
   end
 end
 
-board = Board.new
-board.set_cell_coordinates
-board.place_pawns
-board.place_royalty
-binding.pry
-board.display
+# board = Board.new
+# board.set_cell_coordinates
+# board.place_pawns
+# board.place_royalty
+# binding.pry
+# board.display
