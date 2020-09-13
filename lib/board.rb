@@ -136,4 +136,5 @@ board = Board.new
 board.set_cell_coordinates
 board.place_pawns
 board.place_royalty
+binding.pry
 board.display
