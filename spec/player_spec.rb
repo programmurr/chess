@@ -19,6 +19,11 @@ describe Player do
       new_player = Player.new(2)
       expect(new_player.name).to eq player.name
     end
+
+    it "has a 'move' attribute set to nil" do
+      new_player = Player.new(1)
+      expect(new_player.move).to eq nil
+    end
   end
 
   context '#assign_black_piece' do
@@ -47,7 +52,7 @@ describe Player do
     end
 
     it "prompts the user to enter a 'from' coordinate and a 'to' coordinate" do
-      output_message = "Player1, enter the 'from' and 'to' coordinates for the piece you want to move.\nEnter the coordinates with a space in the middle e.g. 'a2 a4'\n[\"a2\", \"a4\"]\n"
+      output_message = "Player1, enter the 'from' and 'to' coordinates for the piece you want to move.\nEnter the coordinates with a space in the middle e.g. 'a2 a4'\n"
       expect { @player.enter_move }.to output(output_message).to_stdout
     end
 
@@ -65,17 +70,22 @@ describe Player do
 
     it "rejects a 'to' coordinate beyond the range of the board" do
       $stdin = StringIO.new('z2 a4')
-      error_message = 'That is not a valid coordinate, please re-enter'
-      expect { @player.enter_move }.to raise_error(error_message)
+      expect { @player.enter_move }.to raise_error(RuntimeError)
     end
 
-    xit "rejects a 'from' coordinate beyond the range of the board" do
+    it "rejects a 'from' coordinate beyond the range of the board" do
       $stdin = StringIO.new('a2 a40')
-      error_message = 'That is not a valid coordinate, please re-enter'
-      expect { @player.enter_move }.to raise_error(error_message)
+      expect { @player.enter_move }.to raise_error(RuntimeError)
     end
 
-    xit "does not let a player touch the opposing player's piece" do
+    it 'changes the move attribute to a valid move' do
+      expect { @player.enter_move }.to change { @player.move }.from(nil).to(%w[a2 a4])
+    end
+
+    it 'changes the move attribute from one move to another move' do
+      @player.move = %w[a2 a4]
+      $stdin = StringIO.new('a4 b5')
+      expect { @player.enter_move }.to change { @player.move }.from(%w[a2 a4]).to(%w[a4 b5])
     end
   end
 end
