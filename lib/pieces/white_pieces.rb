@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'colorize'
+require_relative 'valid_moves'
 
 # Consider making an overall Piece class. Move WhitePiece/BlackPiece methods into that
 class WhitePiece
@@ -21,6 +22,10 @@ class WhitePiece
         return 'N'
       end
     end
+  end
+
+  def valid_moves
+    ValidMoves.moves(self.class.name)
   end
 end
 
@@ -79,3 +84,8 @@ class WhiteKing < WhitePiece
     'e1'
   end
 end
+
+pawn = WhitePawn.new
+puts pawn.valid_moves
+queen = WhiteQueen.new
+puts queen.valid_moves

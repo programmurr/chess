@@ -18,4 +18,6 @@ class PlayerBoardInterface
 
     false
   end
+
+  def self.valid_move?(player, board); end
 end
