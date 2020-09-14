@@ -28,15 +28,14 @@ class WhitePiece
     end
   end
 
-  def valid_moves(co_ord)
+  def valid_moves(co_ord, class_name)
     moves_hash = { 'WhitePawn' => WhitePawn.moves(co_ord),
                    'WhiteRook' => WhiteRook.moves(co_ord),
                    'WhiteBishop' => WhiteBishop.moves(co_ord),
                    'WhiteKnight' => WhiteKnight.moves(co_ord),
                    'WhiteQueen' => WhiteQueen.moves(co_ord),
                    'WhiteKing' => WhiteKing.moves(co_ord) }
-    moves_hash.fetch(self.class.name)
-    # ValidMoves.moves(self.class.name, co_ord)
+    moves_hash.fetch(class_name)
   end
 end
 
@@ -47,17 +46,20 @@ class WhitePawn < WhitePiece
     false
   end
 
-  def moves(co_ord)
-    # co_ord == b2 / grid[6][1]
-    # possible moves from here:
-    # - grid[5][1] - unless a piece is blocking it
-    # - grid[x-1][y]
-    # - grid[4][1] - if first move / unless a piece is blocking it
-    # - grid[x-2][y]
-    # - grid[5][0] - if enemy piece on it
-    # - grid[x-1][y-1]
-    # - grid[5][2] - if enemy piece on it
-    # - grid[x-1][y+1]
+  # 9/14 - Look back at connect4 to improve this
+  def self.moves(co_ord)
+    x = co_ord[0]
+    y = co_ord[1]
+    move_array = []
+    move1 =  [x - 1, y]
+    move2 =  [x - 2, y]
+    move3 =  [x - 1, y - 1]
+    move4 =  [x - 1, y + 1]
+    move_array << move1
+    move_array << move2
+    move_array << move3
+    move_array << move4
+    move_array
   end
 
   def display
@@ -134,6 +136,3 @@ class WhiteKing < WhitePiece
     'e1'
   end
 end
-
-pawn = WhitePawn.new
-pawn.moves('b2')

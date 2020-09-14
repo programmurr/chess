@@ -31,7 +31,7 @@ describe PlayerBoardInterface do
 
   context '#valid_move?' do
     it 'checks if the move is valid for the piece requested to be moved' do
-      player = double('Player', move: %w[a2 a4], piece: 'WhitePiece')
+      player = double('Player', move: %w[a2 a4], piece: WhitePiece.new)
       expect(PlayerBoardInterface.valid_move?(player, @board)).to eq true
     end
   end
