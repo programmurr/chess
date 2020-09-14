@@ -19,5 +19,15 @@ class PlayerBoardInterface
     false
   end
 
-  def self.valid_move?(player, board); end
+  def self.valid_move?(player, board)
+    # get piece to be moved
+    cell = board.get_cell(player.move[0])
+    # binding.pry
+    # get it's grid coordinates (NOT the Cell.co_ord)
+    # get the formula for that piece's moves
+    # generate ALL possible moves
+    # remove a move if:
+    # - it goes off the board
+    # - an enemy piece blocks it
+  end
 end

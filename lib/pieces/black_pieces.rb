@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 # Consider making an overall Piece class. Move WhitePiece/BlackPiece methods into that
+# 9/14 - This will need refactoring later but I don't know into what, yet
+# Follow where the yellow brick goes goes for now in terms of generating moves
+# Then revisit. YAGNI
 class BlackPiece
   attr_accessor :color
   def initialize

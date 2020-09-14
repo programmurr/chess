@@ -1,13 +1,17 @@
 # frozen_string_literal: true
 
 require 'colorize'
-require_relative 'valid_moves'
+# require_relative 'valid_moves'
 
 # Consider making an overall Piece class. Move WhitePiece/BlackPiece methods into that
+# 9/14 - This will need refactoring later but I don't know into what, yet
+# Follow where the yellow brick goes goes for now in terms of generating moves
+# Then revisit. YAGNI
 class WhitePiece
-  attr_accessor :color
+  attr_accessor :color, :first_move
   def initialize
     @color = 'White'
+    @first_move = true
   end
 
   def name
@@ -24,18 +28,48 @@ class WhitePiece
     end
   end
 
-  def valid_moves
-    ValidMoves.moves(self.class.name)
+  def valid_moves(co_ord)
+    moves_hash = { 'WhitePawn' => WhitePawn.moves(co_ord),
+                   'WhiteRook' => WhiteRook.moves(co_ord),
+                   'WhiteBishop' => WhiteBishop.moves(co_ord),
+                   'WhiteKnight' => WhiteKnight.moves(co_ord),
+                   'WhiteQueen' => WhiteQueen.moves(co_ord),
+                   'WhiteKing' => WhiteKing.moves(co_ord) }
+    moves_hash.fetch(self.class.name)
+    # ValidMoves.moves(self.class.name, co_ord)
   end
 end
 
 class WhitePawn < WhitePiece
+  def first_move?
+    return true if first_move == true
+
+    false
+  end
+
+  def moves(co_ord)
+    # co_ord == b2 / grid[6][1]
+    # possible moves from here:
+    # - grid[5][1] - unless a piece is blocking it
+    # - grid[x-1][y]
+    # - grid[4][1] - if first move / unless a piece is blocking it
+    # - grid[x-2][y]
+    # - grid[5][0] - if enemy piece on it
+    # - grid[x-1][y-1]
+    # - grid[5][2] - if enemy piece on it
+    # - grid[x-1][y+1]
+  end
+
   def display
     " \u2659 ".colorize(color: :black)
   end
 end
 
 class WhiteRook < WhitePiece
+  def self.moves(co_ord)
+    co_ord
+  end
+
   def display
     " \u2656 ".colorize(color: :black)
   end
@@ -46,6 +80,10 @@ class WhiteRook < WhitePiece
 end
 
 class WhiteBishop < WhitePiece
+  def self.moves(co_ord)
+    co_ord
+  end
+
   def display
     " \u2657 ".colorize(color: :black)
   end
@@ -56,6 +94,10 @@ class WhiteBishop < WhitePiece
 end
 
 class WhiteKnight < WhitePiece
+  def self.moves(co_ord)
+    co_ord
+  end
+
   def display
     " \u2658 ".colorize(color: :black)
   end
@@ -66,6 +108,10 @@ class WhiteKnight < WhitePiece
 end
 
 class WhiteQueen < WhitePiece
+  def self.moves(co_ord)
+    co_ord
+  end
+
   def display
     " \u2655 ".colorize(color: :black)
   end
@@ -76,6 +122,10 @@ class WhiteQueen < WhitePiece
 end
 
 class WhiteKing < WhitePiece
+  def self.moves(co_ord)
+    co_ord
+  end
+
   def display
     " \u2654 ".colorize(color: :black)
   end
@@ -86,6 +136,4 @@ class WhiteKing < WhitePiece
 end
 
 pawn = WhitePawn.new
-puts pawn.valid_moves
-queen = WhiteQueen.new
-puts queen.valid_moves
+pawn.moves('b2')
