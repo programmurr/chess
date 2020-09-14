@@ -33,6 +33,20 @@ describe Board do
     end
   end
 
+  context '#get_cell' do
+    before do
+      @board = Board.new
+      @board.set_cell_coordinates
+    end
+
+    it 'returns the cell with the specified coordinate' do
+      coordinate = 'a8'
+      pawn = double('Pawn')
+      @board.grid[0][0].value = pawn
+      expect(@board.get_cell(coordinate).value).to eq pawn
+    end
+  end
+
   context '#place_pawns' do
     before do
       @board = Board.new

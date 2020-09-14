@@ -13,7 +13,19 @@ describe PlayerBoardInterface do
   context '#move_piece' do
     it 'can move the selected piece from one square to another' do
       player = double('Player', move: %w[a2 a4])
-      expect { PlayerBoardInterface.move_piece(player.move, @board) }.to change { @board.grid[4][0].value }.from(nil).to be_instance_of WhitePawn
+      expect { PlayerBoardInterface.move_piece(player, @board) }.to change { @board.grid[4][0].value }.from(nil).to be_instance_of WhitePawn
+    end
+  end
+
+  context '#valid_piece?' do
+    it "returns 'true' if the player piece class matches the superclass of the piece to be moved" do
+      player = double('Player', move: %w[a2 a4], piece: 'WhitePiece')
+      expect(PlayerBoardInterface.valid_piece?(player, @board)).to eq true
+    end
+
+    it "returns 'false' if the player piece class does not match the superclass of the piece to be moved" do
+      player = double('Player', move: %w[a2 a4], piece: 'BlackPiece')
+      expect(PlayerBoardInterface.valid_piece?(player, @board)).to eq false
     end
   end
 end
