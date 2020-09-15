@@ -47,14 +47,16 @@ class WhitePawn < WhitePiece
   end
 
   # 9/14 - Look back at connect4 to improve this
+  # 9/15 - Pawns are more complicated than I thought
+  # 9/15 - Get the moves for other pieces like knights, rooks, etc. then come back to this
   def self.moves(co_ord)
     x = co_ord[0]
     y = co_ord[1]
     move_array = []
     move1 =  [x - 1, y]
     move2 =  [x - 2, y]
-    move3 =  [x - 1, y - 1]
-    move4 =  [x - 1, y + 1]
+    move3 =  [x - 1, y - 1] # attack move
+    move4 =  [x - 1, y + 1] # attack move
     move_array << move1
     move_array << move2
     move_array << move3
@@ -96,8 +98,10 @@ class WhiteBishop < WhitePiece
 end
 
 class WhiteKnight < WhitePiece
+  MOVES_LIST = [2, 2, -2, -2, 1, 1, -1, -1].zip([1, -1, 1, -1, 2, -2, 2, -2])
+
   def self.moves(co_ord)
-    co_ord
+    MOVES_LIST.map { |a, b| [co_ord.first + a, co_ord.last + b] }
   end
 
   def display

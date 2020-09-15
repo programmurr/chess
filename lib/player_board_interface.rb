@@ -32,7 +32,17 @@ class PlayerBoardInterface
     move_array = player.piece.valid_moves(start_co_ords, class_name)
     # remove a move if:
     # - it goes off the board
-    # - an enemy piece blocks it
-    # - a condition particular to it is falsey e.g. WhitePawn#first_move?
+    move_array.select! do |co_ord|
+      co_ord[0] >= 0 && co_ord[1] >= 0
+      co_ord[0] < 8 && co_ord[1] < 8
+    end
+    cell_strings = move_array.map { |co_ord| board.get_cell_string_co_ord(co_ord) }
+    cells = cell_strings.map { |co_ord| board.get_cell(co_ord) }
+    cells.select! { |cell| cell.value.nil? || cell.value.class.superclass.to_s == 'BlackPiece' }
+    return true if cells.length > 0
+
+    false
+    # - a piece blocks it
+    # - a condition particular to it is truthy/falsey e.g. WhitePawn#first_move?
   end
 end

@@ -21,6 +21,10 @@ class Board
     grid_coordinate_map.fetch(co_ord)
   end
 
+  def get_cell_string_co_ord(co_ord)
+    grid_coordinate_map.key(co_ord)
+  end
+
   def place_royalty
     place_black_royalty
     place_white_royalty
@@ -168,6 +172,6 @@ end
 # board.set_cell_coordinates
 # board.place_pawns
 # board.place_royalty
-# # board.display
+# board.display
 # # binding.pry
 # p board.get_cell_grid_co_ord('c5')
