@@ -9,8 +9,6 @@ require 'colorize'
 # Follow where the yellow brick goes goes for now in terms of generating moves
 # Then revisit. YAGNI
 class WhitePiece
-  include Moves
-
   attr_accessor :color, :first_move
   def initialize
     @color = 'White'
@@ -31,14 +29,14 @@ class WhitePiece
     end
   end
 
-  # Moves module
+  # Moves class
   def valid_moves(co_ord, class_name)
-    moves_hash = { 'WhitePawn' => pawn_moves(co_ord),
-                   'WhiteRook' => rook_moves(co_ord),
-                   'WhiteBishop' => WhiteBishop.moves(co_ord),
-                   'WhiteKnight' => knight_moves(co_ord),
-                   'WhiteQueen' => WhiteQueen.moves(co_ord),
-                   'WhiteKing' => WhiteKing.moves(co_ord) }
+    moves_hash = { 'WhitePawn' => Moves.pawn(co_ord),
+                   'WhiteRook' => Moves.rook(co_ord),
+                   'WhiteBishop' => Moves.bishop(co_ord),
+                   'WhiteKnight' => Moves.knight(co_ord),
+                   'WhiteQueen' => Moves.queen(co_ord),
+                   'WhiteKing' => Moves.king(co_ord) }
     moves_hash.fetch(class_name)
   end
 end
@@ -56,6 +54,12 @@ class WhitePawn < WhitePiece
 end
 
 class WhiteRook < WhitePiece
+  def first_move?
+    return true if first_move == true
+
+    false
+  end
+
   def self.moves(co_ord)
     co_ord
   end
@@ -108,6 +112,12 @@ class WhiteQueen < WhitePiece
 end
 
 class WhiteKing < WhitePiece
+  def first_move?
+    return true if first_move == true
+
+    false
+  end
+
   def self.moves(co_ord)
     co_ord
   end

@@ -8,8 +8,6 @@ require_relative 'pieces/black_pieces'
 require_relative 'pieces/moves'
 
 class Board
-  include Moves
-
   attr_accessor :grid
 
   def initialize(grid: default_grid)
