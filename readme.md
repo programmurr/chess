@@ -1,7 +1,7 @@
 # CHESS
 
 ## WORK IN PROGRESS
-*This project is being made via TDD with the red-green-refactor approach. At times this code will break fundamental design principles in order to get a test to pass. However, consistent refactoring will take place over time, and such violations will be removed to the best of my ability for the finished product.* 
+*This project is being made via TDD with the red-green-refactor approach. At times this code will break fundamental design principles in order to get a test to pass, although I will do my best to avoid that happening in the first place. Consistent refactoring will take place over time, and such violations will be removed to the best of my ability for the finished product.* 
 
 ### Assignment:
 
