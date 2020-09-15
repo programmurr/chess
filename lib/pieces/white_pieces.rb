@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require_relative 'moves'
 require 'colorize'
 # require_relative 'valid_moves'
 
@@ -8,6 +9,8 @@ require 'colorize'
 # Follow where the yellow brick goes goes for now in terms of generating moves
 # Then revisit. YAGNI
 class WhitePiece
+  include Moves
+
   attr_accessor :color, :first_move
   def initialize
     @color = 'White'
@@ -28,11 +31,12 @@ class WhitePiece
     end
   end
 
+  # Moves module
   def valid_moves(co_ord, class_name)
-    moves_hash = { 'WhitePawn' => WhitePawn.moves(co_ord),
-                   'WhiteRook' => WhiteRook.moves(co_ord),
+    moves_hash = { 'WhitePawn' => pawn_moves(co_ord),
+                   'WhiteRook' => rook_moves(co_ord),
                    'WhiteBishop' => WhiteBishop.moves(co_ord),
-                   'WhiteKnight' => WhiteKnight.moves(co_ord),
+                   'WhiteKnight' => knight_moves(co_ord),
                    'WhiteQueen' => WhiteQueen.moves(co_ord),
                    'WhiteKing' => WhiteKing.moves(co_ord) }
     moves_hash.fetch(class_name)
@@ -44,24 +48,6 @@ class WhitePawn < WhitePiece
     return true if first_move == true
 
     false
-  end
-
-  # 9/14 - Look back at connect4 to improve this
-  # 9/15 - Pawns are more complicated than I thought
-  # 9/15 - Get the moves for other pieces like knights, rooks, etc. then come back to this
-  def self.moves(co_ord)
-    x = co_ord[0]
-    y = co_ord[1]
-    move_array = []
-    move1 =  [x - 1, y]
-    move2 =  [x - 2, y]
-    move3 =  [x - 1, y - 1] # attack move
-    move4 =  [x - 1, y + 1] # attack move
-    move_array << move1
-    move_array << move2
-    move_array << move3
-    move_array << move4
-    move_array
   end
 
   def display
@@ -98,12 +84,6 @@ class WhiteBishop < WhitePiece
 end
 
 class WhiteKnight < WhitePiece
-  MOVES_LIST = [2, 2, -2, -2, 1, 1, -1, -1].zip([1, -1, 1, -1, 2, -2, 2, -2])
-
-  def self.moves(co_ord)
-    MOVES_LIST.map { |a, b| [co_ord.first + a, co_ord.last + b] }
-  end
-
   def display
     " \u2658 ".colorize(color: :black)
   end

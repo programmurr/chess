@@ -67,6 +67,3 @@ class Player
     puts "Enter the coordinates with a space in the middle e.g. 'a2 a4'"
   end
 end
-
-# new_player = Player.new(1)
-# new_player.enter_move
