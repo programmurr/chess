@@ -8,7 +8,13 @@ class Moves
   end
 
   def self.rook(co_ord)
-    # code
+    # return_array = []
+    # get co_ord
+    # push all up direction cells to return array
+    # push all right direction cells to return array
+    # push all down direction cells to return array
+    # push all left direction cells to return array
+    # return_array
   end
 
   def self.bishop(co_ord)
@@ -69,7 +75,8 @@ class Moves
 
   def valid_move?(_player, board)
     selected_piece_class_name = start_cell.value.class.to_s
-    move_array = piece.valid_moves(start_co_ords, selected_piece_class_name) # This be stirring up sheeeit
+    # Find a way to access the piece moves directly from here, instead of what happens on the next line
+    move_array = piece.valid_moves(start_co_ords, selected_piece_class_name)
     remove_moves_beyond_the_board(move_array)
     cells = get_cells_from_move_array(move_array, board)
     filter_cells_with_same_color_pieces(cells)
@@ -80,6 +87,7 @@ class Moves
     return false if cells.length.zero?
 
     true
+    # needs to have a check to cut off paths blocked by other pieces
   end
 
   def filter_cells_with_same_color_pieces(cells)
