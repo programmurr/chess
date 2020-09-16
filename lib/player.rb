@@ -4,7 +4,7 @@ require 'pry'
 require_relative 'pieces/black_pieces'
 require_relative 'pieces/white_pieces'
 
-# Change player to have a color, not a piece
+# 9/16 HACK: Change player to have a color, not a piece
 # Change tests to suit
 # Then try to finish refactoring WhitePiece and BlackPiece away
 class Player
