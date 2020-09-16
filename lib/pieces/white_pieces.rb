@@ -31,6 +31,10 @@ class WhitePiece
 
   # Moves class
   def valid_moves(co_ord, class_name)
+    # FIXME: This currently generates ALL moves for all piece classes from that co-ord
+    #   Fetch is only returning the specific array requested
+    #   So if there's an error in Moves.rook, Moves.bishop will never activate
+    #   Check out 99 Bottles OOP I think she did a work-around for this
     moves_hash = { 'WhitePawn' => Moves.pawn(co_ord),
                    'WhiteRook' => Moves.rook(co_ord),
                    'WhiteBishop' => Moves.bishop(co_ord),

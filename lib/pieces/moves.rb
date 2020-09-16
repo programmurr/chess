@@ -8,13 +8,30 @@ class Moves
   end
 
   def self.rook(co_ord)
-    # return_array = []
-    # get co_ord
-    # push all up direction cells to return array
-    # push all right direction cells to return array
-    # push all down direction cells to return array
-    # push all left direction cells to return array
-    # return_array
+    return_array = []
+    x = co_ord[0]
+    y = co_ord[1]
+    7.times do
+      return_array << [x - 1, y]
+      x -= 1
+    end
+    x = co_ord[0]
+    7.times do
+      return_array << [x, y + 1]
+      y += 1
+    end
+    y = co_ord[1]
+    7.times do
+      return_array << [x + 1, y]
+      x += 1
+    end
+    x = co_ord[0]
+    7.times do
+      return_array << [x, y - 1]
+      y -= 1
+    end
+    y = co_ord[1]
+    return_array
   end
 
   def self.bishop(co_ord)
@@ -73,12 +90,12 @@ class Moves
     board.get_cell(player.move[1])
   end
 
-  def valid_move?(_player, board)
+  def valid_move?
     selected_piece_class_name = start_cell.value.class.to_s
     # Find a way to access the piece moves directly from here, instead of what happens on the next line
     move_array = piece.valid_moves(start_co_ords, selected_piece_class_name)
-    remove_moves_beyond_the_board(move_array)
-    cells = get_cells_from_move_array(move_array, board)
+    possible_moves = remove_moves_beyond_the_board(move_array)
+    cells = get_cells_from_move_array(possible_moves, board)
     filter_cells_with_same_color_pieces(cells)
 
     return false if cells.length.zero?
@@ -95,10 +112,13 @@ class Moves
   end
 
   def remove_moves_beyond_the_board(move_array)
-    move_array.select! do |co_ord|
-      co_ord[0] >= 0 && co_ord[1] >= 0
-      co_ord[0] < 8 && co_ord[1] < 8
+    possible_array = []
+    move_array.each do |co_ord|
+      next unless co_ord[0] < 8 && co_ord[1] < 8
+
+      possible_array << co_ord if !co_ord[0].negative? && !co_ord[1].negative?
     end
+    possible_array
   end
 
   def get_cells_from_move_array(move_array, board)
