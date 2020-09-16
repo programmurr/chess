@@ -74,13 +74,32 @@ class Moves
   end
 
   def self.king(co_ord)
-    # code
+    move_array = []
+    x = co_ord[0]
+    y = co_ord[1]
+    move1 =  [x - 1, y]
+    move2 =  [x - 1, y - 1]
+    move3 =  [x - 1, y + 1]
+    move4 =  [x, y + 1]
+    move5 =  [x + 1, y + 1]
+    move6 =  [x + 1, y]
+    move7 =  [x + 1, y - 1]
+    move8 =  [x, y - 1]
+    move_array << move1
+    move_array << move2
+    move_array << move3
+    move_array << move4
+    move_array << move5
+    move_array << move6
+    move_array << move7
+    move_array << move8
+    move_array
   end
 
   # 9/14 - HACK: Dry this up
   # 9/15 - Pawns are more complicated than I thought
   # 9/15 - Get the moves for other pieces like knights, rooks, etc. then come back to this
-  def self.pawn(co_ord)
+  def self.white_pawn(co_ord)
     x = co_ord[0]
     y = co_ord[1]
     move_array = []
@@ -88,6 +107,21 @@ class Moves
     move2 =  [x - 2, y]
     move3 =  [x - 1, y - 1] # attack move
     move4 =  [x - 1, y + 1] # attack move
+    move_array << move1
+    move_array << move2
+    move_array << move3
+    move_array << move4
+    move_array
+  end
+
+  def self.black_pawn(co_ord)
+    x = co_ord[0]
+    y = co_ord[1]
+    move_array = []
+    move1 =  [x + 1, y]
+    move2 =  [x + 2, y]
+    move3 =  [x + 1, y - 1] # attack move
+    move4 =  [x + 1, y + 1] # attack move
     move_array << move1
     move_array << move2
     move_array << move3
@@ -127,14 +161,14 @@ class Moves
     move_array = piece.valid_moves(start_co_ords, selected_piece_class_name)
     possible_moves = remove_moves_beyond_the_board(move_array)
     cells = get_cells_from_move_array(possible_moves, board)
+    # binding.pry
     filter_cells_with_same_color_pieces(cells)
-    binding.pry
     return false if cells.length.zero?
 
     cells.select! { |cell| cell.co_ord == end_cell.co_ord }
     return false if cells.length.zero?
 
-    binding.pry
+    # binding.pry
     true
     # needs to have a check to cut off paths blocked by other pieces
   end

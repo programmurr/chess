@@ -14,7 +14,6 @@ class Board
   end
 
   def get_cell(co_ord)
-    # binding.pry
     grid_coordinate_cell_map.fetch(co_ord)
   end
 
