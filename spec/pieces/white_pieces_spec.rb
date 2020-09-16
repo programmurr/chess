@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative '../../lib/pieces/white_pieces'
+require_relative '../../lib/pieces/piece'
 
 describe WhitePiece do
   context '#initialize' do

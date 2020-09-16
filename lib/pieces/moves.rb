@@ -161,14 +161,12 @@ class Moves
     move_array = piece.valid_moves(start_co_ords, selected_piece_class_name)
     possible_moves = remove_moves_beyond_the_board(move_array)
     cells = get_cells_from_move_array(possible_moves, board)
-    # binding.pry
     filter_cells_with_same_color_pieces(cells)
     return false if cells.length.zero?
 
     cells.select! { |cell| cell.co_ord == end_cell.co_ord }
     return false if cells.length.zero?
 
-    # binding.pry
     true
     # needs to have a check to cut off paths blocked by other pieces
   end

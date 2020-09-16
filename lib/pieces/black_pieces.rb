@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# require_relative 'piece'
 require_relative 'moves'
 require 'colorize'
 # Consider making an overall Piece class. Move WhitePiece/BlackPiece methods into that

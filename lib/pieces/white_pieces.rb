@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# require_relative 'piece'
 require_relative 'moves'
 require 'colorize'
 # require_relative 'valid_moves'
@@ -8,7 +9,7 @@ require 'colorize'
 # 9/14 - This will need refactoring later but I don't know into what, yet
 # Follow where the yellow brick goes goes for now in terms of generating moves
 # Then revisit. YAGNI
-class WhitePiece
+class WhitePiece # < Piece
   attr_accessor :color, :first_move
   def initialize
     @color = 'White'
