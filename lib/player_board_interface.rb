@@ -14,6 +14,7 @@ class PlayerBoardInterface
 
   def self.valid_piece?(player, board)
     cell = board.get_cell(player.move[0])
+    # HACK: Does below line break law of demeter?
     return true if cell.value.class.superclass.to_s == player.piece
 
     false

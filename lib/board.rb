@@ -5,7 +5,6 @@ require 'colorize'
 require_relative 'cell'
 require_relative 'pieces/white_pieces'
 require_relative 'pieces/black_pieces'
-require_relative 'pieces/moves'
 
 class Board
   attr_accessor :grid
@@ -69,7 +68,7 @@ class Board
       'a1' => grid[7][0], 'b1' => grid[7][1], 'c1' => grid[7][2], 'd1' => grid[7][3], 'e1' => grid[7][4], 'f1' => grid[7][5], 'g1' => grid[7][6], 'h1' => grid[7][7] }
   end
 
-  # 9/14 - HACK: Please see comment on line 55
+  # 9/14 - HACK: Please see comment on line 59
   def grid_coordinate_map
     { 'a8' => [0, 0], 'b8' => [0, 1], 'c8' => [0, 2], 'd8' => [0, 3], 'e8' => [0, 4], 'f8' => [0, 5], 'g8' => [0, 6], 'h8' => [0, 7],
       'a7' => [1, 0], 'b7' => [1, 1], 'c7' => [1, 2], 'd7' => [1, 3], 'e7' => [1, 4], 'f7' => [1, 5], 'g7' => [1, 6], 'h7' => [1, 7],
