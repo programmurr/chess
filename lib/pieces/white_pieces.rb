@@ -12,6 +12,10 @@ class WhitePiece < Piece
 end
 
 class WhitePawn < WhitePiece
+  def initialize
+    @color = 'White'
+  end
+
   def name
     self.class.to_s
   end
@@ -28,6 +32,10 @@ class WhitePawn < WhitePiece
 end
 
 class WhiteRook < WhitePiece
+  def initialize
+    @color = 'White'
+  end
+
   def name
     self.class.to_s
   end
@@ -52,6 +60,10 @@ class WhiteRook < WhitePiece
 end
 
 class WhiteBishop < WhitePiece
+  def initialize
+    @color = 'White'
+  end
+
   def name
     self.class.to_s
   end
@@ -70,6 +82,10 @@ class WhiteBishop < WhitePiece
 end
 
 class WhiteKnight < WhitePiece
+  def initialize
+    @color = 'White'
+  end
+
   def name
     self.class.to_s
   end
@@ -84,6 +100,10 @@ class WhiteKnight < WhitePiece
 end
 
 class WhiteQueen < WhitePiece
+  def initialize
+    @color = 'White'
+  end
+
   def name
     self.class.to_s
   end
@@ -102,6 +122,10 @@ class WhiteQueen < WhitePiece
 end
 
 class WhiteKing < WhitePiece
+  def initialize
+    @color = 'White'
+  end
+
   def name
     self.class.to_s
   end

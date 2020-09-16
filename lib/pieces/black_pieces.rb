@@ -12,6 +12,10 @@ class BlackPiece < Piece
 end
 
 class BlackPawn < BlackPiece
+  def initialize
+    @color = 'Black'
+  end
+
   def name
     self.class.to_s
   end
@@ -22,6 +26,10 @@ class BlackPawn < BlackPiece
 end
 
 class BlackRook < BlackPiece
+  def initialize
+    @color = 'Black'
+  end
+
   def name
     self.class.to_s
   end
@@ -36,6 +44,10 @@ class BlackRook < BlackPiece
 end
 
 class BlackBishop < BlackPiece
+  def initialize
+    @color = 'Black'
+  end
+
   def name
     self.class.to_s
   end
@@ -50,6 +62,10 @@ class BlackBishop < BlackPiece
 end
 
 class BlackKnight < BlackPiece
+  def initialize
+    @color = 'Black'
+  end
+
   def name
     self.class.to_s
   end
@@ -64,6 +80,10 @@ class BlackKnight < BlackPiece
 end
 
 class BlackQueen < BlackPiece
+  def initialize
+    @color = 'Black'
+  end
+
   def name
     self.class.to_s
   end
@@ -78,6 +98,10 @@ class BlackQueen < BlackPiece
 end
 
 class BlackKing < BlackPiece
+  def initialize
+    @color = 'Black'
+  end
+
   def name
     self.class.to_s
   end

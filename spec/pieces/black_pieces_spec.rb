@@ -6,7 +6,7 @@ require_relative '../../lib/pieces/piece'
 
 describe BlackPiece do
   context '#initialize' do
-    let(:piece) { BlackPiece.new }
+    let(:piece) { Piece.new('Black') }
     it 'can have a color attribute with default set to Black' do
       expect(piece.color).to eq 'Black'
     end
