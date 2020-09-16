@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
-require_relative 'white_pieces'
-require_relative 'black_pieces'
+require_relative 'moves'
 
 class Piece
   attr_accessor :color, :first_move
@@ -33,12 +32,17 @@ class Piece
     #   So if there's an error in Moves.rook, Moves.bishop will never activate
     #   Check out 99 Bottles OOP I think she did a work-around for this
     moves_hash = { 'WhitePawn' => Moves.white_pawn(co_ord),
+                   'WhiteRook' => Moves.rook(co_ord),
+                   'WhiteBishop' => Moves.bishop(co_ord),
+                   'WhiteKnight' => Moves.knight(co_ord),
+                   'WhiteQueen' => Moves.queen(co_ord),
+                   'WhiteKing' => Moves.king(co_ord),
                    'BlackPawn' => Moves.black_pawn(co_ord),
-                   'Rook' => Moves.rook(co_ord),
-                   'Bishop' => Moves.bishop(co_ord),
-                   'Knight' => Moves.knight(co_ord),
-                   'Queen' => Moves.queen(co_ord),
-                   'King' => Moves.king(co_ord) }
+                   'BlackRook' => Moves.rook(co_ord),
+                   'BlackBishop' => Moves.bishop(co_ord),
+                   'BlackKnight' => Moves.knight(co_ord),
+                   'BlackQueen' => Moves.queen(co_ord),
+                   'BlackKing' => Moves.king(co_ord) }
     moves_hash.fetch(class_name)
   end
 end

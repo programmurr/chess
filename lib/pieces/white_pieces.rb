@@ -1,52 +1,21 @@
 # frozen_string_literal: true
 
-# require_relative 'piece'
+require_relative 'piece'
 require_relative 'moves'
 require 'colorize'
-# require_relative 'valid_moves'
 
-# Consider making an overall Piece class. Move WhitePiece/BlackPiece methods into that
-# 9/14 - This will need refactoring later but I don't know into what, yet
-# Follow where the yellow brick goes goes for now in terms of generating moves
-# Then revisit. YAGNI
-class WhitePiece # < Piece
-  attr_accessor :color, :first_move
+class WhitePiece < Piece
+  attr_accessor :color
   def initialize
     @color = 'White'
-    @first_move = true
-  end
-
-  def name
-    self.class.to_s
-  end
-
-  def algebraic_name
-    self.class.to_s.split(//).each.with_index do |letter, index|
-      if ('A'..'Z').include?(letter) && !index.zero?
-        return letter
-      elsif is_a? WhiteKnight
-        return 'N'
-      end
-    end
-  end
-
-  # Moves class
-  def valid_moves(co_ord, class_name)
-    # FIXME: This currently generates ALL moves for all piece classes from that co-ord
-    #   Fetch is only returning the specific array requested
-    #   So if there's an error in Moves.rook, Moves.bishop will never activate
-    #   Check out 99 Bottles OOP I think she did a work-around for this
-    moves_hash = { 'WhitePawn' => Moves.white_pawn(co_ord),
-                   'WhiteRook' => Moves.rook(co_ord),
-                   'WhiteBishop' => Moves.bishop(co_ord),
-                   'WhiteKnight' => Moves.knight(co_ord),
-                   'WhiteQueen' => Moves.queen(co_ord),
-                   'WhiteKing' => Moves.king(co_ord) }
-    moves_hash.fetch(class_name)
   end
 end
 
 class WhitePawn < WhitePiece
+  def name
+    self.class.to_s
+  end
+
   def first_move?
     return true if first_move == true
 
@@ -59,6 +28,10 @@ class WhitePawn < WhitePiece
 end
 
 class WhiteRook < WhitePiece
+  def name
+    self.class.to_s
+  end
+
   def first_move?
     return true if first_move == true
 
@@ -79,6 +52,10 @@ class WhiteRook < WhitePiece
 end
 
 class WhiteBishop < WhitePiece
+  def name
+    self.class.to_s
+  end
+
   def self.moves(co_ord)
     co_ord
   end
@@ -93,6 +70,10 @@ class WhiteBishop < WhitePiece
 end
 
 class WhiteKnight < WhitePiece
+  def name
+    self.class.to_s
+  end
+
   def display
     " \u2658 ".colorize(color: :black)
   end
@@ -103,6 +84,10 @@ class WhiteKnight < WhitePiece
 end
 
 class WhiteQueen < WhitePiece
+  def name
+    self.class.to_s
+  end
+
   def self.moves(co_ord)
     co_ord
   end
@@ -117,6 +102,10 @@ class WhiteQueen < WhitePiece
 end
 
 class WhiteKing < WhitePiece
+  def name
+    self.class.to_s
+  end
+
   def first_move?
     return true if first_move == true
 

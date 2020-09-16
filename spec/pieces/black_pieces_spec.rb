@@ -2,7 +2,7 @@
 
 require 'colorize'
 require_relative '../../lib/pieces/black_pieces'
-# require_relative '../../lib/pieces/piece'
+require_relative '../../lib/pieces/piece'
 
 describe BlackPiece do
   context '#initialize' do
