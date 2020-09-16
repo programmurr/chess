@@ -35,7 +35,38 @@ class Moves
   end
 
   def self.bishop(co_ord)
-    # code
+    return_array = []
+    x = co_ord[0]
+    y = co_ord[1]
+    7.times do
+      return_array << [x - 1, y + 1]
+      x -= 1
+      y += 1
+    end
+    x = co_ord[0]
+    y = co_ord[1]
+    7.times do
+      return_array << [x + 1, y + 1]
+      x += 1
+      y += 1
+    end
+    x = co_ord[0]
+    y = co_ord[1]
+    7.times do
+      return_array << [x + 1, y - 1]
+      x += 1
+      y -= 1
+    end
+    x = co_ord[0]
+    y = co_ord[1]
+    7.times do
+      return_array << [x - 1, y - 1]
+      x -= 1
+      y -= 1
+    end
+    x = co_ord[0]
+    y = co_ord[1]
+    return_array
   end
 
   def self.queen(co_ord)
