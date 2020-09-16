@@ -70,7 +70,7 @@ class Moves
   end
 
   def self.queen(co_ord)
-    # code
+    rook(co_ord) + bishop(co_ord)
   end
 
   def self.king(co_ord)
@@ -128,12 +128,13 @@ class Moves
     possible_moves = remove_moves_beyond_the_board(move_array)
     cells = get_cells_from_move_array(possible_moves, board)
     filter_cells_with_same_color_pieces(cells)
-
+    binding.pry
     return false if cells.length.zero?
 
     cells.select! { |cell| cell.co_ord == end_cell.co_ord }
     return false if cells.length.zero?
 
+    binding.pry
     true
     # needs to have a check to cut off paths blocked by other pieces
   end
