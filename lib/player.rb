@@ -8,10 +8,11 @@ require_relative 'pieces/white_pieces'
 # Change tests to suit
 # Then try to finish refactoring WhitePiece and BlackPiece away
 class Player
-  attr_accessor :name, :piece, :move
+  attr_accessor :name, :piece, :move, :color
   def initialize(num)
     @name = "Player#{num}"
     @piece = nil
+    @color = nil
     @move = nil
   end
 
@@ -27,11 +28,13 @@ class Player
   end
 
   def assign_black_piece
-    self.piece = BlackPiece.new
+    self.piece = Piece.new('Black')
+    self.color = 'Black'
   end
 
   def assign_white_piece
-    self.piece = WhitePiece.new
+    self.piece = Piece.new('White')
+    self.color = 'White'
   end
 
   private

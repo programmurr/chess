@@ -3,15 +3,6 @@
 require_relative '../../lib/pieces/white_pieces'
 require_relative '../../lib/pieces/piece'
 
-describe WhitePiece do
-  context '#initialize' do
-    let(:piece) { WhitePiece.new }
-    it 'can have a color attribute with default set to White' do
-      expect(piece.color).to eq 'White'
-    end
-  end
-end
-
 describe WhitePawn do
   let(:pawn) { WhitePawn.new }
   context '#initialize' do

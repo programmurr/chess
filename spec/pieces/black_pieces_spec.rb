@@ -4,15 +4,6 @@ require 'colorize'
 require_relative '../../lib/pieces/black_pieces'
 require_relative '../../lib/pieces/piece'
 
-describe BlackPiece do
-  context '#initialize' do
-    let(:piece) { Piece.new('Black') }
-    it 'can have a color attribute with default set to Black' do
-      expect(piece.color).to eq 'Black'
-    end
-  end
-end
-
 describe BlackPawn do
   let(:pawn) { BlackPawn.new }
   context '#initialize' do

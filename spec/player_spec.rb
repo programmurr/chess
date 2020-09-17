@@ -24,19 +24,24 @@ describe Player do
       new_player = Player.new(1)
       expect(new_player.move).to eq nil
     end
+
+    it "has a 'color' attribute set to nil" do
+      new_player = Player.new(1)
+      expect(new_player.color).to eq nil
+    end
   end
 
   context '#assign_black_piece' do
     it 'can be assigned the BlackPiece class as a piece attribute' do
       new_player = Player.new(1)
-      expect { new_player.assign_black_piece }.to change { new_player.piece }.from(nil).to be_instance_of BlackPiece
+      expect { new_player.assign_black_piece }.to change { new_player.color }.from(nil).to 'Black'
     end
   end
 
   context '#assign_white_piece' do
     it 'can be assigned the WhitePiece class as a piece attribute' do
       new_player = Player.new(1)
-      expect { new_player.assign_white_piece }.to change { new_player.piece }.from(nil).to be_instance_of WhitePiece
+      expect { new_player.assign_white_piece }.to change { new_player.color }.from(nil).to 'White'
     end
   end
 

@@ -4,14 +4,7 @@ require_relative 'piece'
 require_relative 'moves'
 require 'colorize'
 
-class BlackPiece < Piece
-  attr_accessor :color
-  def initialize
-    @color = 'Black'
-  end
-end
-
-class BlackPawn < BlackPiece
+class BlackPawn < Piece
   def initialize
     @color = 'Black'
   end
@@ -25,7 +18,7 @@ class BlackPawn < BlackPiece
   end
 end
 
-class BlackRook < BlackPiece
+class BlackRook < Piece
   def initialize
     @color = 'Black'
   end
@@ -43,7 +36,7 @@ class BlackRook < BlackPiece
   end
 end
 
-class BlackBishop < BlackPiece
+class BlackBishop < Piece
   def initialize
     @color = 'Black'
   end
@@ -61,7 +54,7 @@ class BlackBishop < BlackPiece
   end
 end
 
-class BlackKnight < BlackPiece
+class BlackKnight < Piece
   def initialize
     @color = 'Black'
   end
@@ -79,7 +72,7 @@ class BlackKnight < BlackPiece
   end
 end
 
-class BlackQueen < BlackPiece
+class BlackQueen < Piece
   def initialize
     @color = 'Black'
   end
@@ -97,7 +90,7 @@ class BlackQueen < BlackPiece
   end
 end
 
-class BlackKing < BlackPiece
+class BlackKing < Piece
   def initialize
     @color = 'Black'
   end

@@ -7,10 +7,12 @@ require_relative 'pieces/white_pieces'
 require_relative 'pieces/black_pieces'
 
 class Board
-  attr_accessor :grid
+  attr_accessor :grid, :white_pawn, :black_pawn
 
-  def initialize(grid: default_grid)
+  def initialize(grid: default_grid, white_pawn: WhitePawn.new, black_pawn: BlackPawn.new)
     @grid = grid
+    @white_pawn = white_pawn
+    @black_pawn = black_pawn
   end
 
   def get_cell(co_ord)
@@ -31,8 +33,8 @@ class Board
   end
 
   def place_pawns
-    grid[6].each { |cell| cell.value = WhitePawn.new }
-    grid[1].each { |cell| cell.value = BlackPawn.new }
+    grid[6].each { |cell| cell.value = white_pawn }
+    grid[1].each { |cell| cell.value = black_pawn }
   end
 
   def set_cell_coordinates
@@ -173,3 +175,4 @@ end
 # board.place_pawns
 # board.place_royalty
 # board.display
+# board.grid

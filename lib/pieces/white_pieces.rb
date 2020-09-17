@@ -4,14 +4,7 @@ require_relative 'piece'
 require_relative 'moves'
 require 'colorize'
 
-class WhitePiece < Piece
-  attr_accessor :color
-  def initialize
-    @color = 'White'
-  end
-end
-
-class WhitePawn < WhitePiece
+class WhitePawn < Piece
   def initialize
     @color = 'White'
   end
@@ -31,7 +24,7 @@ class WhitePawn < WhitePiece
   end
 end
 
-class WhiteRook < WhitePiece
+class WhiteRook < Piece
   def initialize
     @color = 'White'
   end
@@ -59,7 +52,7 @@ class WhiteRook < WhitePiece
   end
 end
 
-class WhiteBishop < WhitePiece
+class WhiteBishop < Piece
   def initialize
     @color = 'White'
   end
@@ -81,7 +74,7 @@ class WhiteBishop < WhitePiece
   end
 end
 
-class WhiteKnight < WhitePiece
+class WhiteKnight < Piece
   def initialize
     @color = 'White'
   end
@@ -99,7 +92,7 @@ class WhiteKnight < WhitePiece
   end
 end
 
-class WhiteQueen < WhitePiece
+class WhiteQueen < Piece
   def initialize
     @color = 'White'
   end
@@ -121,7 +114,7 @@ class WhiteQueen < WhitePiece
   end
 end
 
-class WhiteKing < WhitePiece
+class WhiteKing < Piece
   def initialize
     @color = 'White'
   end
