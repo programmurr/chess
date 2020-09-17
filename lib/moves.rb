@@ -1,4 +1,8 @@
+require_relative 'move_formulas'
+
 class Moves
+  include MoveFormulas
+
   KNIGHT_MOVES_LIST = [2, 2, -2, -2, 1, 1, -1, -1].zip([1, -1, 1, -1, 2, -2, 2, -2])
 
   attr_reader :player, :board, :start_cell, :end_cell, :piece, :start_co_ords, :end_co_ords
@@ -30,10 +34,6 @@ class Moves
   private
 
   def valid_moves(co_ord, class_name)
-    # FIXME: This currently generates ALL moves for all piece classes from that co-ord
-    #   Fetch is only returning the specific array requested
-    #   So if there's an error in Moves.rook, Moves.bishop will never activate
-    #   Check out 99 Bottles OOP I think she did a work-around for this
     moves_hash = { 'Pawn' => pawn(co_ord),
                    'Rook' => rook(co_ord),
                    'Bishop' => bishop(co_ord),

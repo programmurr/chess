@@ -12,6 +12,12 @@ class Piece
   def name
     self.class.to_s
   end
+
+  def first_move?
+    return true if first_move == true
+
+    false
+  end
 end
 
 class Pawn < Piece
@@ -19,12 +25,6 @@ class Pawn < Piece
 
   def initialize(color)
     @color = color
-  end
-
-  def first_move?
-    return true if first_move == true
-
-    false
   end
 
   def display
@@ -41,12 +41,6 @@ class Rook < Piece
 
   def initialize(color)
     @color = color
-  end
-
-  def first_move?
-    return true if first_move == true
-
-    false
   end
 
   def display
@@ -111,12 +105,6 @@ class King < Piece
 
   def initialize(color)
     @color = color
-  end
-
-  def first_move?
-    return true if first_move == true
-
-    false
   end
 
   def display
