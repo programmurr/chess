@@ -24,40 +24,31 @@ describe Piece do
   end
 end
 
-describe BlackPawn do
-  let(:pawn) { BlackPawn.new }
+describe Pawn do
+  let(:black_pawn) { Pawn.new('Black') }
+  let(:white_pawn) { Pawn.new('White') }
+
   context '#initialize' do
-    it 'inherits the color attribute from the BlackPiece superclass' do
-      expect(pawn.color).to eq 'Black'
+    it 'can have a color attribute of Black' do
+      expect(black_pawn.color).to eq 'Black'
+    end
+
+    it 'can have a color attribute of White' do
+      expect(white_pawn.color).to eq 'White'
     end
 
     it 'generates its own name based on its sub-class name' do
-      expect(pawn.name).to eq 'BlackPawn'
+      expect(black_pawn.name).to eq 'Pawn'
     end
   end
 
   context '#display' do
     it 'can display a unicode character representing a Black chess pawn' do
-      expect(pawn.display).to eq " \u265F ".colorize(color: :black)
-    end
-  end
-end
-
-describe WhitePawn do
-  let(:pawn) { WhitePawn.new }
-  context '#initialize' do
-    it 'has a color attribute of White' do
-      expect(pawn.color).to eq 'White'
+      expect(black_pawn.display).to eq " \u265F ".colorize(color: :black)
     end
 
-    it 'generates its own name based on its sub-class name' do
-      expect(pawn.name).to eq 'WhitePawn'
-    end
-  end
-
-  context '#display' do
-    it 'can display a unicode character representing a white chess pawn' do
-      expect(pawn.display).to eq ' ♙ '.colorize(color: :black)
+    it 'can display a unicode character representing a White chess pawn' do
+      expect(white_pawn.display).to eq ' ♙ '.colorize(color: :black)
     end
   end
 end

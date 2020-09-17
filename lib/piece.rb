@@ -36,38 +36,6 @@ class Pawn < Piece
   end
 end
 
-class BlackPawn < Piece
-  def initialize
-    @color = 'Black'
-  end
-
-  def first_move?
-    return true if first_move == true
-
-    false
-  end
-
-  def display
-    " \u265F ".colorize(color: :black)
-  end
-end
-
-class WhitePawn < Piece
-  def initialize
-    @color = 'White'
-  end
-
-  def first_move?
-    return true if first_move == true
-
-    false
-  end
-
-  def display
-    " \u2659 ".colorize(color: :black)
-  end
-end
-
 class Rook < Piece
   attr_reader :color
 
