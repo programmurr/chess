@@ -102,16 +102,16 @@ class Moves
   def self.white_pawn(co_ord)
     x = co_ord[0]
     y = co_ord[1]
-    move_array = []
-    move1 =  [x - 1, y]
-    move2 =  [x - 2, y]
-    move3 =  [x - 1, y - 1] # attack move
-    move4 =  [x - 1, y + 1] # attack move
-    move_array << move1
-    move_array << move2
-    move_array << move3
-    move_array << move4
-    move_array
+    white_array = []
+    white_move1 =  [x - 1, y]
+    white_move2 =  [x - 2, y]
+    white_move3 =  [x - 1, y - 1] # attack move
+    white_move4 =  [x - 1, y + 1] # attack move
+    white_array << white_move1
+    white_array << white_move2
+    white_array << white_move3
+    white_array << white_move4
+    white_array
   end
 
   def self.black_pawn(co_ord)
