@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require_relative '../lib/player'
-require_relative '../lib/pieces/piece'
+require_relative '../lib/piece'
 
 describe Player do
   context '#initialize' do

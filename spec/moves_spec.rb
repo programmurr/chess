@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require_relative '../../lib/pieces/moves'
-require_relative '../../lib/board'
+require_relative '../lib/moves'
+require_relative '../lib/board'
 
 describe Moves do
   context '#valid_move?' do

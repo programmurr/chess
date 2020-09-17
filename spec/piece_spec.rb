@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'colorize'
-require_relative '../../lib/pieces/piece'
+require_relative '../lib/piece'
 
 describe Piece do
   context '#initialize' do
@@ -17,14 +17,9 @@ describe Piece do
   end
 
   context '#name' do
-    it 'has a name matching its color' do
+    it 'has a name matching its class' do
       piece = Piece.new('Black')
-      expect(piece.name).to eq 'BlackPiece'
-    end
-
-    it 'has a name matching its color' do
-      piece = Piece.new('White')
-      expect(piece.name).to eq 'WhitePiece'
+      expect(piece.name).to eq 'Piece'
     end
   end
 end

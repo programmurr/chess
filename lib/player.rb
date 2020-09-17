@@ -1,7 +1,7 @@
 # frozen_string_literal: false
 
 require 'pry'
-require_relative 'pieces/piece'
+require_relative 'piece'
 
 # 9/16 HACK: Change player to have a color, not a piece
 # Change tests to suit
@@ -23,7 +23,7 @@ class Player
         raise 'That is not a valid coordinate, please re-enter'
       end
     end
-    @move = convert_to_move(move)
+    self.move = convert_to_move(move)
   end
 
   def assign_black_piece

@@ -3,13 +3,13 @@
 require 'pry'
 require 'colorize'
 require_relative 'cell'
-require_relative 'pieces/piece'
+require_relative 'piece'
 
 class Board
   attr_accessor :grid, :white_pawn, :black_pawn
 
   # FIXME: Liskov violation - WhitePawn cannot initialize when new gets called by superclass Piece
-  def initialize(grid: default_grid, white_pawn: WhitePawn.new, black_pawn: BlackPawn.new)
+  def initialize(grid: default_grid, white_pawn: Pawn.new('White'), black_pawn: Pawn.new('Black'))
     @grid = grid
     @white_pawn = white_pawn
     @black_pawn = black_pawn
