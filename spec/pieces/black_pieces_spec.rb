@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'colorize'
-require_relative '../../lib/pieces/black_pieces'
 require_relative '../../lib/pieces/piece'
 
 describe BlackPawn do
@@ -21,23 +20,17 @@ describe BlackPawn do
       expect(pawn.display).to eq " \u265F ".colorize(color: :black)
     end
   end
-
-  context '#algebraic_name' do
-    it 'has an algebraic name of P' do
-      expect(pawn.algebraic_name).to eq 'P'
-    end
-  end
 end
 
-describe BlackRook do
-  let(:rook) { BlackRook.new }
+describe Rook do
+  let(:rook) { Rook.new('Black') }
   context '#initialize' do
-    it 'inherits the color attribute from the BlackPiece superclass' do
+    it 'has a color attribute of black' do
       expect(rook.color).to eq 'Black'
     end
 
     it 'generates its own name based on its sub-class name' do
-      expect(rook.name).to eq 'BlackRook'
+      expect(rook.name).to eq 'Rook'
     end
   end
 
@@ -46,23 +39,17 @@ describe BlackRook do
       expect(rook.display).to eq ' ♜ '.colorize(color: :black)
     end
   end
-
-  context '#algebraic_name' do
-    it 'has an algebraic name of R' do
-      expect(rook.algebraic_name).to eq 'R'
-    end
-  end
 end
 
-describe BlackBishop do
-  let(:bishop) { BlackBishop.new }
+describe Bishop do
+  let(:bishop) { Bishop.new('Black') }
   context '#initialize' do
-    it 'inherits the color attribute from the BlackPiece superclass' do
+    it 'has a color attribute set to Black' do
       expect(bishop.color).to eq 'Black'
     end
 
     it 'generates its own name based on its sub-class name' do
-      expect(bishop.name).to eq 'BlackBishop'
+      expect(bishop.name).to eq 'Bishop'
     end
   end
 
@@ -71,23 +58,17 @@ describe BlackBishop do
       expect(bishop.display).to eq ' ♝ '.colorize(color: :black)
     end
   end
-
-  context '#algebraic_name' do
-    it 'has an algebraic name of B' do
-      expect(bishop.algebraic_name).to eq 'B'
-    end
-  end
 end
 
-describe BlackKnight do
-  let(:knight) { BlackKnight.new }
+describe Knight do
+  let(:knight) { Knight.new('Black') }
   context '#initialize' do
-    it 'inherits the color attribute from the BlackPiece superclass' do
+    it 'has a color attribute set to black' do
       expect(knight.color).to eq 'Black'
     end
 
     it 'generates its own name based on its sub-class name' do
-      expect(knight.name).to eq 'BlackKnight'
+      expect(knight.name).to eq 'Knight'
     end
   end
 
@@ -96,23 +77,17 @@ describe BlackKnight do
       expect(knight.display).to eq ' ♞ '.colorize(color: :black)
     end
   end
-
-  context '#algebraic_name' do
-    it 'has an algebraic name of N' do
-      expect(knight.algebraic_name).to eq 'N'
-    end
-  end
 end
 
-describe BlackQueen do
-  let(:queen) { BlackQueen.new }
+describe Queen do
+  let(:queen) { Queen.new('Black') }
   context '#initialize' do
-    it 'inherits the color attribute from the BlackPiece superclass' do
+    it 'has a color attribute set to black' do
       expect(queen.color).to eq 'Black'
     end
 
     it 'generates its own name based on its sub-class name' do
-      expect(queen.name).to eq 'BlackQueen'
+      expect(queen.name).to eq 'Queen'
     end
   end
 
@@ -121,35 +96,23 @@ describe BlackQueen do
       expect(queen.display).to eq ' ♛ '.colorize(color: :black)
     end
   end
-
-  context '#algebraic_name' do
-    it 'has an algebraic name of Q' do
-      expect(queen.algebraic_name).to eq 'Q'
-    end
-  end
 end
 
-describe BlackKing do
-  let(:king) { BlackKing.new }
+describe King do
+  let(:king) { King.new('Black') }
   context '#initialize' do
-    it 'inherits the color attribute from the BlackPiece superclass' do
+    it 'has a color attribute set to black' do
       expect(king.color).to eq 'Black'
     end
 
     it 'generates its own name based on its sub-class name' do
-      expect(king.name).to eq 'BlackKing'
+      expect(king.name).to eq 'King'
     end
   end
 
   context '#display' do
     it 'can display a unicode character representing a Black chess king' do
       expect(king.display).to eq ' ♚ '.colorize(color: :black)
-    end
-  end
-
-  context '#algebraic_name' do
-    it 'has an algebraic name of K' do
-      expect(king.algebraic_name).to eq 'K'
     end
   end
 end

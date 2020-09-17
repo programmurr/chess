@@ -69,23 +69,23 @@ describe Board do
       @board.set_cell_coordinates
       @board.place_royalty
       @test_row = [Cell.new, Cell.new, Cell.new, Cell.new, Cell.new, Cell.new, Cell.new, Cell.new]
-      @test_row[0].value = BlackRook.new
-      @test_row[1].value = BlackKnight.new
-      @test_row[2].value = BlackBishop.new
-      @test_row[3].value = BlackQueen.new
-      @test_row[4].value = BlackKing.new
-      @test_row[5].value = BlackBishop.new
-      @test_row[6].value = BlackKnight.new
-      @test_row[7].value = BlackRook.new
+      @test_row[0].value = Rook.new('Black')
+      @test_row[1].value = Knight.new('Black')
+      @test_row[2].value = Bishop.new('Black')
+      @test_row[3].value = Queen.new('Black')
+      @test_row[4].value = King.new('Black')
+      @test_row[5].value = Bishop.new('Black')
+      @test_row[6].value = Knight.new('Black')
+      @test_row[7].value = Rook.new('Black')
       @test_row2 = [Cell.new, Cell.new, Cell.new, Cell.new, Cell.new, Cell.new, Cell.new, Cell.new]
-      @test_row2[0].value = WhiteRook.new
-      @test_row2[1].value = WhiteKnight.new
-      @test_row2[2].value = WhiteBishop.new
-      @test_row2[3].value = WhiteQueen.new
-      @test_row2[4].value = WhiteKing.new
-      @test_row2[5].value = WhiteBishop.new
-      @test_row2[6].value = WhiteKnight.new
-      @test_row2[7].value = WhiteRook.new
+      @test_row2[0].value = Rook.new('White')
+      @test_row2[1].value = Knight.new('White')
+      @test_row2[2].value = Bishop.new('White')
+      @test_row2[3].value = Queen.new('White')
+      @test_row2[4].value = King.new('White')
+      @test_row2[5].value = Bishop.new('White')
+      @test_row2[6].value = Knight.new('White')
+      @test_row2[7].value = Rook.new('White')
     end
 
     it 'puts a black rook in a8' do

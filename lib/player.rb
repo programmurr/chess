@@ -1,8 +1,7 @@
 # frozen_string_literal: false
 
 require 'pry'
-require_relative 'pieces/black_pieces'
-require_relative 'pieces/white_pieces'
+require_relative 'pieces/piece'
 
 # 9/16 HACK: Change player to have a color, not a piece
 # Change tests to suit

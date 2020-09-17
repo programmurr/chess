@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative '../lib/cell'
+
 describe Cell do
   context '#initialize' do
     let(:cell) { Cell.new }

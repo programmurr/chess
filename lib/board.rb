@@ -3,8 +3,7 @@
 require 'pry'
 require 'colorize'
 require_relative 'cell'
-require_relative 'pieces/white_pieces'
-require_relative 'pieces/black_pieces'
+require_relative 'pieces/piece'
 
 class Board
   attr_accessor :grid, :white_pawn, :black_pawn
@@ -136,12 +135,12 @@ class Board
   end
 
   def place_black_royalty
-    royalty = [BlackRook.new, BlackKnight.new, BlackBishop.new, BlackQueen.new, BlackKing.new, BlackBishop.new, BlackKnight.new, BlackRook.new]
+    royalty = [Rook.new('Black'), Knight.new('Black'), Bishop.new('Black'), Queen.new('Black'), King.new('Black'), Bishop.new('Black'), Knight.new('Black'), Rook.new('Black')]
     grid[0].map { |cell| cell.value = royalty.shift }
   end
 
   def place_white_royalty
-    royalty = [WhiteRook.new, WhiteKnight.new, WhiteBishop.new, WhiteQueen.new, WhiteKing.new, WhiteBishop.new, WhiteKnight.new, WhiteRook.new]
+    royalty = [Rook.new('White'), Knight.new('White'), Bishop.new('White'), Queen.new('White'), King.new('White'), Bishop.new('White'), Knight.new('White'), Rook.new('White')]
     grid[7].map { |cell| cell.value = royalty.shift }
   end
 
