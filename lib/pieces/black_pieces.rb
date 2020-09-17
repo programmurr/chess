@@ -30,10 +30,6 @@ class BlackRook < Piece
   def display
     " \u265C ".colorize(color: :black)
   end
-
-  def initial_co_ords
-    %w[a8 h8]
-  end
 end
 
 class BlackBishop < Piece
@@ -47,10 +43,6 @@ class BlackBishop < Piece
 
   def display
     " \u265D ".colorize(color: :black)
-  end
-
-  def initial_co_ords
-    %w[c8 f8]
   end
 end
 
@@ -66,10 +58,6 @@ class BlackKnight < Piece
   def display
     " \u265E ".colorize(color: :black)
   end
-
-  def initial_co_ords
-    %w[b8 g8]
-  end
 end
 
 class BlackQueen < Piece
@@ -84,10 +72,6 @@ class BlackQueen < Piece
   def display
     " \u265B ".colorize(color: :black)
   end
-
-  def initial_co_ords
-    'd8'
-  end
 end
 
 class BlackKing < Piece
@@ -101,9 +85,5 @@ class BlackKing < Piece
 
   def display
     " \u265A ".colorize(color: :black)
-  end
-
-  def initial_co_ords
-    'e8'
   end
 end

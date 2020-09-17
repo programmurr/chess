@@ -9,6 +9,7 @@ require_relative 'pieces/black_pieces'
 class Board
   attr_accessor :grid, :white_pawn, :black_pawn
 
+  # FIXME: Liskov violation - WhitePawn cannot initialize when new gets called by superclass Piece
   def initialize(grid: default_grid, white_pawn: WhitePawn.new, black_pawn: BlackPawn.new)
     @grid = grid
     @white_pawn = white_pawn
