@@ -2,6 +2,8 @@
 
 require_relative 'moves'
 
+# Remove color attribute for Piece? Is not cascading to subclasses, and causes trouble
+#   Not really useful for the player either
 class Piece
   attr_accessor :color, :first_move
   def initialize(color)

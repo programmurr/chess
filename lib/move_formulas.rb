@@ -1,3 +1,7 @@
+# frozen_string_literal: true
+
+# Rename this to just Moves?
+# Rename the current Moves class to RuleChecker/MoveChecks, etc?
 class MoveFormulas
   KNIGHT_MOVES_LIST = [2, 2, -2, -2, 1, 1, -1, -1].zip([1, -1, 1, -1, 2, -2, 2, -2])
 

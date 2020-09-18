@@ -30,11 +30,20 @@ describe Moves do
       expect(move.valid_move?).to eq false
     end
 
-    it 'returns true if the Rook can move to an empty square' do
+    it 'returns true if the Rook tries to move to an empty square with direct line of sight' do
       player = double('Player', move: %w[f4 b4], piece: Piece.new('White'))
       @board.grid[4][5].value = Rook.new('White')
       move = Moves.new(player, @board)
       expect(move.valid_move?).to eq true
+    end
+
+    it 'returns false if the Rook tries to move to an empty square with any piece blocking the path' do
+      player = double('Player', move: %w[f4 a4], piece: Piece.new('White'))
+      @board.grid[4][5].value = Rook.new('White')
+      @board.grid[4][2].value = Pawn.new('White')
+      @board.display
+      move = Moves.new(player, @board)
+      expect(move.valid_move?).to eq false
     end
 
     it 'returns false if Rook tries to move to a square occupied by the same piece color' do

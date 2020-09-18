@@ -3,9 +3,6 @@
 require 'pry'
 require_relative 'piece'
 
-# 9/16 HACK: Change player to have a color, not a piece
-# Change tests to suit
-# Then try to finish refactoring WhitePiece and BlackPiece away
 class Player
   attr_accessor :name, :piece, :move, :color
   def initialize(num)
@@ -59,12 +56,9 @@ class Player
   end
 
   def convert_to_move(move)
-    return_array = []
     return1 = move[0] + move[1]
     return2 = move[3] + move[4]
-    return_array << return1
-    return_array << return2
-    return_array
+    [return1, return2]
   end
 
   def enter_move_message
