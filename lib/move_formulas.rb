@@ -28,6 +28,7 @@ class MoveFormulas
     rook_horizontal_right(all_moves)
     rook_vertical_down(all_moves)
     rook_horizontal_left(all_moves)
+    all_moves
   end
 
   def bishop
@@ -35,10 +36,11 @@ class MoveFormulas
     bishop_down_right(all_moves)
     bishop_down_left(all_moves)
     bishop_up_left(all_moves)
+    all_moves
   end
 
   def queen
-    rook + bishop
+    rook.merge(bishop)
   end
 
   def king
@@ -62,34 +64,37 @@ class MoveFormulas
       return_array << [x - 1, y]
       self.x -= 1
     end
-    return_array
+    { 'up' => return_array }
   end
 
-  def rook_horizontal_right(return_array)
+  def rook_horizontal_right(return_hash)
     reset_x_and_y
+    return_array = []
     7.times do
       return_array << [x, y + 1]
       self.y += 1
     end
-    return_array
+    return_hash['right'] = return_array
   end
 
-  def rook_vertical_down(return_array)
+  def rook_vertical_down(return_hash)
     reset_x_and_y
+    return_array = []
     7.times do
       return_array << [x + 1, y]
       self.x += 1
     end
-    return_array
+    return_hash['down'] = return_array
   end
 
-  def rook_horizontal_left(return_array)
+  def rook_horizontal_left(return_hash)
     reset_x_and_y
+    return_array = []
     7.times do
       return_array << [x, y - 1]
       self.y -= 1
     end
-    return_array
+    return_hash['left'] = return_array
   end
 
   def bishop_up_right
@@ -100,36 +105,39 @@ class MoveFormulas
       self.x -= 1
       self.y += 1
     end
-    return_array
+    { 'up_right' => return_array }
   end
 
-  def bishop_down_right(return_array)
+  def bishop_down_right(return_hash)
     reset_x_and_y
+    return_array = []
     7.times do
       return_array << [x + 1, y + 1]
       self.x += 1
       self.y += 1
     end
-    return_array
+    return_hash['down_right'] = return_array
   end
 
-  def bishop_down_left(return_array)
+  def bishop_down_left(return_hash)
     reset_x_and_y
+    return_array = []
     7.times do
       return_array << [x + 1, y - 1]
       self.x += 1
       self.y -= 1
     end
-    return_array
+    return_hash['down_left'] = return_array
   end
 
-  def bishop_up_left(return_array)
+  def bishop_up_left(return_hash)
     reset_x_and_y
+    return_array = []
     7.times do
       return_array << [x - 1, y - 1]
       self.x -= 1
       self.y -= 1
     end
-    return_array
+    return_hash['up_left'] = return_array
   end
 end

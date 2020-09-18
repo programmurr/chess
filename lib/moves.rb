@@ -17,8 +17,9 @@ class Moves
 
   def valid_move?
     selected_piece_class_name = start_cell.value.class.to_s
-    move_array = all_moves(start_co_ords, selected_piece_class_name)
-    possible_moves = remove_moves_beyond_the_board(move_array)
+    total_moves = all_moves(start_co_ords, selected_piece_class_name)
+    binding.pry
+    possible_moves = remove_moves_beyond_the_board(total_moves)
     cells = get_cells_from_move_array(possible_moves, board)
     # binding.pry
     filter_cells_with_same_color_pieces(cells)
