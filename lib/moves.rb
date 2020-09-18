@@ -1,10 +1,6 @@
 require_relative 'move_formulas'
 
 class Moves
-  include MoveFormulas
-
-  KNIGHT_MOVES_LIST = [2, 2, -2, -2, 1, 1, -1, -1].zip([1, -1, 1, -1, 2, -2, 2, -2])
-
   attr_reader :player, :board, :start_cell, :end_cell, :piece, :start_co_ords, :end_co_ords
 
   def initialize(player, board)
@@ -35,12 +31,20 @@ class Moves
 
   def valid_moves(co_ord, class_name)
     moves_hash = { 'Pawn' => pawn(co_ord),
-                   'Rook' => rook(co_ord),
-                   'Bishop' => bishop(co_ord),
-                   'Knight' => knight(co_ord),
-                   'Queen' => queen(co_ord),
-                   'King' => king(co_ord) }
+                   'Rook' => MoveFormulas.new(co_ord).rook,
+                   'Bishop' => MoveFormulas.new(co_ord).bishop,
+                   'Knight' => MoveFormulas.new(co_ord).knight,
+                   'Queen' => MoveFormulas.new(co_ord).queen,
+                   'King' => MoveFormulas.new(co_ord).king }
     moves_hash.fetch(class_name)
+  end
+
+  def pawn(co_ord)
+    if start_cell.value.color == 'White'
+      MoveFormulas.new(co_ord).white_pawn
+    elsif start_cell.value.color == 'Black'
+      MoveFormulas.new(co_ord).black_pawn
+    end
   end
 
   def get_end_co_ords(player, board)
@@ -76,40 +80,5 @@ class Moves
   def get_cells_from_move_array(move_array, board)
     cell_strings = move_array.map { |co_ord| board.get_cell_string_co_ord(co_ord) }
     cell_strings.map { |co_ord| board.get_cell(co_ord) }
-  end
-
-  def knight(co_ord)
-    KNIGHT_MOVES_LIST.map { |a, b| [co_ord.first + a, co_ord.last + b] }
-  end
-
-  def rook(co_ord)
-    all_moves = rook_vertical_up(co_ord)
-    rook_horizontal_right(co_ord, all_moves)
-    rook_vertical_down(co_ord, all_moves)
-    rook_horizontal_left(co_ord, all_moves)
-  end
-
-  def bishop(co_ord)
-    all_moves = bishop_up_right(co_ord)
-    bishop_down_right(co_ord, all_moves)
-    bishop_down_left(co_ord, all_moves)
-    bishop_up_left(co_ord, all_moves)
-  end
-
-  def queen(co_ord)
-    rook(co_ord) + bishop(co_ord)
-  end
-
-  def king(co_ord)
-    king_all_directions(co_ord)
-  end
-
-  def pawn(co_ord)
-    # This might blow up
-    if start_cell.value.color == 'White'
-      white_pawn(co_ord)
-    elsif start_cell.value.color == 'Black'
-      black_pawn(co_ord)
-    end
   end
 end

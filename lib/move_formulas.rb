@@ -1,105 +1,131 @@
-module MoveFormulas
-  def white_pawn(co_ord)
-    x = co_ord[0]
-    y = co_ord[1]
+class MoveFormulas
+  KNIGHT_MOVES_LIST = [2, 2, -2, -2, 1, 1, -1, -1].zip([1, -1, 1, -1, 2, -2, 2, -2])
+
+  attr_reader :co_ord
+  attr_accessor :x, :y
+
+  def initialize(co_ord)
+    @co_ord = co_ord
+    @x = co_ord[0]
+    @y = co_ord[1]
+  end
+
+  def reset_x_and_y
+    self.x = co_ord[0]
+    self.y = co_ord[1]
+  end
+
+  def knight
+    KNIGHT_MOVES_LIST.map { |a, b| [x + a, y + b] }
+  end
+
+  def rook
+    all_moves = rook_vertical_up
+    rook_horizontal_right(all_moves)
+    rook_vertical_down(all_moves)
+    rook_horizontal_left(all_moves)
+  end
+
+  def bishop
+    all_moves = bishop_up_right
+    bishop_down_right(all_moves)
+    bishop_down_left(all_moves)
+    bishop_up_left(all_moves)
+  end
+
+  def queen
+    rook + bishop
+  end
+
+  def king
+    [[x - 1, y], [x - 1, y - 1], [x - 1, y + 1], [x, y + 1], [x + 1, y + 1], [x + 1, y], [x + 1, y - 1], [x, y - 1]]
+  end
+
+  def white_pawn
     [[x - 1, y], [x - 2, y], [x - 1, y - 1], [x - 1, y + 1]]
   end
 
-  def black_pawn(co_ord)
-    x = co_ord[0]
-    y = co_ord[1]
+  def black_pawn
     [[x + 1, y], [x + 2, y], [x + 1, y - 1], [x + 1, y + 1]]
   end
 
-  def rook_vertical_up(co_ord)
+  private
+
+  def rook_vertical_up
+    reset_x_and_y
     return_array = []
-    x = co_ord[0]
-    y = co_ord[1]
     7.times do
       return_array << [x - 1, y]
-      x -= 1
+      self.x -= 1
     end
     return_array
   end
 
-  def rook_horizontal_right(co_ord, return_array)
-    x = co_ord[0]
-    y = co_ord[1]
+  def rook_horizontal_right(return_array)
+    reset_x_and_y
     7.times do
       return_array << [x, y + 1]
-      y += 1
+      self.y += 1
     end
     return_array
   end
 
-  def rook_vertical_down(co_ord, return_array)
-    x = co_ord[0]
-    y = co_ord[1]
+  def rook_vertical_down(return_array)
+    reset_x_and_y
     7.times do
       return_array << [x + 1, y]
-      x += 1
+      self.x += 1
     end
     return_array
   end
 
-  def rook_horizontal_left(co_ord, return_array)
-    x = co_ord[0]
-    y = co_ord[1]
+  def rook_horizontal_left(return_array)
+    reset_x_and_y
     7.times do
       return_array << [x, y - 1]
-      y -= 1
+      self.y -= 1
     end
     return_array
   end
 
-  def bishop_up_right(co_ord)
+  def bishop_up_right
+    reset_x_and_y
     return_array = []
-    x = co_ord[0]
-    y = co_ord[1]
     7.times do
       return_array << [x - 1, y + 1]
-      x -= 1
-      y += 1
+      self.x -= 1
+      self.y += 1
     end
     return_array
   end
 
-  def bishop_down_right(co_ord, return_array)
-    x = co_ord[0]
-    y = co_ord[1]
+  def bishop_down_right(return_array)
+    reset_x_and_y
     7.times do
       return_array << [x + 1, y + 1]
-      x += 1
-      y += 1
+      self.x += 1
+      self.y += 1
     end
     return_array
   end
 
-  def bishop_down_left(co_ord, return_array)
-    x = co_ord[0]
-    y = co_ord[1]
+  def bishop_down_left(return_array)
+    reset_x_and_y
     7.times do
       return_array << [x + 1, y - 1]
-      x += 1
-      y -= 1
+      self.x += 1
+      self.y -= 1
     end
     return_array
   end
 
-  def bishop_up_left(co_ord, return_array)
-    x = co_ord[0]
-    y = co_ord[1]
+  def bishop_up_left(return_array)
+    reset_x_and_y
     7.times do
       return_array << [x - 1, y - 1]
-      x -= 1
-      y -= 1
+      self.x -= 1
+      self.y -= 1
     end
     return_array
-  end
-
-  def king_all_directions(co_ord)
-    x = co_ord[0]
-    y = co_ord[1]
-    [[x - 1, y], [x - 1, y - 1], [x - 1, y + 1], [x, y + 1], [x + 1, y + 1], [x + 1, y], [x + 1, y - 1], [x, y - 1]]
   end
 end
