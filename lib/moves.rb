@@ -83,65 +83,17 @@ class Moves
   end
 
   def rook(co_ord)
-    return_array = []
-    x = co_ord[0]
-    y = co_ord[1]
-    7.times do
-      return_array << [x - 1, y]
-      x -= 1
-    end
-    x = co_ord[0]
-    7.times do
-      return_array << [x, y + 1]
-      y += 1
-    end
-    y = co_ord[1]
-    7.times do
-      return_array << [x + 1, y]
-      x += 1
-    end
-    x = co_ord[0]
-    7.times do
-      return_array << [x, y - 1]
-      y -= 1
-    end
-    y = co_ord[1]
-    return_array
+    all_moves = rook_vertical_up(co_ord)
+    rook_horizontal_right(co_ord, all_moves)
+    rook_vertical_down(co_ord, all_moves)
+    rook_horizontal_left(co_ord, all_moves)
   end
 
   def bishop(co_ord)
-    return_array = []
-    x = co_ord[0]
-    y = co_ord[1]
-    7.times do
-      return_array << [x - 1, y + 1]
-      x -= 1
-      y += 1
-    end
-    x = co_ord[0]
-    y = co_ord[1]
-    7.times do
-      return_array << [x + 1, y + 1]
-      x += 1
-      y += 1
-    end
-    x = co_ord[0]
-    y = co_ord[1]
-    7.times do
-      return_array << [x + 1, y - 1]
-      x += 1
-      y -= 1
-    end
-    x = co_ord[0]
-    y = co_ord[1]
-    7.times do
-      return_array << [x - 1, y - 1]
-      x -= 1
-      y -= 1
-    end
-    x = co_ord[0]
-    y = co_ord[1]
-    return_array
+    all_moves = bishop_up_right(co_ord)
+    bishop_down_right(co_ord, all_moves)
+    bishop_down_left(co_ord, all_moves)
+    bishop_up_left(co_ord, all_moves)
   end
 
   def queen(co_ord)
@@ -149,26 +101,7 @@ class Moves
   end
 
   def king(co_ord)
-    move_array = []
-    x = co_ord[0]
-    y = co_ord[1]
-    move1 =  [x - 1, y]
-    move2 =  [x - 1, y - 1]
-    move3 =  [x - 1, y + 1]
-    move4 =  [x, y + 1]
-    move5 =  [x + 1, y + 1]
-    move6 =  [x + 1, y]
-    move7 =  [x + 1, y - 1]
-    move8 =  [x, y - 1]
-    move_array << move1
-    move_array << move2
-    move_array << move3
-    move_array << move4
-    move_array << move5
-    move_array << move6
-    move_array << move7
-    move_array << move8
-    move_array
+    king_all_directions(co_ord)
   end
 
   def pawn(co_ord)
@@ -178,36 +111,5 @@ class Moves
     elsif start_cell.value.color == 'Black'
       black_pawn(co_ord)
     end
-  end
-
-  # 9/14 - HACK: Dry this up
-  def white_pawn(co_ord)
-    x = co_ord[0]
-    y = co_ord[1]
-    white_array = []
-    white_move1 =  [x - 1, y]
-    white_move2 =  [x - 2, y]
-    white_move3 =  [x - 1, y - 1] # attack move
-    white_move4 =  [x - 1, y + 1] # attack move
-    white_array << white_move1
-    white_array << white_move2
-    white_array << white_move3
-    white_array << white_move4
-    white_array
-  end
-
-  def black_pawn(co_ord)
-    x = co_ord[0]
-    y = co_ord[1]
-    black_array = []
-    black_move1 =  [x + 1, y]
-    black_move2 =  [x + 2, y]
-    black_move3 =  [x + 1, y - 1] # attack move
-    black_move4 =  [x + 1, y + 1] # attack move
-    black_array << black_move1
-    black_array << black_move2
-    black_array << black_move3
-    black_array << black_move4
-    black_array
   end
 end

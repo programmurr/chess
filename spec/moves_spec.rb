@@ -44,7 +44,7 @@ describe Moves do
       expect(move.valid_move?).to eq false
     end
 
-    it 'returns false if WhiteRook tries to move in an invalid direction' do
+    it 'returns false if Rook tries to move in an invalid direction' do
       player = double('Player', move: %w[f4 d6], piece: Piece.new('White'))
       @board.grid[4][5].value = Rook.new('White')
       move = Moves.new(player, @board)
@@ -135,7 +135,7 @@ describe Moves do
       expect(move.valid_move?).to eq false
     end
 
-    it 'returns false if the King tries to make an invalid move' do
+    it 'returns false if the King tries to make a move outside its range of motion' do
       player = double('Player', move: %w[a6 d3], piece: Piece.new('Black'))
       @board.grid[2][0].value = King.new('Black')
       move = Moves.new(player, @board)
