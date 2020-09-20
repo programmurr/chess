@@ -18,13 +18,12 @@ class Moves
   def valid_move?
     selected_piece_class_name = start_cell.value.class.to_s
     total_moves = all_moves(start_co_ords, selected_piece_class_name)
-    binding.pry
     possible_moves = remove_moves_beyond_the_board(total_moves)
-    cells = get_cells_from_move_array(possible_moves, board)
-    # binding.pry
+    # At this point, possible_moves should contain a straight line to the end cell
+    #   If there are no pieces blocking the way
+    cells = get_cells_from_possible_moves(possible_moves, board)
     filter_cells_with_same_color_pieces(cells)
     chop_cells_blocked_by_a_piece(cells)
-    # binding.pry
     return false if cells.length.zero?
 
     cells.select! { |cell| cell.co_ord == end_cell.co_ord }
@@ -85,18 +84,48 @@ class Moves
     cells.select! { |cell| cell.value.nil? || cell.value.class.superclass.to_s == self.class.superclass.to_s }
   end
 
-  def remove_moves_beyond_the_board(move_array)
-    possible_array = []
-    move_array.each do |co_ord|
-      next unless co_ord[0] < 8 && co_ord[1] < 8
+  def remove_hash_moves_beyond_board(total_moves)
+    possible_hash = {}
+    total_moves.each_key { |key| possible_hash[key] = [] }
+    total_moves.each do |direction, positions|
+      positions.each do |co_ord|
+        next unless co_ord[0] < 8 && co_ord[1] < 8
 
-      possible_array << co_ord if !co_ord[0].negative? && !co_ord[1].negative?
+        possible_hash[direction] << co_ord if !co_ord[0].negative? && !co_ord[1].negative?
+      end
     end
-    possible_array
+    possible_hash
   end
 
-  def get_cells_from_move_array(move_array, board)
-    cell_strings = move_array.map { |co_ord| board.get_cell_string_co_ord(co_ord) }
-    cell_strings.map { |co_ord| board.get_cell(co_ord) }
+  def remove_moves_beyond_the_board(total_moves)
+    if total_moves.class == Hash
+      remove_hash_moves_beyond_board(total_moves)
+    else
+      possible_array = []
+      total_moves.each do |co_ord|
+        next unless co_ord[0] < 8 && co_ord[1] < 8
+
+        possible_array << co_ord if !co_ord[0].negative? && !co_ord[1].negative?
+      end
+      possible_array
+    end
+  end
+
+  def get_cells_from_hash(possible_moves, board)
+    possible_moves.each_value do |positions|
+      cell_strings = positions.map { |co_ord| board.get_cell_string_co_ord(co_ord) }
+      cells = cell_strings.map { |co_ord| board.get_cell(co_ord) }
+      # Need to have it so possible_move coords change to cells
+      binding.pry
+    end
+  end
+
+  def get_cells_from_possible_moves(possible_moves, board)
+    if possible_moves.class == Hash
+      get_cells_from_hash(possible_moves, board)
+    else
+      cell_strings = possible_moves.map { |co_ord| board.get_cell_string_co_ord(co_ord) }
+      cell_strings.map { |co_ord| board.get_cell(co_ord) }
+    end
   end
 end
