@@ -1,3 +1,4 @@
+require 'hashdiff'
 require_relative 'move_formulas'
 
 # This class might need renamed, as MoveFormulas does most of the leg work for move calculations
@@ -24,9 +25,17 @@ class Moves
     cells = get_cells_from_possible_moves(possible_moves, board)
     # compare the current cells to the cells returned from #filter_cells_with_same_color_pieces
     #   If the position arrays differ, remove that whole position
-    cells_backup = cells.clone
+    cells_backup = Marshal.load(Marshal.dump(cells))
+    # cells_backup = cells.clone
     filter_cells_with_same_color_pieces(cells)
-    chop_cells_blocked_by_a_piece(cells)
+    chopped_cells = chop_cells_blocked_by_a_piece(cells, cells_backup)
+    if contains_end_cell?(chopped_cells, end_cell) == false
+      return false
+    else
+      return true
+    end
+    return true if contains_end_cell?
+    # If chopped cells does not contain the end cell, return false
     return false if cells.length.zero?
 
     cells.select! { |cell| cell.co_ord == end_cell.co_ord }
@@ -37,7 +46,24 @@ class Moves
 
   private
 
-  def chop_cells_blocked_by_a_piece(cells)
+  # Works for hash, not arrays i.e. only for rook, bishop and queen
+  def contains_end_cell?(chopped_cells, end_cell)
+    chopped_cells.each do |key, value|
+      return true if chopped_cells[key].include?(end_cell)
+    end
+    false
+  end
+
+  # Works for hash, not arrays i.e. only for rook, bishop and queen
+  def chop_cells_blocked_by_a_piece(cells, cells_backup)
+    return_hash = {}
+    cells.each_key do |key|
+      if cells[key].length == cells_backup[key].length
+        return_hash[key] = cells[key]
+      end
+    end
+    return_hash
+    # (h1.keys & h2.keys).each {|k| puts ( h1[k] == h2[k] ? h1[k] : k ) }
     # Get cells between current cell and destination
     # Turn move_array into a hash?
     # If the end cell is inside the left key, filter out the left moves?
@@ -83,10 +109,18 @@ class Moves
     board.get_cell(player.move[1])
   end
 
+  def filter_cells_from_hash(cells)
+    cells.each_value do |positions|
+      positions.select! { |cell| cell.value.nil? || cell.value.color != player.piece.color }
+    end
+  end
+
   def filter_cells_with_same_color_pieces(cells)
-    # Change this so it accepts a hash, or an array if necessary
-    #   Similar to the changes below 
-    cells.select! { |cell| cell.value.nil? || cell.value.class.superclass.to_s == self.class.superclass.to_s }
+    if cells.class == Hash
+      filter_cells_from_hash(cells)
+    else
+      cells.select! { |cell| cell.value.nil? || cell.value.class.superclass.to_s == self.class.superclass.to_s }
+    end
   end
 
   def remove_hash_moves_beyond_board(total_moves)
