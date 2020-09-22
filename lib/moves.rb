@@ -22,6 +22,9 @@ class Moves
     # At this point, possible_moves should contain a straight line to the end cell
     #   If there are no pieces blocking the way
     cells = get_cells_from_possible_moves(possible_moves, board)
+    # compare the current cells to the cells returned from #filter_cells_with_same_color_pieces
+    #   If the position arrays differ, remove that whole position
+    cells_backup = cells.clone
     filter_cells_with_same_color_pieces(cells)
     chop_cells_blocked_by_a_piece(cells)
     return false if cells.length.zero?
@@ -81,6 +84,8 @@ class Moves
   end
 
   def filter_cells_with_same_color_pieces(cells)
+    # Change this so it accepts a hash, or an array if necessary
+    #   Similar to the changes below 
     cells.select! { |cell| cell.value.nil? || cell.value.class.superclass.to_s == self.class.superclass.to_s }
   end
 
@@ -113,10 +118,8 @@ class Moves
 
   def get_cells_from_hash(possible_moves, board)
     possible_moves.each_value do |positions|
-      cell_strings = positions.map { |co_ord| board.get_cell_string_co_ord(co_ord) }
-      cells = cell_strings.map { |co_ord| board.get_cell(co_ord) }
-      # Need to have it so possible_move coords change to cells
-      binding.pry
+      positions.map! { |co_ord| board.get_cell_string_co_ord(co_ord) }
+      positions.map! { |co_ord| board.get_cell(co_ord) }
     end
   end
 
