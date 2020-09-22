@@ -30,14 +30,14 @@ describe Moves do
       expect(move.valid_move?).to eq false
     end
 
-    it 'returns true if the Rook tries to move to an empty square with direct line of sight' do
+    xit 'returns true if the Rook tries to move to an empty square with direct line of sight' do
       player = double('Player', move: %w[f4 b4], piece: Piece.new('White'))
       @board.grid[4][5].value = Rook.new('White')
       move = Moves.new(player, @board)
       expect(move.valid_move?).to eq true
     end
 
-    it 'returns false if the Rook tries to move to an empty square with any piece blocking the path' do
+    xit 'returns false if the Rook tries to move to an empty square with any piece blocking the path' do
       player = double('Player', move: %w[f4 a4], piece: Piece.new('White'))
       @board.grid[4][5].value = Rook.new('White')
       @board.grid[4][2].value = Pawn.new('White')
@@ -46,14 +46,14 @@ describe Moves do
       expect(move.valid_move?).to eq false
     end
 
-    it 'returns false if Rook tries to move to a square occupied by the same piece color' do
+    xit 'returns false if Rook tries to move to a square occupied by the same piece color' do
       player = double('Player', move: %w[f4 f7], piece: Piece.new('Black'))
       @board.grid[4][5].value = Rook.new('Black')
       move = Moves.new(player, @board)
       expect(move.valid_move?).to eq false
     end
 
-    it 'returns false if Rook tries to move in an invalid direction' do
+    xit 'returns false if Rook tries to move in an invalid direction' do
       player = double('Player', move: %w[f4 d6], piece: Piece.new('White'))
       @board.grid[4][5].value = Rook.new('White')
       move = Moves.new(player, @board)
@@ -95,9 +95,10 @@ describe Moves do
       expect(move.valid_move?).to eq true
     end
 
-    xit 'returns true if the Queen can move to an empty square in a diagonal direction' do
+    it 'returns true if the Queen can move to an empty square in a diagonal direction' do
       player = double('Player', move: %w[g6 d3], piece: Piece.new('White'))
       @board.grid[2][6].value = Queen.new('White')
+      @board.display
       move = Moves.new(player, @board)
       expect(move.valid_move?).to eq true
     end

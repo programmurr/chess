@@ -6,5 +6,7 @@ class Cell
   def initialize
     @co_ord = nil
     @value = nil
+    @counter = nil
+    @remove = false
   end
 end

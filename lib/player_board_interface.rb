@@ -20,12 +20,12 @@ class PlayerBoardInterface
   end
 end
 
-# player = Player.new(1)
-# player.move = %w[a2 a4]
-# board = Board.new
-# board.set_cell_coordinates
-# board.place_pawns
-# board.place_royalty
-# board.display
-# PlayerBoardInterface.move_piece(player, board)
-# board.display
+player = Player.new(1)
+player.move = %w[a2 a4]
+board = Board.new
+board.set_cell_coordinates
+board.place_pawns
+board.place_royalty
+board.display
+PlayerBoardInterface.move_piece(player, board)
+board.display

@@ -16,26 +16,26 @@ class Moves
     @end_co_ords = get_end_co_ords(player, board)
   end
 
+  def cells_between_start_and_end_cells(start_cell, end_cell)
+    # graph/bfs?
+  end
+
+  # May split this into a method just for rooks, bishops and queens
+  #   Make a separate method for the other pieces
   def valid_move?
+    # Immediately return false if the end cell color is the same as the player's color
     selected_piece_class_name = start_cell.value.class.to_s
     total_moves = all_moves(start_co_ords, selected_piece_class_name)
     possible_moves = remove_moves_beyond_the_board(total_moves)
-    # At this point, possible_moves should contain a straight line to the end cell
-    #   If there are no pieces blocking the way
     cells = get_cells_from_possible_moves(possible_moves, board)
-    # compare the current cells to the cells returned from #filter_cells_with_same_color_pieces
-    #   If the position arrays differ, remove that whole position
     cells_backup = Marshal.load(Marshal.dump(cells))
-    # cells_backup = cells.clone
-    filter_cells_with_same_color_pieces(cells)
+    filter_cells_with_pieces(cells)
     chopped_cells = chop_cells_blocked_by_a_piece(cells, cells_backup)
     if contains_end_cell?(chopped_cells, end_cell) == false
       return false
-    else
+    elsif contains_end_cell?(chopped_cells, end_cell)
       return true
     end
-    return true if contains_end_cell?
-    # If chopped cells does not contain the end cell, return false
     return false if cells.length.zero?
 
     cells.select! { |cell| cell.co_ord == end_cell.co_ord }
@@ -63,15 +63,6 @@ class Moves
       end
     end
     return_hash
-    # (h1.keys & h2.keys).each {|k| puts ( h1[k] == h2[k] ? h1[k] : k ) }
-    # Get cells between current cell and destination
-    # Turn move_array into a hash?
-    # If the end cell is inside the left key, filter out the left moves?
-    # If the cells are not consecutive, remove it?
-    # How to traverse the cells consecutively? Use a queue?
-    # Have a consecutive order returned my move_array, filter out cells containing pieces
-    # If the consecutive array does not match the array after that filter, it's invalid?
-    # binding.pry
   end
 
   def all_moves(co_ord, class_name)
@@ -111,15 +102,15 @@ class Moves
 
   def filter_cells_from_hash(cells)
     cells.each_value do |positions|
-      positions.select! { |cell| cell.value.nil? || cell.value.color != player.piece.color }
+      positions.select! { |cell| cell.value.nil? }
     end
   end
 
-  def filter_cells_with_same_color_pieces(cells)
+  def filter_cells_with_pieces(cells)
     if cells.class == Hash
       filter_cells_from_hash(cells)
     else
-      cells.select! { |cell| cell.value.nil? || cell.value.class.superclass.to_s == self.class.superclass.to_s }
+      cells.select! { |cell| cell.value.nil? }
     end
   end
 
