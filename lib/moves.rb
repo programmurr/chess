@@ -35,7 +35,7 @@ class Moves
     path = move_to_end_cell(cells_containing_path, start_adjascent_cells)
     reset_cell_counters
     self.count = 1
-    path
+    cells_containing_path
   end
 
   def reset_cell_counters
@@ -162,14 +162,18 @@ class Moves
   def valid_move?
     # Immediately return false if the end cell color is the same as the player's color
     return false if start_and_end_cells_same_color?
-    cells_between_start_and_end_cells
+    path_cells = cells_between_start_and_end_cells
     selected_piece_class_name = start_cell.value.class.to_s
     total_moves = all_moves(start_co_ords, selected_piece_class_name)
     possible_moves = remove_moves_beyond_the_board(total_moves)
     cells = get_cells_from_possible_moves(possible_moves, board)
     cells_backup = Marshal.load(Marshal.dump(cells))
+    path_hash = make_hash_of_path_cells(path_cells, cells)
     filter_cells_with_pieces(cells)
-    chopped_cells = chop_cells_blocked_by_a_piece(cells, cells_backup)
+    return true if does_path_match_cells?(path_hash, cells)
+
+    return false
+    # chopped_cells = chop_cells_blocked_by_a_piece(cells, cells_backup)
     if contains_end_cell?(chopped_cells, end_cell) == false
       return false
     elsif contains_end_cell?(chopped_cells, end_cell)
@@ -184,6 +188,29 @@ class Moves
   end
 
   private
+
+  def make_hash_of_path_cells(path_cells, cells)
+    return_hash = {}
+    cells.each_key { |key| return_hash[key] = [] }
+    path_cells.each do |cell|
+      cells.each do |direction, move|
+        binding.pry
+        return_hash[direction] << cell if move.include?(cell)
+      end
+    end
+    return_hash.reject { |_direction, moves| moves.empty? }
+  end
+
+  def does_path_match_cells?(path_hash, cells)
+    path_hash.each_value do |return_move|
+      cells.each_value do |cell|
+        return true if return_move.difference(cell) == [] && return_move.include?(end_cell)
+      end
+    end
+    false
+    # sepearate only matching directions
+    # do those directions contain end cell?
+  end
 
   def start_and_end_cells_same_color?
     return true if start_cell.value.color == end_cell.value.color

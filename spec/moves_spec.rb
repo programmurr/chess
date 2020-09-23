@@ -60,9 +60,10 @@ describe Moves do
       expect(move.valid_move?).to eq false
     end
 
-    xit 'returns true if the Bishop can move to an empty square' do
+    it 'returns true if the Bishop can move to an empty square' do
       player = double('Player', move: %w[e5 c3], piece: Piece.new('Black'))
       @board.grid[3][4].value = Bishop.new('Black')
+      @board.display
       move = Moves.new(player, @board)
       expect(move.valid_move?).to eq true
     end
@@ -95,10 +96,9 @@ describe Moves do
       expect(move.valid_move?).to eq true
     end
 
-    it 'returns true if the Queen can move to an empty square in a diagonal direction' do
+    xit 'returns true if the Queen can move to an empty square in a diagonal direction' do
       player = double('Player', move: %w[g6 d3], piece: Piece.new('White'))
       @board.grid[2][6].value = Queen.new('White')
-      @board.display
       move = Moves.new(player, @board)
       expect(move.valid_move?).to eq true
     end
