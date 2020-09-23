@@ -22,33 +22,97 @@ describe Piece do
       expect(piece.name).to eq 'Piece'
     end
   end
+
+  context '#all_moves_from_current_position' do
+    it 'can list all co_ordinates in all directions a KNIGHT can move to, including cells with other pieces' do
+      knight = Knight.new('White')
+      co_ord = [3, 3]
+      predicted_moves = [[2, 1], [4, 1], [1, 2], [1, 4], [2, 5], [4, 5], [5, 4], [5, 2]]
+      actual_moves = knight.all_move_coordinates_from_current_position(co_ord)
+      expect(predicted_moves.difference(actual_moves)).to eq []
+    end
+
+    it 'can list all co_ordinates in all directions a BISHOP can move to, including cells with other pieces' do
+      bishop = Bishop.new('Black')
+      co_ord = [4, 4]
+      predicted_moves = [[3, 3], [2, 2], [1, 1], [0, 0],
+                         [3, 5], [2, 6], [1, 7],
+                         [5, 5], [6, 6], [7, 7],
+                         [5, 3], [6, 2], [7, 1]]
+      actual_moves = bishop.all_move_coordinates_from_current_position(co_ord)
+      expect(predicted_moves.difference(actual_moves)).to eq []
+    end
+
+    it 'can list all co_ordinates in all directions a ROOK can move to, including cells with other pieces' do
+      rook = Rook.new('White')
+      co_ord = [3, 2]
+      predicted_moves = [[2, 2], [1, 2], [0, 2],
+                         [3, 3], [3, 4], [3, 5], [3, 6], [3, 7],
+                         [4, 2], [5, 2], [6, 2], [7, 2],
+                         [3, 1], [3, 0]]
+      actual_moves = rook.all_move_coordinates_from_current_position(co_ord)
+      expect(predicted_moves.difference(actual_moves)).to eq []
+    end
+
+    it 'can list all co_ordinates in all directions a QUEEN can move to, including cells with other pieces' do
+      queen = Queen.new('Black')
+      co_ord = [2, 3]
+      predicted_moves = [[1, 3], [0, 3],
+                         [1, 4], [0, 5],
+                         [2, 4], [2, 5], [2, 6], [2, 7],
+                         [3, 3], [4, 3], [5, 3], [6, 3], [7, 3],
+                         [2, 2], [2, 1], [2, 0],
+                         [1, 2], [0, 1]]
+      actual_moves = queen.all_move_coordinates_from_current_position(co_ord)
+      expect(predicted_moves.difference(actual_moves)).to eq []
+    end
+
+    it 'can list all co_ordinates in all directions a KING can move to, including cells with other pieces' do
+      king = King.new('White')
+      co_ord = [5, 6]
+      predicted_moves = [[4, 6], [4, 7], [5, 7], [6, 7], [6, 6], [6, 5], [5, 5], [4, 5]]
+      actual_moves = king.all_move_coordinates_from_current_position(co_ord)
+      expect(predicted_moves.difference(actual_moves)).to eq []
+    end
+  end
 end
 
-describe Pawn do
-  let(:black_pawn) { Pawn.new('Black') }
-  let(:white_pawn) { Pawn.new('White') }
+describe WhitePawn do
+  let(:white_pawn) { WhitePawn.new('White') }
+
+  context '#initialize' do
+    it 'can have a color attribute of White' do
+      expect(white_pawn.color).to eq 'White'
+    end
+
+    it 'generates its own name based on its sub-class name' do
+      expect(white_pawn.name).to eq 'WhitePawn'
+    end
+  end
+
+  context '#display' do
+    it 'can display a unicode character representing a White chess pawn' do
+      expect(white_pawn.display).to eq ' ♙ '.colorize(color: :black)
+    end
+  end
+end
+
+describe BlackPawn do
+  let(:black_pawn) { BlackPawn.new('Black') }
 
   context '#initialize' do
     it 'can have a color attribute of Black' do
       expect(black_pawn.color).to eq 'Black'
     end
 
-    it 'can have a color attribute of White' do
-      expect(white_pawn.color).to eq 'White'
-    end
-
     it 'generates its own name based on its sub-class name' do
-      expect(black_pawn.name).to eq 'Pawn'
+      expect(black_pawn.name).to eq 'BlackPawn'
     end
   end
 
   context '#display' do
     it 'can display a unicode character representing a Black chess pawn' do
       expect(black_pawn.display).to eq " \u265F ".colorize(color: :black)
-    end
-
-    it 'can display a unicode character representing a White chess pawn' do
-      expect(white_pawn.display).to eq ' ♙ '.colorize(color: :black)
     end
   end
 end

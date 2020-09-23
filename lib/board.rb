@@ -8,7 +8,7 @@ require_relative 'piece'
 class Board
   attr_accessor :grid, :white_pawn, :black_pawn
 
-  def initialize(grid: default_grid, white_pawn: Pawn.new('White'), black_pawn: Pawn.new('Black'))
+  def initialize(grid: default_grid, white_pawn: WhitePawn.new('White'), black_pawn: BlackPawn.new('Black'))
     @grid = grid
     @white_pawn = white_pawn
     @black_pawn = black_pawn

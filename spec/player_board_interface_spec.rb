@@ -13,7 +13,7 @@ describe PlayerBoardInterface do
   context '#move_piece' do
     it 'can move the selected piece from one square to another' do
       player = double('Player', move: %w[a2 a4])
-      expect { PlayerBoardInterface.move_piece(player, @board) }.to change { @board.grid[4][0].value }.from(nil).to be_instance_of Pawn
+      expect { PlayerBoardInterface.move_piece(player, @board) }.to change { @board.grid[4][0].value }.from(nil).to be_instance_of WhitePawn
     end
   end
 

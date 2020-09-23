@@ -20,9 +20,13 @@ class Piece
 
     false
   end
+
+  def all_move_coordinates_from_current_position(co_ord)
+    self.class.moves(co_ord)
+  end
 end
 
-class Pawn < Piece
+class WhitePawn < Piece
   attr_reader :color
 
   def initialize(color)
@@ -30,15 +34,27 @@ class Pawn < Piece
   end
 
   def display
-    if color == 'White'
-      " \u2659 ".colorize(color: :black)
-    elsif color == 'Black'
-      " \u265F ".colorize(color: :black)
-    end
+    " \u2659 ".colorize(color: :black)
+  end
+end
+
+class BlackPawn < Piece
+  attr_reader :color
+
+  def initialize(color)
+    @color = color
+  end
+
+  def display
+    " \u265F ".colorize(color: :black)
   end
 end
 
 class Rook < Piece
+  def self.moves(co_ord)
+    RookMoves.new(co_ord).moves
+  end
+
   attr_reader :color
 
   def initialize(color)
@@ -55,6 +71,10 @@ class Rook < Piece
 end
 
 class Bishop < Piece
+  def self.moves(co_ord)
+    BishopMoves.new(co_ord).moves
+  end
+
   attr_reader :color
 
   def initialize(color)
@@ -71,6 +91,10 @@ class Bishop < Piece
 end
 
 class Knight < Piece
+  def self.moves(co_ord)
+    KnightMoves.new(co_ord).moves
+  end
+
   attr_reader :color
 
   def initialize(color)
@@ -87,6 +111,10 @@ class Knight < Piece
 end
 
 class Queen < Piece
+  def self.moves(co_ord)
+    BishopMoves.new(co_ord).moves + RookMoves.new(co_ord).moves
+  end
+
   attr_reader :color
 
   def initialize(color)
@@ -103,6 +131,10 @@ class Queen < Piece
 end
 
 class King < Piece
+  def self.moves(co_ord)
+    KingMoves.new(co_ord).moves
+  end
+
   attr_reader :color
 
   def initialize(color)
