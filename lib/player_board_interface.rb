@@ -4,19 +4,39 @@ require 'pry'
 require_relative 'board'
 require_relative 'player'
 
+# Create a validation class/module, to validate moves, then trigger a move via this class
 class PlayerBoardInterface
-  def self.move_piece(player, board)
-    start_cell = board.get_cell(player.move[0])
-    end_cell = board.get_cell(player.move[1])
+  attr_reader :player, :board
+  attr_accessor :start_cell, :end_cell
+
+  def initialize(player, board)
+    @player = player
+    @board = board
+    @start_cell = board.get_cell(player.move[0])
+    @end_cell = board.get_cell(player.move[1])
+  end
+
+  def move_piece
     end_cell.value = start_cell.value
     start_cell.value = nil
   end
 
-  def self.valid_piece?(player, board)
-    cell = board.get_cell(player.move[0])
-    return true if cell.value.color == player.color
+  def cell_contains_piece?
+    return true unless start_cell.value.nil?
 
     false
+  end
+
+  def matching_piece_class?
+    return true if start_cell.value.color == player.color
+
+    false
+  end
+
+  # Does this belong here?
+  def attack_move?
+    return false if end_cell.value.nil?
+    return true if start_cell.value.color != end_cell.value.color
   end
 end
 

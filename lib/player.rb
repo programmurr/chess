@@ -4,12 +4,13 @@ require 'pry'
 require_relative 'piece'
 
 class Player
-  attr_accessor :name, :piece, :move, :color
+  attr_accessor :name, :piece, :move, :color, :captured_piece
   def initialize(num)
     @name = "Player#{num}"
     @piece = nil
     @color = nil
     @move = nil
+    @captured_pieces = []
   end
 
   def enter_move
