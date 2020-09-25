@@ -23,24 +23,24 @@ end
 
 class BlackPawnMoves < Moves
   def first_moves
-    all_moves = [[x + 1, y], [x + 2, y]]
+    all_moves = [[x + 1, y], [x + 2, y], [x + 1, y - 1], [x + 1, y + 1]]
     Moves.remove_moves_beyond_the_board(all_moves)
   end
 
   def moves
-    all_moves = [[x + 1, y]]
+    all_moves = [[x + 1, y], [x + 1, y - 1], [x + 1, y + 1]]
     Moves.remove_moves_beyond_the_board(all_moves)
   end
 end
 
 class WhitePawnMoves < Moves
   def first_moves
-    all_moves = [[x - 1, y], [x - 2, y]]
+    all_moves = [[x - 1, y], [x - 2, y], [x - 1, y - 1], [x - 1, y + 1]]
     Moves.remove_moves_beyond_the_board(all_moves)
   end
 
   def moves
-    all_moves = [[x - 1, y]]
+    all_moves = [[x - 1, y], [x - 1, y - 1], [x - 1, y + 1]]
     Moves.remove_moves_beyond_the_board(all_moves)
   end
 end

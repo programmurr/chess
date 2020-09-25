@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative '../lib/move_checks'
 
 context MoveChecks do
@@ -47,12 +49,36 @@ context MoveChecks do
     end
   end
 
-  context '#permit_special_move?' do
-    xit 'lets a white pawn move forward 2 spaces on its first move' do
-      player = double('Player', move: %w[f2 f4], color: 'White')
-      expect(MoveChecks.new(player, @board).permit_special_move?).to eq true
+  context '#piece_a_whitepawn?' do
+    it 'returns true if the piece to be moved is a white pawn' do
+      player = double('Player', move: %w[h2 h4], color: 'White')
+      expect(MoveChecks.new(player, @board).piece_a_whitepawn?).to eq true
+    end
+
+    it 'returns false if the piece to be moved is not a white pawn' do
+      player = double('Player', move: %w[b1 c3], color: 'White')
+      expect(MoveChecks.new(player, @board).piece_a_whitepawn?).to eq false
     end
   end
+
+  context '#piece_a_blackpawn?' do
+    it 'returns true if the piece to be moved is a black pawn' do
+      player = double('Player', move: %w[e7 e6], color: 'Black')
+      expect(MoveChecks.new(player, @board).piece_a_blackpawn?).to eq true
+    end
+
+    it 'returns false if the piece to be moved is not a black pawn' do
+      player = double('Player', move: %w[g8 h6], color: 'Black')
+      expect(MoveChecks.new(player, @board).piece_a_blackpawn?).to eq false
+    end
+  end
+
+  # context '#permit_special_move?' do
+  #   xit 'lets a white pawn move forward 2 spaces on its first move' do
+  #     player = double('Player', move: %w[f2 f4], color: 'White')
+  #     expect(MoveChecks.new(player, @board).permit_special_move?).to eq true
+  #   end
+  # end
 
   # context '#piece_blocking_path?' do
   #   xit 'returns true if there is an enemy piece blocking the move' do

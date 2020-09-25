@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'player_board_interface'
 
 class MoveChecks
@@ -12,6 +14,18 @@ class MoveChecks
     @temp_cell = nil
   end
 
+  def piece_a_whitepawn?
+    return true if start_cell.value.class == WhitePawn
+
+    false
+  end
+
+  def piece_a_blackpawn?
+    return true if start_cell.value.class == BlackPawn
+
+    false
+  end
+
   def cell_contains_piece?
     return true unless start_cell.value.nil?
 
@@ -22,6 +36,24 @@ class MoveChecks
     return true if start_cell.value.color == player.color
 
     false
+  end
+
+  def white_pawn_attack_move?
+    #  Is there an enemy piece to the top-right diagonal of the pawn?
+    #   Yes - let that move remain in the move array
+    #   No - remove that move from the move array
+    # Is there an enemy piece to the top-left diagonal of the pawn?
+    #   Yes - let that move remain in the move array
+    #   No - remove that move from the move array
+  end
+
+  def black_pawn_attack_move?
+    #  Is there an enemy piece to the down-right diagonal of the pawn?
+    #   Yes - let that move remain in the move array
+    #   No - remove that move from the move array
+    # Is there an enemy piece to the down-left diagonal of the pawn?
+    #   Yes - let that move remain in the move array
+    #   No - remove that move from the move array
   end
 
   def attack_move?

@@ -2,6 +2,7 @@
 
 require 'colorize'
 require_relative '../lib/piece'
+require_relative '../lib/board'
 
 describe Piece do
   context '#initialize' do
@@ -10,7 +11,7 @@ describe Piece do
       expect(piece.color).to eq 'White'
     end
 
-    it 'can have a color attribute with default set to White' do
+    it 'can have a color attribute with default set to Black' do
       piece = Piece.new('Black')
       expect(piece.color).to eq 'Black'
     end
@@ -24,6 +25,13 @@ describe Piece do
   end
 
   context '#all_moves_from_current_position' do
+    before do
+      @board = Board.new
+      @board.set_cell_coordinates
+      @board.place_pawns
+      @board.place_royalty
+    end
+
     it 'can list all co_ordinates in all directions a KNIGHT can move to, including cells with other pieces' do
       knight = Knight.new('White')
       co_ord = [3, 3]
@@ -75,34 +83,34 @@ describe Piece do
       expect(predicted_moves.difference(actual_moves)).to eq []
     end
 
-    it 'can list all non-attack co_ordinates a WHITEPAWN can move to on its first move' do
+    it 'can list all co_ordinates, including attacks, a WHITEPAWN can move to on its first move' do
       pawn = WhitePawn.new('White')
-      co_ord = [6, 0]
-      predicted_moves = [[5, 0], [4, 0]]
+      co_ord = [6, 1]
+      predicted_moves = [[5, 1], [4, 1], [5, 0], [5, 2]]
       actual_moves = pawn.all_move_coordinates_from_current_position(co_ord)
       expect(predicted_moves.difference(actual_moves)).to eq []
     end
 
-    it 'can list all non-attack co_ordinates a WHITEPAWN can move to on a move other than its first move' do
+    it 'can list all co_ordinates, including attacks, a WHITEPAWN can move to on a move other than its first move' do
       pawn = WhitePawn.new('White')
       co_ord = [5, 6]
-      predicted_moves = [[4, 6]]
+      predicted_moves = [[4, 6], [4, 5], [4, 7]]
       actual_moves = pawn.all_move_coordinates_from_current_position(co_ord)
       expect(predicted_moves.difference(actual_moves)).to eq []
     end
 
-    it 'can list all non-attack co_ordinates a BLACKPAWN can move to on its first move' do
+    it 'can list all co_ordinates, including attacks, a BLACKPAWN can move to on its first move' do
       pawn = BlackPawn.new('Black')
       co_ord = [1, 3]
-      predicted_moves = [[2, 3], [3, 3]]
+      predicted_moves = [[2, 3], [3, 3], [2, 4], [2, 2]]
       actual_moves = pawn.all_move_coordinates_from_current_position(co_ord)
       expect(predicted_moves.difference(actual_moves)).to eq []
     end
 
-    it 'can list all non-attack co_ordinates a BLACKPAWN can move to on a move other than its first move' do
+    it 'can list all co_ordinates, including attacks, a BLACKPAWN can move to on a move other than its first move' do
       pawn = BlackPawn.new('Black')
       co_ord = [3, 2]
-      predicted_moves = [[4, 2]]
+      predicted_moves = [[4, 2], [4, 1], [4, 3]]
       actual_moves = pawn.all_move_coordinates_from_current_position(co_ord)
       expect(predicted_moves.difference(actual_moves)).to eq []
     end

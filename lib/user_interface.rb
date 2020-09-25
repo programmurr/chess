@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Displays welcome screen
 # Displays the captured pieces for both players
 # Displays the board
