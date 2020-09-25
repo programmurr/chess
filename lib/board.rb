@@ -118,7 +118,7 @@ class Board
   end
 
   def display_piece_on_black_tile(cell)
-    cell.value.display.to_s.colorize(background: :light_black)
+    cell.value.display_on_board.to_s.colorize(background: :light_black)
   end
 
   def cell_has_a_piece_and_tile_is_black?(cell)
@@ -126,7 +126,7 @@ class Board
   end
 
   def display_piece_on_white_tile(cell)
-    cell.value.display.to_s.colorize(background: :light_white)
+    cell.value.display_on_board.to_s.colorize(background: :light_white)
   end
 
   def cell_has_a_piece_and_tile_is_white?(cell)
@@ -168,3 +168,9 @@ class Board
     Array.new(8) { Array.new(8) { Cell.new } }
   end
 end
+
+board = Board.new
+board.set_cell_coordinates
+board.place_pawns
+board.place_royalty
+board.display

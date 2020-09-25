@@ -4,13 +4,23 @@ require 'pry'
 require_relative 'piece'
 
 class Player
-  attr_accessor :name, :piece, :move, :color, :captured_piece
+  attr_accessor :name, :piece, :move, :color, :captured_pieces
   def initialize(num)
     @name = "Player#{num}"
     @piece = nil
     @color = nil
     @move = nil
     @captured_pieces = []
+  end
+
+  def display_captured_pieces
+    captured_pieces.each do |piece|
+      if piece.color == 'Black'
+        puts piece.display_on_board
+      elsif piece.color == 'White'
+        piece.display_for_capture
+      end
+    end
   end
 
   def enter_move

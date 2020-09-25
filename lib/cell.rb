@@ -6,5 +6,6 @@ class Cell
   def initialize
     @co_ord = nil
     @value = nil
+    # under attack?
   end
 end

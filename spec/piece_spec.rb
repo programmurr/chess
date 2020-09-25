@@ -74,6 +74,38 @@ describe Piece do
       actual_moves = king.all_move_coordinates_from_current_position(co_ord)
       expect(predicted_moves.difference(actual_moves)).to eq []
     end
+
+    it 'can list all non-attack co_ordinates a WHITEPAWN can move to on its first move' do
+      pawn = WhitePawn.new('White')
+      co_ord = [6, 0]
+      predicted_moves = [[5, 0], [4, 0]]
+      actual_moves = pawn.all_move_coordinates_from_current_position(co_ord)
+      expect(predicted_moves.difference(actual_moves)).to eq []
+    end
+
+    it 'can list all non-attack co_ordinates a WHITEPAWN can move to on a move other than its first move' do
+      pawn = WhitePawn.new('White')
+      co_ord = [5, 6]
+      predicted_moves = [[4, 6]]
+      actual_moves = pawn.all_move_coordinates_from_current_position(co_ord)
+      expect(predicted_moves.difference(actual_moves)).to eq []
+    end
+
+    it 'can list all non-attack co_ordinates a BLACKPAWN can move to on its first move' do
+      pawn = BlackPawn.new('Black')
+      co_ord = [1, 3]
+      predicted_moves = [[2, 3], [3, 3]]
+      actual_moves = pawn.all_move_coordinates_from_current_position(co_ord)
+      expect(predicted_moves.difference(actual_moves)).to eq []
+    end
+
+    it 'can list all non-attack co_ordinates a BLACKPAWN can move to on a move other than its first move' do
+      pawn = BlackPawn.new('Black')
+      co_ord = [3, 2]
+      predicted_moves = [[4, 2]]
+      actual_moves = pawn.all_move_coordinates_from_current_position(co_ord)
+      expect(predicted_moves.difference(actual_moves)).to eq []
+    end
   end
 end
 
@@ -92,7 +124,7 @@ describe WhitePawn do
 
   context '#display' do
     it 'can display a unicode character representing a White chess pawn' do
-      expect(white_pawn.display).to eq ' ♙ '.colorize(color: :black)
+      expect(white_pawn.display_on_board).to eq ' ♙ '.colorize(color: :black)
     end
   end
 end
@@ -112,7 +144,7 @@ describe BlackPawn do
 
   context '#display' do
     it 'can display a unicode character representing a Black chess pawn' do
-      expect(black_pawn.display).to eq " \u265F ".colorize(color: :black)
+      expect(black_pawn.display_on_board).to eq " \u265F ".colorize(color: :black)
     end
   end
 end
@@ -136,11 +168,11 @@ describe Rook do
 
   context '#display' do
     it 'can display a unicode character representing a Black chess rook' do
-      expect(black_rook.display).to eq ' ♜ '.colorize(color: :black)
+      expect(black_rook.display_on_board).to eq ' ♜ '.colorize(color: :black)
     end
 
     it 'can display a unicode character representing a White chess rook' do
-      expect(white_rook.display).to eq ' ♖ '.colorize(color: :black)
+      expect(white_rook.display_on_board).to eq ' ♖ '.colorize(color: :black)
     end
   end
 end
@@ -164,11 +196,11 @@ describe Bishop do
 
   context '#display' do
     it 'can display a unicode character representing a Black chess bishop' do
-      expect(black_bishop.display).to eq ' ♝ '.colorize(color: :black)
+      expect(black_bishop.display_on_board).to eq ' ♝ '.colorize(color: :black)
     end
 
     it 'can display a unicode character representing a White chess bishop' do
-      expect(white_bishop.display).to eq ' ♗ '.colorize(color: :black)
+      expect(white_bishop.display_on_board).to eq ' ♗ '.colorize(color: :black)
     end
   end
 end
@@ -193,11 +225,11 @@ describe Knight do
 
   context '#display' do
     it 'can display a unicode character representing a Black chess knight' do
-      expect(black_knight.display).to eq ' ♞ '.colorize(color: :black)
+      expect(black_knight.display_on_board).to eq ' ♞ '.colorize(color: :black)
     end
 
     it 'can display a unicode character representing a White chess knight' do
-      expect(white_knight.display).to eq ' ♘ '.colorize(color: :black)
+      expect(white_knight.display_on_board).to eq ' ♘ '.colorize(color: :black)
     end
   end
 end
@@ -222,11 +254,11 @@ describe Queen do
 
   context '#display' do
     it 'can display a unicode character representing a Black chess queen' do
-      expect(black_queen.display).to eq ' ♛ '.colorize(color: :black)
+      expect(black_queen.display_on_board).to eq ' ♛ '.colorize(color: :black)
     end
 
     it 'can display a unicode character representing a White chess queen' do
-      expect(white_queen.display).to eq ' ♕ '.colorize(color: :black)
+      expect(white_queen.display_on_board).to eq ' ♕ '.colorize(color: :black)
     end
   end
 end
@@ -251,11 +283,11 @@ describe King do
 
   context '#display' do
     it 'can display a unicode character representing a Black chess king' do
-      expect(black_king.display).to eq ' ♚ '.colorize(color: :black)
+      expect(black_king.display_on_board).to eq ' ♚ '.colorize(color: :black)
     end
 
     it 'can display a unicode character representing a White chess king' do
-      expect(white_king.display).to eq ' ♔ '.colorize(color: :black)
+      expect(white_king.display_on_board).to eq ' ♔ '.colorize(color: :black)
     end
   end
 end
