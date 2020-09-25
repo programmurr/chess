@@ -2,6 +2,19 @@
 
 class Moves
   def self.remove_moves_beyond_the_board(all_moves)
+    possible_hash = {}
+    all_moves.each_key { |key| possible_hash[key] = [] }
+    all_moves.each do |direction, positions|
+      positions.each do |co_ord|
+        next unless co_ord[0] < 8 && co_ord[1] < 8
+
+        possible_hash[direction] << co_ord if !co_ord[0].negative? && !co_ord[1].negative?
+      end
+    end
+    possible_hash
+  end
+
+  def self.remove_knight_moves_beyond_the_board(all_moves)
     possible_array = []
     all_moves.each do |co_ord|
       next unless co_ord[0] < 8 && co_ord[1] < 8
@@ -23,31 +36,31 @@ end
 
 class BlackPawnMoves < Moves
   def first_moves
-    all_moves = [[x + 1, y], [x + 2, y], [x + 1, y - 1], [x + 1, y + 1]]
+    all_moves = { 'down' => [[x + 1, y]], 'double_down' => [[x + 2, y]], 'down_left' => [[x + 1, y - 1]], 'down_right' => [[x + 1, y + 1]] }
     Moves.remove_moves_beyond_the_board(all_moves)
   end
 
   def moves
-    all_moves = [[x + 1, y], [x + 1, y - 1], [x + 1, y + 1]]
+    all_moves = { 'down' => [[x + 1, y]], 'down_left' => [[x + 1, y - 1]], 'down_right' => [[x + 1, y + 1]] }
     Moves.remove_moves_beyond_the_board(all_moves)
   end
 end
 
 class WhitePawnMoves < Moves
   def first_moves
-    all_moves = [[x - 1, y], [x - 2, y], [x - 1, y - 1], [x - 1, y + 1]]
+    all_moves = { 'up' => [[x - 1, y]], 'double_up' => [[x - 2, y]], 'up_left' => [[x - 1, y - 1]], 'up_right' => [[x - 1, y + 1]] }
     Moves.remove_moves_beyond_the_board(all_moves)
   end
 
   def moves
-    all_moves = [[x - 1, y], [x - 1, y - 1], [x - 1, y + 1]]
+    all_moves = { 'up' => [[x - 1, y]], 'up_left' => [[x - 1, y - 1]], 'up_right' => [[x - 1, y + 1]] }
     Moves.remove_moves_beyond_the_board(all_moves)
   end
 end
 
 class KingMoves < Moves
   def moves
-    all_moves = [[x - 1, y], [x - 1, y - 1], [x - 1, y + 1], [x, y + 1], [x + 1, y + 1], [x + 1, y], [x + 1, y - 1], [x, y - 1]]
+    all_moves = { 'up' => [[x - 1, y]], 'up_right' => [[x - 1, y + 1]], 'right' => [[x, y + 1]], 'down_right' => [[x + 1, y + 1]], 'down' => [[x + 1, y]], 'down_left' => [[x + 1, y - 1]], 'left' => [[x, y - 1]], 'up_left' => [[x - 1, y - 1]] }
     Moves.remove_moves_beyond_the_board(all_moves)
   end
 end
@@ -57,7 +70,7 @@ class KnightMoves < Moves
 
   def moves
     all_moves = KNIGHT_MOVES_LIST.map { |a, b| [x + a, y + b] }
-    Moves.remove_moves_beyond_the_board(all_moves)
+    Moves.remove_knight_moves_beyond_the_board(all_moves)
   end
 end
 
@@ -85,37 +98,40 @@ class BishopMoves < Moves
       self.x -= 1
       self.y += 1
     end
-    return_array
+    { 'up_right' => return_array }
   end
 
-  def bishop_down_right(return_array)
+  def bishop_down_right(all_moves)
     reset_x_and_y
+    return_array = []
     7.times do
       return_array << [x + 1, y + 1]
       self.x += 1
       self.y += 1
     end
-    return_array
+    all_moves['down_right'] = return_array
   end
 
-  def bishop_down_left(return_array)
+  def bishop_down_left(all_moves)
     reset_x_and_y
+    return_array = []
     7.times do
       return_array << [x + 1, y - 1]
       self.x += 1
       self.y -= 1
     end
-    return_array
+    all_moves['down_left'] = return_array
   end
 
-  def bishop_up_left(return_array)
+  def bishop_up_left(all_moves)
     reset_x_and_y
+    return_array = []
     7.times do
       return_array << [x - 1, y - 1]
       self.x -= 1
       self.y -= 1
     end
-    return_array
+    all_moves['up_left'] = return_array
   end
 end
 
@@ -142,33 +158,36 @@ class RookMoves < Moves
       return_array << [x - 1, y]
       self.x -= 1
     end
-    return_array
+    { 'up' => return_array }
   end
 
-  def rook_horizontal_right(return_array)
+  def rook_horizontal_right(all_moves)
     reset_x_and_y
+    return_array = []
     7.times do
       return_array << [x, y + 1]
       self.y += 1
     end
-    return_array
+    all_moves['right'] = return_array
   end
 
-  def rook_vertical_down(return_array)
+  def rook_vertical_down(all_moves)
     reset_x_and_y
+    return_array = []
     7.times do
       return_array << [x + 1, y]
       self.x += 1
     end
-    return_array
+    all_moves['down'] = return_array
   end
 
-  def rook_horizontal_left(return_array)
+  def rook_horizontal_left(all_moves)
     reset_x_and_y
+    return_array = []
     7.times do
       return_array << [x, y - 1]
       self.y -= 1
     end
-    return_array
+    all_moves['left'] = return_array
   end
 end

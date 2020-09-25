@@ -36,6 +36,14 @@ class Board
     grid_coordinate_map.key(co_ord)
   end
 
+  def get_cells_from_hash(moves)
+    binding.pry
+    moves.each_value do |positions|
+      positions.map! { |co_ord| get_cell_string_co_ord(co_ord) }
+      positions.map! { |co_ord| get_cell(co_ord) }
+    end
+  end
+
   def place_royalty
     place_black_royalty
     place_white_royalty

@@ -167,7 +167,7 @@ end
 
 class Queen < Piece
   def self.moves(co_ord)
-    BishopMoves.new(co_ord).moves + RookMoves.new(co_ord).moves
+    RookMoves.new(co_ord).moves.merge(BishopMoves.new(co_ord).moves)
   end
 
   attr_reader :color

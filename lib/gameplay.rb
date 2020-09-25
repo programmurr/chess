@@ -27,7 +27,8 @@ if move_check.piece_a_whitepawn?
   piece = board.get_cell(player1.move[0]).value
   co_ord = board.get_cell_grid_co_ord(player1.move[0])
   moves = piece.all_move_coordinates_from_current_position(co_ord)
-  cells = moves.map { |move| board.get_cell_from_array_co_ord(move) }
+  binding.pry
+  cells = board.get_cells_from_hash(moves)
 elsif move_check.piece_a_blackpawn?
   # code
 end

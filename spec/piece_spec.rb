@@ -43,76 +43,78 @@ describe Piece do
     it 'can list all co_ordinates in all directions a BISHOP can move to, including cells with other pieces' do
       bishop = Bishop.new('Black')
       co_ord = [4, 4]
-      predicted_moves = [[3, 3], [2, 2], [1, 1], [0, 0],
-                         [3, 5], [2, 6], [1, 7],
-                         [5, 5], [6, 6], [7, 7],
-                         [5, 3], [6, 2], [7, 1]]
+      predicted_moves = { 'up_right' => [[3, 5], [2, 6], [1, 7]],
+                          'down_right' => [[5, 5], [6, 6], [7, 7]],
+                          'down_left' => [[5, 3], [6, 2], [7, 1]],
+                          'up_left' => [[3, 3], [2, 2], [1, 1], [0, 0]] }
       actual_moves = bishop.all_move_coordinates_from_current_position(co_ord)
-      expect(predicted_moves.difference(actual_moves)).to eq []
+      expect(predicted_moves).to eq actual_moves
     end
 
     it 'can list all co_ordinates in all directions a ROOK can move to, including cells with other pieces' do
       rook = Rook.new('White')
       co_ord = [3, 2]
-      predicted_moves = [[2, 2], [1, 2], [0, 2],
-                         [3, 3], [3, 4], [3, 5], [3, 6], [3, 7],
-                         [4, 2], [5, 2], [6, 2], [7, 2],
-                         [3, 1], [3, 0]]
+      predicted_moves = { 'up' => [[2, 2], [1, 2], [0, 2]],
+                          'right' => [[3, 3], [3, 4], [3, 5], [3, 6], [3, 7]],
+                          'down' => [[4, 2], [5, 2], [6, 2], [7, 2]],
+                          'left' => [[3, 1], [3, 0]] }
       actual_moves = rook.all_move_coordinates_from_current_position(co_ord)
-      expect(predicted_moves.difference(actual_moves)).to eq []
+      expect(predicted_moves).to eq actual_moves
     end
 
     it 'can list all co_ordinates in all directions a QUEEN can move to, including cells with other pieces' do
       queen = Queen.new('Black')
-      co_ord = [2, 3]
-      predicted_moves = [[1, 3], [0, 3],
-                         [1, 4], [0, 5],
-                         [2, 4], [2, 5], [2, 6], [2, 7],
-                         [3, 3], [4, 3], [5, 3], [6, 3], [7, 3],
-                         [2, 2], [2, 1], [2, 0],
-                         [1, 2], [0, 1]]
+      co_ord = [3, 2]
+      predicted_moves = { 'up' => [[2, 2], [1, 2], [0, 2]],
+                          'right' => [[3, 3], [3, 4], [3, 5], [3, 6], [3, 7]],
+                          'down' => [[4, 2], [5, 2], [6, 2], [7, 2]],
+                          'left' => [[3, 1], [3, 0]],
+                          'up_right' => [[2, 3], [1, 4], [0, 5]],
+                          'down_right' => [[4, 3], [5, 4], [6, 5], [7, 6]],
+                          'down_left' => [[4, 1], [5, 0]],
+                          'up_left' => [[2, 1], [1, 0]] }
       actual_moves = queen.all_move_coordinates_from_current_position(co_ord)
-      expect(predicted_moves.difference(actual_moves)).to eq []
+      expect(predicted_moves).to eq actual_moves
     end
 
     it 'can list all co_ordinates in all directions a KING can move to, including cells with other pieces' do
       king = King.new('White')
       co_ord = [5, 6]
-      predicted_moves = [[4, 6], [4, 7], [5, 7], [6, 7], [6, 6], [6, 5], [5, 5], [4, 5]]
+      predicted_moves = { 'up' => [[4, 6]], 'up_right' => [[4, 7]], 'right' => [[5, 7]], 'down_right' => [[6, 7]], 'down' => [[6, 6]], 'down_left' => [[6, 5]], 'left' => [[5, 5]], 'up_left' => [[4, 5]] }
       actual_moves = king.all_move_coordinates_from_current_position(co_ord)
-      expect(predicted_moves.difference(actual_moves)).to eq []
+      expect(predicted_moves).to eq actual_moves
     end
 
     it 'can list all co_ordinates, including attacks, a WHITEPAWN can move to on its first move' do
       pawn = WhitePawn.new('White')
       co_ord = [6, 1]
-      predicted_moves = [[5, 1], [4, 1], [5, 0], [5, 2]]
+      predicted_moves = { 'up' => [[5, 1]], 'double_up' => [[4, 1]], 'up_left' => [[5, 0]], 'up_right' => [[5, 2]] }
       actual_moves = pawn.all_move_coordinates_from_current_position(co_ord)
-      expect(predicted_moves.difference(actual_moves)).to eq []
+      expect(predicted_moves).to eq actual_moves
     end
 
     it 'can list all co_ordinates, including attacks, a WHITEPAWN can move to on a move other than its first move' do
       pawn = WhitePawn.new('White')
       co_ord = [5, 6]
-      predicted_moves = [[4, 6], [4, 5], [4, 7]]
+      predicted_moves = { 'up' => [[4, 6]], 'up_left' => [[4, 5]], 'up_right' => [[4, 7]] }
       actual_moves = pawn.all_move_coordinates_from_current_position(co_ord)
-      expect(predicted_moves.difference(actual_moves)).to eq []
+      expect(predicted_moves).to eq actual_moves
     end
 
     it 'can list all co_ordinates, including attacks, a BLACKPAWN can move to on its first move' do
       pawn = BlackPawn.new('Black')
       co_ord = [1, 3]
-      predicted_moves = [[2, 3], [3, 3], [2, 4], [2, 2]]
+      predicted_moves = { 'down' => [[2, 3]], 'double_down' => [[3, 3]], 'down_left' => [[2, 2]], 'down_right' => [[2, 4]] }
       actual_moves = pawn.all_move_coordinates_from_current_position(co_ord)
-      expect(predicted_moves.difference(actual_moves)).to eq []
+      expect(predicted_moves).to eq actual_moves
     end
 
     it 'can list all co_ordinates, including attacks, a BLACKPAWN can move to on a move other than its first move' do
       pawn = BlackPawn.new('Black')
       co_ord = [3, 2]
-      predicted_moves = [[4, 2], [4, 1], [4, 3]]
+      predicted_moves = { 'down' => [[4, 2]], 'down_left' => [[4, 1]], 'down_right' => [[4, 3]] }
       actual_moves = pawn.all_move_coordinates_from_current_position(co_ord)
-      expect(predicted_moves.difference(actual_moves)).to eq []
+      expect(predicted_moves).to eq actual_moves
     end
   end
 end
