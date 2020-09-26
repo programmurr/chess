@@ -96,7 +96,7 @@ describe Piece do
     it 'can list all co_ordinates, including attacks, a WHITEPAWN can move to on a move other than its first move' do
       pawn = WhitePawn.new('White')
       co_ord = [5, 6]
-      predicted_moves = { 'up' => [[4, 6]], 'up_left' => [[4, 5]], 'up_right' => [[4, 7]] }
+      predicted_moves = { 'up' => [[4, 6]], 'double_up' => [], 'up_left' => [[4, 5]], 'up_right' => [[4, 7]] }
       actual_moves = pawn.all_move_coordinates_from_current_position(co_ord)
       expect(predicted_moves).to eq actual_moves
     end
@@ -112,7 +112,7 @@ describe Piece do
     it 'can list all co_ordinates, including attacks, a BLACKPAWN can move to on a move other than its first move' do
       pawn = BlackPawn.new('Black')
       co_ord = [3, 2]
-      predicted_moves = { 'down' => [[4, 2]], 'down_left' => [[4, 1]], 'down_right' => [[4, 3]] }
+      predicted_moves = { 'down' => [[4, 2]], 'double_down' => [], 'down_left' => [[4, 1]], 'down_right' => [[4, 3]] }
       actual_moves = pawn.all_move_coordinates_from_current_position(co_ord)
       expect(predicted_moves).to eq actual_moves
     end

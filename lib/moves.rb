@@ -41,7 +41,7 @@ class BlackPawnMoves < Moves
   end
 
   def moves
-    all_moves = { 'down' => [[x + 1, y]], 'down_left' => [[x + 1, y - 1]], 'down_right' => [[x + 1, y + 1]] }
+    all_moves = { 'down' => [[x + 1, y]], 'double_down' => [], 'down_left' => [[x + 1, y - 1]], 'down_right' => [[x + 1, y + 1]] }
     Moves.remove_moves_beyond_the_board(all_moves)
   end
 end
@@ -53,7 +53,7 @@ class WhitePawnMoves < Moves
   end
 
   def moves
-    all_moves = { 'up' => [[x - 1, y]], 'up_left' => [[x - 1, y - 1]], 'up_right' => [[x - 1, y + 1]] }
+    all_moves = { 'up' => [[x - 1, y]], 'double_up' => [], 'up_left' => [[x - 1, y - 1]], 'up_right' => [[x - 1, y + 1]] }
     Moves.remove_moves_beyond_the_board(all_moves)
   end
 end

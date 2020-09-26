@@ -23,7 +23,9 @@ class PlayerBoardInterface
   end
 
   def take_enemy_piece
-    player.captured_pieces << temp_cell
-    self.temp_cell = nil
+    unless temp_cell.nil?
+      player.captured_pieces << temp_cell
+      self.temp_cell = nil
+    end
   end
 end

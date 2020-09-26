@@ -55,6 +55,7 @@ class WhitePawn < Piece
   def special_moves
     # En passant - if pawn in adjascent left/right just completed a first move
     # Attacking - if bottom left or bottom right cells contain an enemy piece
+    # Promotion
   end
 end
 
@@ -86,6 +87,7 @@ class BlackPawn < Piece
   def special_moves
     # En passant - if pawn in adjascent left/right just completed a first move
     # Attacking - if bottom left or bottom right cells contain an enemy piece
+    # Promotion
   end
 end
 

@@ -37,7 +37,6 @@ class Board
   end
 
   def get_cells_from_hash(moves)
-    binding.pry
     moves.each_value do |positions|
       positions.map! { |co_ord| get_cell_string_co_ord(co_ord) }
       positions.map! { |co_ord| get_cell(co_ord) }

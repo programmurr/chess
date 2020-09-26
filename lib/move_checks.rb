@@ -14,6 +14,15 @@ class MoveChecks
     @temp_cell = nil
   end
 
+  def valid_move?(cells, end_co_ord)
+    cells.each_value do |move|
+      move.each do |position|
+        return true if end_co_ord == position.co_ord
+      end
+    end
+    false
+  end
+
   def piece_a_whitepawn?
     return true if start_cell.value.class == WhitePawn
 
@@ -38,22 +47,46 @@ class MoveChecks
     false
   end
 
-  def white_pawn_attack_move?
-    #  Is there an enemy piece to the top-right diagonal of the pawn?
-    #   Yes - let that move remain in the move array
-    #   No - remove that move from the move array
-    # Is there an enemy piece to the top-left diagonal of the pawn?
-    #   Yes - let that move remain in the move array
-    #   No - remove that move from the move array
+  def white_pawn_non_attack_filter(cells)
+    # binding.pry
+    unless cells['up'].empty?
+      cells['up'] = [] unless cells['up'][0].value.nil?
+    end
+    unless cells['double_up'].empty?
+      cells['double_up'] = [] unless cells['double_up'][0].value.nil?
+    end
+    cells
   end
 
-  def black_pawn_attack_move?
-    #  Is there an enemy piece to the down-right diagonal of the pawn?
-    #   Yes - let that move remain in the move array
-    #   No - remove that move from the move array
-    # Is there an enemy piece to the down-left diagonal of the pawn?
-    #   Yes - let that move remain in the move array
-    #   No - remove that move from the move array
+  def white_pawn_attack_filter(cells)
+    # binding.pry
+    unless cells['up_right'].empty?
+      cells['up_right'] = [] if cells['up_right'][0].value.nil?
+    end
+    unless cells['up_left'].empty?
+      cells['up_left'] = [] if cells['up_left'][0].value.nil?
+    end
+    cells
+  end
+
+  def black_pawn_non_attack_filter(cells)
+    unless cells['down'].empty?
+      cells['down'] = [] unless cells['down'][0].value.nil?
+    end
+    unless cells['double_down'].empty?
+      cells['double_down'] = [] unless cells['double_down'][0].value.nil?
+    end
+    cells
+  end
+
+  def black_pawn_attack_filter(cells)
+    unless cells['down_right'].empty?
+      cells['down_right'] = [] if cells['down_right'][0].value.nil?
+    end
+    unless cells['down_left'].empty?
+      cells['down_left'] = [] if cells['down_left'][0].value.nil?
+    end
+    cells
   end
 
   def attack_move?
@@ -61,9 +94,3 @@ class MoveChecks
     return true if start_cell.value.color != end_cell.value.color
   end
 end
-
-# Gets the posible moves from a piece
-# Compares it to the player's proposed move
-# Triggers the move in PBI if valid
-# Denies the move if it is not
-# Keep a list of cells that could be moved to by a piece

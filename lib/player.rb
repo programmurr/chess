@@ -14,13 +14,15 @@ class Player
   end
 
   def display_captured_pieces
+    puts "#{name} captured pieces:"
     captured_pieces.each do |piece|
       if piece.color == 'Black'
-        puts piece.display_on_board
+        print piece.display_on_board
       elsif piece.color == 'White'
-        piece.display_for_capture
+        print piece.display_for_capture
       end
     end
+    puts
   end
 
   def enter_move
