@@ -52,6 +52,35 @@ class WhitePawn < Piece
     " \u265F ".colorize(color: :white)
   end
 
+  def attack_filter(cells)
+    unless cells['up_right'].empty?
+      cells['up_right'] = [] if cells['up_right'][0].value.nil?
+    end
+    unless cells['up_left'].empty?
+      cells['up_left'] = [] if cells['up_left'][0].value.nil?
+    end
+    cells
+  end
+
+  def non_attack_filter(cells)
+    unless cells['up'].empty?
+      cells['up'] = [] unless cells['up'][0].value.nil?
+    end
+    unless cells['double_up'].empty?
+      cells['double_up'] = [] unless cells['double_up'][0].value.nil?
+    end
+    cells
+  end
+
+  def valid_move?(cells, end_co_ord)
+    cells.each_value do |move|
+      move.each do |position|
+        return true if end_co_ord == position.co_ord
+      end
+    end
+    false
+  end
+
   def special_moves
     # En passant - if pawn in adjascent left/right just completed a first move
     # Attacking - if bottom left or bottom right cells contain an enemy piece
@@ -82,6 +111,35 @@ class BlackPawn < Piece
 
   def display_for_capture
     " \u265F ".colorize(color: :white)
+  end
+
+  def non_attack_filter(cells)
+    unless cells['down'].empty?
+      cells['down'] = [] unless cells['down'][0].value.nil?
+    end
+    unless cells['double_down'].empty?
+      cells['double_down'] = [] unless cells['double_down'][0].value.nil?
+    end
+    cells
+  end
+
+  def attack_filter(cells)
+    unless cells['down_right'].empty?
+      cells['down_right'] = [] if cells['down_right'][0].value.nil?
+    end
+    unless cells['down_left'].empty?
+      cells['down_left'] = [] if cells['down_left'][0].value.nil?
+    end
+    cells
+  end
+
+  def valid_move?(cells, end_co_ord)
+    cells.each_value do |move|
+      move.each do |position|
+        return true if end_co_ord == position.co_ord
+      end
+    end
+    false
   end
 
   def special_moves

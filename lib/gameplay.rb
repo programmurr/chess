@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
+require 'colorize'
 require_relative 'board'
 require_relative 'player'
-require_relative 'player_board_interface'
 require_relative 'move_checks'
 
 class GamePlay
@@ -49,16 +49,19 @@ class GamePlay
   def enter_move
     loop do
       begin
-      active_player.enter_move
+        active_player.enter_move
       rescue RuntimeError
+        puts 'Please select a piece matching your color'.colorize(:red)
+        sleep 2
         retry
-    end
+      end
       @move_check = MoveChecks.new(active_player, board)
-      @move_check.cell_contains_piece?
-      break if @move_check.matching_piece_class?
-
-      puts 'Please select a piece matching your color'
-      sleep 2
+      if @move_check.cell_contains_piece? == false || @move_check.matching_piece_class? == false
+        puts 'Please select a piece matching your color'.colorize(:red)
+        sleep 2
+      else
+        break
+      end
     end
   end
 
@@ -73,33 +76,22 @@ class GamePlay
     loop do
       refresh_display
       enter_move
-      if @move_check.piece_a_whitepawn?
-        piece = board.get_cell(active_player.move[0]).value
-        co_ord = board.get_cell_grid_co_ord(active_player.move[0])
-        moves = piece.all_move_coordinates_from_current_position(co_ord)
-        cells = board.get_cells_from_hash(moves)
-        @move_check.white_pawn_attack_filter(cells)
-        @move_check.white_pawn_non_attack_filter(cells)
-        if @move_check.valid_move?(cells, active_player.move[1])
-          interface = PlayerBoardInterface.new(active_player, board)
-          interface.move_piece
-          interface.take_enemy_piece
-        end
-      elsif @move_check.piece_a_blackpawn?
-        piece = board.get_cell(active_player.move[0]).value
-        co_ord = board.get_cell_grid_co_ord(active_player.move[0])
-        moves = piece.all_move_coordinates_from_current_position(co_ord)
-        cells = board.get_cells_from_hash(moves)
-        @move_check.black_pawn_attack_filter(cells)
-        @move_check.black_pawn_non_attack_filter(cells)
-        if @move_check.valid_move?(cells, active_player.move[1])
-          interface = PlayerBoardInterface.new(active_player, board)
-          interface.move_piece
-          interface.take_enemy_piece
-        end
+      piece = board.get_cell(active_player.move[0]).value
+      co_ord = board.get_cell_grid_co_ord(active_player.move[0])
+      moves = piece.all_move_coordinates_from_current_position(co_ord)
+      cells = board.get_cells_from_hash(moves)
+      piece.attack_filter(cells)
+      piece.non_attack_filter(cells)
+      if piece.valid_move?(cells, active_player.move[1])
+        active_player.move_piece(board)
+        active_player.take_enemy_piece
+        break
+      elsif piece.valid_move?(cells, active_player.move[1]) == false
+        puts 'That is not valid, please re-enter your move'.colorize(:red)
+        sleep 3
       end
-      switch_active_player
     end
+    switch_active_player
   end
 end
 
@@ -107,4 +99,6 @@ game = GamePlay.new
 game.setup_board
 game.assign_player1_white_piece
 game.player1_as_active_player
-game.test_loop
+loop do
+  game.test_loop
+end

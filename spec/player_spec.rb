@@ -47,7 +47,7 @@ describe Player do
   context '#enter_move' do
     before do
       @player = Player.new(1)
-      $stdin = StringIO.new('a2 a4')
+      $stdin = StringIO.new('a2a4')
       @move = %w[a2 a4]
     end
 
@@ -56,7 +56,7 @@ describe Player do
     end
 
     it "prompts the user to enter a 'from' coordinate and a 'to' coordinate" do
-      output_message = "Player1, enter the 'from' and 'to' coordinates for the piece you want to move.\nEnter the coordinates with a space in the middle e.g. 'a2 a4'\n"
+      output_message = "Player1, enter the 'from' and 'to' coordinates for the piece you want to move e.g. 'a2a4'\n"
       expect { @player.enter_move }.to output(output_message).to_stdout
     end
 
@@ -73,12 +73,12 @@ describe Player do
     end
 
     it "rejects a 'to' coordinate beyond the range of the board" do
-      $stdin = StringIO.new('z2 a4')
+      $stdin = StringIO.new('z2a4')
       expect { @player.enter_move }.to raise_error(RuntimeError)
     end
 
     it "rejects a 'from' coordinate beyond the range of the board" do
-      $stdin = StringIO.new('a2 a40')
+      $stdin = StringIO.new('a2a40')
       expect { @player.enter_move }.to raise_error(RuntimeError)
     end
 
@@ -88,8 +88,42 @@ describe Player do
 
     it 'changes the move attribute from one move to another move' do
       @player.move = %w[a2 a4]
-      $stdin = StringIO.new('a4 b5')
+      $stdin = StringIO.new('a4b5')
       expect { @player.enter_move }.to change { @player.move }.from(%w[a2 a4]).to(%w[a4 b5])
+    end
+  end
+
+  context '#move_piece' do
+    before do
+      @board = Board.new
+      @board.set_cell_coordinates
+      @board.place_pawns
+      @board.place_royalty
+    end
+
+    it 'can move the selected piece from one square to another' do
+      player = Player.new(1)
+      player.move = %w[a2 a4]
+      expect { player.move_piece(@board) }.to change { @board.grid[4][0].value }.from(nil).to be_instance_of WhitePawn
+    end
+  end
+
+  context '#take_enemy_piece' do
+    before do
+      @player = Player.new(1)
+      @player.color = 'White'
+      @player.move = %w[b3 g3]
+      @board = Board.new
+      @board.set_cell_coordinates
+      @board.place_pawns
+      @board.place_royalty
+      @board.grid[5][1].value = Rook.new('Black')
+      @board.grid[5][6].value = Knight.new('Black')
+      @player.move_piece(@board)
+    end
+
+    it "places the captured piece into the player's captured pieces attribute" do
+      expect { @player.take_enemy_piece }.to change { @player.captured_pieces }
     end
   end
 end
