@@ -34,9 +34,9 @@ class Player
     puts "#{name} captured pieces:"
     captured_pieces.each do |piece|
       if piece.color == 'Black'
-        print piece.display_on_board
+        print piece.display_on_board.colorize(background: :white)
       elsif piece.color == 'White'
-        print piece.display_for_capture
+        print piece.display_for_capture.colorize(background: :black)
       end
     end
     puts
@@ -48,7 +48,6 @@ class Player
     move.each.with_index do |char, index|
       if move.length > 4 || validation_checks?(char, index) == false
         raise 'That is not a valid coordinate, please re-enter'.colorize(:red)
-        sleep 2
       end
     end
     self.move = convert_to_move(move)

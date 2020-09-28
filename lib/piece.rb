@@ -83,7 +83,6 @@ class WhitePawn < Piece
 
   def special_moves
     # En passant - if pawn in adjascent left/right just completed a first move
-    # Attacking - if bottom left or bottom right cells contain an enemy piece
     # Promotion
   end
 end
@@ -144,7 +143,6 @@ class BlackPawn < Piece
 
   def special_moves
     # En passant - if pawn in adjascent left/right just completed a first move
-    # Attacking - if bottom left or bottom right cells contain an enemy piece
     # Promotion
   end
 end
@@ -170,6 +168,26 @@ class Rook < Piece
 
   def display_for_capture
     " \u265C ".colorize(color: :white)
+  end
+
+  def move_filter(cells, end_co_ord)
+    cells.each_value do |positions|
+      if positions.length.zero?
+        next
+      elsif positions[-1].co_ord != end_co_ord
+        positions.pop until positions.length.zero? || positions[-1].co_ord == end_co_ord
+      end
+    end
+  end
+
+  def valid_move?(cells, end_co_ord)
+    cells.each_value do |move|
+      move.each do |position|
+        return false if !position.value.nil? && position.co_ord != end_co_ord
+        return true if end_co_ord == position.co_ord
+      end
+    end
+    false
   end
 
   def special_moves
@@ -199,6 +217,26 @@ class Bishop < Piece
   def display_for_capture
     " \u265D ".colorize(color: :white)
   end
+
+  def move_filter(cells, end_co_ord)
+    cells.each_value do |positions|
+      if positions.length.zero?
+        next
+      elsif positions[-1].co_ord != end_co_ord
+        positions.pop until positions.length.zero? || positions[-1].co_ord == end_co_ord
+      end
+    end
+  end
+
+  def valid_move?(cells, end_co_ord)
+    cells.each_value do |move|
+      move.each do |position|
+        return false if !position.value.nil? && position.co_ord != end_co_ord
+        return true if end_co_ord == position.co_ord
+      end
+    end
+    false
+  end
 end
 
 class Knight < Piece
@@ -222,6 +260,18 @@ class Knight < Piece
 
   def display_for_capture
     " \u265E ".colorize(color: :white)
+  end
+
+  def move_filter(cells)
+    return if cells.length.zero?
+
+    cells.select! { |cell| cell.value.nil? }
+  end
+
+  def valid_move?(cells)
+    return false if cells.length.zero?
+
+    true
   end
 end
 
@@ -247,6 +297,26 @@ class Queen < Piece
   def display_for_capture
     " \u265B ".colorize(color: :white)
   end
+
+  def move_filter(cells, end_co_ord)
+    cells.each_value do |positions|
+      if positions.length.zero?
+        next
+      elsif positions[-1].co_ord != end_co_ord
+        positions.pop until positions.length.zero? || positions[-1].co_ord == end_co_ord
+      end
+    end
+  end
+
+  def valid_move?(cells, end_co_ord)
+    cells.each_value do |move|
+      move.each do |position|
+        return false if !position.value.nil? && position.co_ord != end_co_ord
+        return true if end_co_ord == position.co_ord
+      end
+    end
+    false
+  end
 end
 
 class King < Piece
@@ -270,6 +340,26 @@ class King < Piece
 
   def display_for_capture
     " \u265A ".colorize(color: :white)
+  end
+
+  def move_filter(cells, end_co_ord)
+    cells.each_value do |positions|
+      if positions.length.zero?
+        next
+      elsif positions[-1].co_ord != end_co_ord
+        positions.pop until positions.length.zero? || positions[-1].co_ord == end_co_ord
+      end
+    end
+  end
+
+  def valid_move?(cells, end_co_ord)
+    cells.each_value do |move|
+      move.each do |position|
+        return false if !position.value.nil? && position.co_ord != end_co_ord
+        return true if end_co_ord == position.co_ord
+      end
+    end
+    false
   end
 
   def special_moves

@@ -79,23 +79,3 @@ end
 #     expect(MoveChecks.new(player, @board).permit_special_move?).to eq true
 #   end
 # end
-
-# context '#piece_blocking_path?' do
-#   xit 'returns true if there is an enemy piece blocking the move' do
-#   end
-
-#   xit 'returns true if there is a friendly piece blocking the move' do
-#   end
-
-#   xit 'returns false if the path of the move is clear' do
-#   end
-# end
-
-# For the 'must not jump over another piece' problem:
-#   Generate all possible moves as before
-#   Start with the last element
-#   Is that the end cell?
-#   If not, remove it
-#   Keep going until the end cell is reached
-#   Do any of the other cells have a value that is not nil?
-#   If yes, the move cannot be executed

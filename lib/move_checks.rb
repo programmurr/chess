@@ -12,6 +12,13 @@ class MoveChecks
     @temp_cell = nil
   end
 
+  def end_cell_matches_player_color?
+    unless end_cell.value.nil?
+      return true if end_cell.value.color == player.color
+    end
+    false
+  end
+
   def valid_move?(cells, end_co_ord)
     cells.each_value do |move|
       move.each do |position|

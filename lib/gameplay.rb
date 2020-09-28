@@ -53,12 +53,18 @@ class GamePlay
       rescue RuntimeError
         puts 'Please select a piece matching your color'.colorize(:red)
         sleep 2
+        refresh_display
         retry
       end
       @move_check = MoveChecks.new(active_player, board)
       if @move_check.cell_contains_piece? == false || @move_check.matching_piece_class? == false
         puts 'Please select a piece matching your color'.colorize(:red)
         sleep 2
+        refresh_display
+      elsif @move_check.end_cell_matches_player_color?
+        puts 'You cannot attack your own pieces'.colorize(:red)
+        sleep 2
+        refresh_display
       else
         break
       end
@@ -72,6 +78,10 @@ class GamePlay
     board.display
   end
 
+  # The aim of this loop is to get the game functional except for:
+  #   Check/Mate/Stalemate/Castling/Promotion/En Passant situations
+  #   i.e. Pieces can move correctly around the board and attack each other
+  #   Once this goal is met - refactor then work on the special situations outlined above
   def test_loop
     loop do
       refresh_display
@@ -79,16 +89,43 @@ class GamePlay
       piece = board.get_cell(active_player.move[0]).value
       co_ord = board.get_cell_grid_co_ord(active_player.move[0])
       moves = piece.all_move_coordinates_from_current_position(co_ord)
-      cells = board.get_cells_from_hash(moves)
-      piece.attack_filter(cells)
-      piece.non_attack_filter(cells)
-      if piece.valid_move?(cells, active_player.move[1])
-        active_player.move_piece(board)
-        active_player.take_enemy_piece
-        break
-      elsif piece.valid_move?(cells, active_player.move[1]) == false
-        puts 'That is not valid, please re-enter your move'.colorize(:red)
-        sleep 3
+      cells = if piece.class == Knight
+                board.get_cells_from_array(moves)
+              else
+                board.get_cells_from_hash(moves)
+              end
+      if piece.class == WhitePawn || piece.class == BlackPawn
+        piece.attack_filter(cells)
+        piece.non_attack_filter(cells)
+        if piece.valid_move?(cells, active_player.move[1])
+          active_player.move_piece(board)
+          active_player.take_enemy_piece
+          break
+        elsif piece.valid_move?(cells, active_player.move[1]) == false
+          puts 'That is not valid, please re-enter your move'.colorize(:red)
+          sleep 3
+        end
+      elsif piece.class == Rook || piece.class == Bishop || piece.class == Queen || piece.class == King
+        piece.move_filter(cells, active_player.move[1])
+        if piece.valid_move?(cells, active_player.move[1])
+          active_player.move_piece(board)
+          active_player.take_enemy_piece
+          break
+        elsif piece.valid_move?(cells, active_player.move[1]) == false
+          puts 'That is not valid, please re-enter your move'.colorize(:red)
+          sleep 3
+        end
+      elsif piece.class == Knight
+        piece.move_filter(cells)
+        # Note - Knight#valid_move? does not need the end_co_ord, unlike the other pieces
+        if piece.valid_move?(cells)
+          active_player.move_piece(board)
+          active_player.take_enemy_piece
+          break
+        elsif piece.valid_move?(cells) == false
+          puts 'That is not valid, please re-enter your move'.colorize(:red)
+          sleep 3
+        end
       end
     end
     switch_active_player

@@ -36,6 +36,10 @@ class Board
     grid_coordinate_map.key(co_ord)
   end
 
+  def get_cells_from_array(moves)
+    moves.map { |move| grid_coordinate_array_map.fetch(move) }
+  end
+
   def get_cells_from_hash(moves)
     moves.each_value do |positions|
       positions.map! { |co_ord| get_cell_string_co_ord(co_ord) }
