@@ -46,24 +46,57 @@ class GamePlay
     self.next_player = temp
   end
 
+  # The aim of this loop is to get the game functional except for:
+  #   Check/Mate/Stalemate/Castling/Promotion/En Passant situations
+  #   i.e. Pieces can move correctly around the board and attack each other
+  #   Once this goal is met - refactor then work on the special situations outlined above
+  def test_loop
+    loop do
+      refresh_display
+      enter_move
+      piece.move_filter(cells, end_co_ordinate)
+      if piece.valid_move?(cells, end_co_ordinate)
+        player_move_actions
+        break
+      else
+        invalid_move_message
+      end
+    end
+    switch_active_player
+  end
+
+  private
+
+  def select_correct_piece_message
+    puts 'Please select a piece matching your color'.colorize(:red)
+    sleep 2
+  end
+
+  def attack_own_piece_message
+    puts 'You cannot attack your own pieces'.colorize(:red)
+    sleep 2
+  end
+
+  def user_move_input
+    active_player.enter_move
+  rescue RuntimeError
+    select_correct_piece_message
+    refresh_display
+    retry
+  end
+
+  def move_check
+    MoveChecks.new(active_player, board)
+  end
+
   def enter_move
     loop do
-      begin
-        active_player.enter_move
-      rescue RuntimeError
-        puts 'Please select a piece matching your color'.colorize(:red)
-        sleep 2
+      user_move_input
+      if move_check.start_cell_contains_piece? == false || move_check.matching_piece_class? == false
+        select_correct_piece_message
         refresh_display
-        retry
-      end
-      @move_check = MoveChecks.new(active_player, board)
-      if @move_check.cell_contains_piece? == false || @move_check.matching_piece_class? == false
-        puts 'Please select a piece matching your color'.colorize(:red)
-        sleep 2
-        refresh_display
-      elsif @move_check.end_cell_matches_player_color?
-        puts 'You cannot attack your own pieces'.colorize(:red)
-        sleep 2
+      elsif move_check.end_cell_matches_player_color?
+        attack_own_piece_message
         refresh_display
       else
         break
@@ -110,25 +143,6 @@ class GamePlay
   def player_move_actions
     active_player.move_piece(board)
     active_player.take_enemy_piece
-  end
-
-  # The aim of this loop is to get the game functional except for:
-  #   Check/Mate/Stalemate/Castling/Promotion/En Passant situations
-  #   i.e. Pieces can move correctly around the board and attack each other
-  #   Once this goal is met - refactor then work on the special situations outlined above
-  def test_loop
-    loop do
-      refresh_display
-      enter_move
-      piece.move_filter(cells, end_co_ordinate)
-      if piece.valid_move?(cells, end_co_ordinate)
-        player_move_actions
-        break
-      else
-        invalid_move_message
-      end
-    end
-    switch_active_player
   end
 end
 

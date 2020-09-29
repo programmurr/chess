@@ -28,7 +28,7 @@ class MoveChecks
     false
   end
 
-  def cell_contains_piece?
+  def start_cell_contains_piece?
     return true unless start_cell.value.nil?
 
     false

@@ -13,12 +13,12 @@ context MoveChecks do
   context '#cell_contains_piece?' do
     it 'returns true if the cell contains a piece to be moved' do
       player = double('Player', move: %w[h2 h3])
-      expect(MoveChecks.new(player, @board).cell_contains_piece?).to eq true
+      expect(MoveChecks.new(player, @board).start_cell_contains_piece?).to eq true
     end
 
     it 'returns false if the cell does not contain a piece to be moved' do
       player = double('Player', move: %w[h3 h5])
-      expect(MoveChecks.new(player, @board).cell_contains_piece?).to eq false
+      expect(MoveChecks.new(player, @board).start_cell_contains_piece?).to eq false
     end
   end
 
