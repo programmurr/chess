@@ -200,9 +200,3 @@ class Board
     Array.new(8) { Array.new(8) { Cell.new } }
   end
 end
-
-# board = Board.new
-# board.set_cell_coordinates
-# board.place_pawns
-# board.place_royalty
-# board.display
