@@ -165,9 +165,11 @@ class Rook < Piece
   end
 
   attr_reader :color
+  attr_accessor :first_move
 
   def initialize(color)
     @color = color
+    @first_move = true
   end
 
   def display_on_board
@@ -183,7 +185,10 @@ class Rook < Piece
   end
 
   def special_moves
-    # Castling
+    # Castle h1
+    # Castle h8
+    # Castle a1
+    # Castle a8
   end
 end
 
@@ -277,9 +282,11 @@ class King < Piece
   end
 
   attr_reader :color
+  attr_accessor :first_move
 
   def initialize(color)
     @color = color
+    @first_move = true
   end
 
   def display_on_board
@@ -295,6 +302,9 @@ class King < Piece
   end
 
   def special_moves
-    # Castling
+    # Castle h1
+    # Castle h8
+    # Castle a1
+    # Castle a8
   end
 end

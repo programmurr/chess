@@ -46,14 +46,15 @@ class GamePlay
     self.next_player = temp
   end
 
-  # The aim of this loop is to get the game functional except for:
-  #   Check/Mate/Stalemate/Castling/Promotion/En Passant situations
-  #   i.e. Pieces can move correctly around the board and attack each other
-  #   Once this goal is met - refactor then work on the special situations outlined above
   def test_loop
     loop do
       refresh_display
       enter_move
+      cells = if piece.class == Knight
+                board.get_cells_from_array(moves)
+              else
+                board.get_cells_from_hash(moves)
+              end
       piece.move_filter(cells, end_co_ordinate)
       if piece.valid_move?(cells, end_co_ordinate)
         player_move_actions
@@ -66,6 +67,10 @@ class GamePlay
   end
 
   private
+
+  def castle_check?
+    binding.pry
+  end
 
   def select_correct_piece_message
     puts 'Please select a piece matching your color'.colorize(:red)
@@ -92,7 +97,9 @@ class GamePlay
   def enter_move
     loop do
       user_move_input
-      if move_check.start_cell_contains_piece? == false || move_check.matching_piece_class? == false
+      if castle_check?
+      # execute Castle move
+      elsif move_check.start_cell_contains_piece? == false || move_check.matching_piece_class? == false
         select_correct_piece_message
         refresh_display
       elsif move_check.end_cell_matches_player_color?
@@ -126,14 +133,6 @@ class GamePlay
 
   def moves
     piece.all_move_coordinates_from_current_position(co_ord)
-  end
-
-  def cells
-    if piece.class == Knight
-      board.get_cells_from_array(moves)
-    else
-      board.get_cells_from_hash(moves)
-    end
   end
 
   def end_co_ordinate

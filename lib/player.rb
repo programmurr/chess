@@ -45,8 +45,10 @@ class Player
   def enter_move
     enter_move_message
     move = $stdin.gets.chomp.to_s.downcase.split('')
+    return self.move = move.join if castle_check?(move.join)
+
     move.each.with_index do |char, index|
-      if move.length > 4 || validation_checks?(char, index) == false
+      if move.length > 4 || move.length < 4 || validation_checks?(char, index) == false
         raise 'That is not a valid coordinate, please re-enter'.colorize(:red)
       end
     end
@@ -64,6 +66,20 @@ class Player
   end
 
   private
+
+  def castle_check?(move)
+    if move == 'castleh1'
+      return true
+    elsif move == 'castleh8'
+      return true
+    elsif move == 'castlea1'
+      return true
+    elsif move == 'castlea8'
+      return true
+    end
+
+    false
+  end
 
   def validation_checks?(char, index)
     return false if character_is_not_a_valid_letter?(char, index)

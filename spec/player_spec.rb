@@ -82,6 +82,12 @@ describe Player do
       expect { @player.enter_move }.to raise_error(RuntimeError)
     end
 
+    it 'accepts a Castle command' do
+      $stdin = StringIO.new('castlea1')
+      @player.enter_move
+      expect(@player.move).to eq 'castlea1'
+    end
+
     it 'changes the move attribute to a valid move' do
       expect { @player.enter_move }.to change { @player.move }.from(nil).to(%w[a2 a4])
     end
