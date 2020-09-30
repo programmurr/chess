@@ -6,7 +6,7 @@ require_relative 'moves'
 # Remove color attribute for Piece? Is not cascading to subclasses, and causes trouble
 #   Not really useful for the player either
 class Piece
-  attr_accessor :color, :first_move
+  attr_accessor :color, :first_move, :number_of_moves
   def initialize(color)
     @color = color
     @first_move = true
@@ -58,9 +58,10 @@ class WhitePawn < Piece
 
   START_CO_ORDS = [[6, 0], [6, 1], [6, 2], [6, 3], [6, 4], [6, 5], [6, 6], [6, 7]].freeze
 
-  attr_reader :color
+  attr_reader :color, :number_of_moves
 
   def initialize(color)
+    @number_of_moves = 0
     @color = color
   end
 
@@ -69,7 +70,7 @@ class WhitePawn < Piece
   end
 
   def display_for_capture
-    " \u265F ".colorize(color: :white)
+    " \u265F ".colorize(color: :light_white)
   end
 
   def move_filter(cells, _end_co_ord)
@@ -114,10 +115,11 @@ class BlackPawn < Piece
 
   START_CO_ORDS = [[1, 0], [1, 1], [1, 2], [1, 3], [1, 4], [1, 5], [1, 6], [1, 7]].freeze
 
-  attr_reader :color
+  attr_reader :color, :number_of_moves
 
   def initialize(color)
     @color = color
+    @number_of_moves = 0
   end
 
   def display_on_board
@@ -165,11 +167,12 @@ class Rook < Piece
   end
 
   attr_reader :color
-  attr_accessor :first_move
+  attr_accessor :first_move, :number_of_moves
 
   def initialize(color)
     @color = color
     @first_move = true
+    @number_of_moves = 0
   end
 
   def display_on_board
@@ -197,10 +200,11 @@ class Bishop < Piece
     BishopMoves.new(co_ord).moves
   end
 
-  attr_reader :color
+  attr_reader :color, :number_of_moves
 
   def initialize(color)
     @color = color
+    @number_of_moves = 0
   end
 
   def display_on_board
@@ -221,10 +225,11 @@ class Knight < Piece
     KnightMoves.new(co_ord).moves
   end
 
-  attr_reader :color
+  attr_reader :color, :number_of_moves
 
   def initialize(color)
     @color = color
+    @number_of_moves = 0
   end
 
   def display_on_board
@@ -257,10 +262,11 @@ class Queen < Piece
     RookMoves.new(co_ord).moves.merge(BishopMoves.new(co_ord).moves)
   end
 
-  attr_reader :color
+  attr_reader :color, :number_of_moves
 
   def initialize(color)
     @color = color
+    @number_of_moves = 0
   end
 
   def display_on_board
@@ -282,11 +288,12 @@ class King < Piece
   end
 
   attr_reader :color
-  attr_accessor :first_move
+  attr_accessor :first_move, :number_of_moves
 
   def initialize(color)
     @color = color
     @first_move = true
+    @number_of_moves = 0
   end
 
   def display_on_board

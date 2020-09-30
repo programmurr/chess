@@ -20,6 +20,18 @@ class Board
     place_royalty
   end
 
+  def get_castle_cells(co_ord)
+    if co_ord == 'a1'
+      [grid[7][0], grid[7][1], grid[7][2], grid[7][3], grid[7][4]]
+    elsif co_ord == 'a8'
+      [grid[0][0], grid[0][1], grid[0][2], grid[0][3], grid[0][4]]
+    elsif co_ord == 'h1'
+      [grid[7][4], grid[7][5], grid[7][6], grid[7][7]]
+    elsif co_ord == 'h8'
+      [grid[0][4], grid[0][5], grid[0][6], grid[0][7]]
+    end
+  end
+
   def get_cell(co_ord)
     grid_coordinate_cell_map.fetch(co_ord)
   end

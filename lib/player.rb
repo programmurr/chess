@@ -20,6 +20,7 @@ class Player
     end_cell = board.get_cell(move[1])
     self.temp_cell = end_cell.value
     end_cell.value = start_cell.value
+    end_cell.value.number_of_moves += 1
     start_cell.value = nil
   end
 
@@ -34,7 +35,7 @@ class Player
     puts "#{name} captured pieces:"
     captured_pieces.each do |piece|
       if piece.color == 'Black'
-        print piece.display_on_board.colorize(background: :white)
+        print piece.display_on_board.colorize(background: :light_white)
       elsif piece.color == 'White'
         print piece.display_for_capture.colorize(background: :black)
       end

@@ -46,15 +46,24 @@ class GamePlay
     self.next_player = temp
   end
 
+  def change_move_array_to_cells
+    if piece.class == Knight
+      board.get_cells_from_array(moves)
+    else
+      board.get_cells_from_hash(moves)
+    end
+  end
+
+  # FIXME: Pawns can jump over other pieces on their first move
   def test_loop
     loop do
       refresh_display
       enter_move
-      cells = if piece.class == Knight
-                board.get_cells_from_array(moves)
-              else
-                board.get_cells_from_hash(moves)
-              end
+      if castle_check?
+        execute_castle_move
+        break
+      end
+      cells = change_move_array_to_cells
       piece.move_filter(cells, end_co_ordinate)
       if piece.valid_move?(cells, end_co_ordinate)
         player_move_actions
@@ -66,11 +75,25 @@ class GamePlay
     switch_active_player
   end
 
-  private
-
   def castle_check?
-    binding.pry
+    return false unless active_player.move.include?('castle')
+
+    move_co_ord = active_player.move[-2, 2]
+    cells = board.get_castle_cells(move_co_ord)
+    first_cell = cells.shift
+    last_cell = cells.pop
+    return false if first_cell.value.nil? || last_cell.value.nil?
+    return false if active_player.color != first_cell.value.color || active_player.color != last_cell.value.color
+
+    cells.each do |cell|
+      return false unless cell.value.nil?
+    end
+    return true if first_cell.value.first_move == true && last_cell.value.first_move == true
+
+    false
   end
+
+  private
 
   def select_correct_piece_message
     puts 'Please select a piece matching your color'.colorize(:red)
@@ -94,11 +117,48 @@ class GamePlay
     MoveChecks.new(active_player, board)
   end
 
+  def execute_castle_move
+    case active_player.move[-2, 2]
+    when 'a1'
+      board.grid[7][3].value = board.grid[7][0].value
+      board.grid[7][0].value = nil
+      board.grid[7][3].value.first_move = false
+      board.grid[7][2].value = board.grid[7][4].value
+      board.grid[7][4].value = nil
+      board.grid[7][2].value.first_move = false
+    when 'a8'
+      board.grid[0][3].value = board.grid[0][0].value
+      board.grid[0][0].value = nil
+      board.grid[0][3].value.first_move = false
+      board.grid[0][2].value = board.grid[0][4].value
+      board.grid[0][4].value = nil
+      board.grid[0][2].value.first_move = false
+    when 'h1'
+      board.grid[7][5].value = board.grid[7][7].value
+      board.grid[7][7].value = nil
+      board.grid[7][5].value.first_move = false
+      board.grid[7][6].value = board.grid[7][4].value
+      board.grid[7][4].value = nil
+      board.grid[7][6].value.first_move = false
+    when 'h8'
+      board.grid[0][5].value = board.grid[0][7].value
+      board.grid[0][7].value = nil
+      board.grid[0][5].value.first_move = false
+      board.grid[0][6].value = board.grid[0][4].value
+      board.grid[0][4].value = nil
+      board.grid[0][6].value.first_move = false
+    end
+  end
+
   def enter_move
     loop do
       user_move_input
       if castle_check?
-      # execute Castle move
+        break
+      elsif castle_check? == false && active_player.move.include?('castle')
+        puts 'Cannot castle, please re-enter your move'.colorize(:red)
+        sleep 2
+        refresh_display
       elsif move_check.start_cell_contains_piece? == false || move_check.matching_piece_class? == false
         select_correct_piece_message
         refresh_display
