@@ -82,6 +82,7 @@ class WhitePawn < Piece
     end
     unless cells['up'].empty?
       cells['up'] = [] unless cells['up'][0].value.nil?
+      cells['double_up'] = [] if cells['up'] == []
     end
     unless cells['double_up'].empty?
       cells['double_up'] = [] unless cells['double_up'][0].value.nil?
@@ -133,6 +134,7 @@ class BlackPawn < Piece
   def move_filter(cells, _end_co_ord)
     unless cells['down'].empty?
       cells['down'] = [] unless cells['down'][0].value.nil?
+      cells['double_down'] = [] if cells['down'] == []
     end
     unless cells['double_down'].empty?
       cells['double_down'] = [] unless cells['double_down'][0].value.nil?
@@ -185,13 +187,6 @@ class Rook < Piece
 
   def display_for_capture
     " \u265C ".colorize(color: :white)
-  end
-
-  def special_moves
-    # Castle h1
-    # Castle h8
-    # Castle a1
-    # Castle a8
   end
 end
 
@@ -306,12 +301,5 @@ class King < Piece
 
   def display_for_capture
     " \u265A ".colorize(color: :white)
-  end
-
-  def special_moves
-    # Castle h1
-    # Castle h8
-    # Castle a1
-    # Castle a8
   end
 end

@@ -54,7 +54,6 @@ class GamePlay
     end
   end
 
-  # FIXME: Pawns can jump over other pieces on their first move
   def test_loop
     loop do
       refresh_display
