@@ -20,11 +20,6 @@ describe Board do
       board = Board.new
       expect(board.grid[7].length).to eq 8
     end
-
-    it 'instantializes Cell objects as the value of each space on the board' do
-      board = Board.new
-      expect(board.grid[5][1]).to be_instance_of Cell
-    end
   end
 
   context '#set_cell_coordinates' do

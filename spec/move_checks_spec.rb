@@ -72,10 +72,3 @@ context MoveChecks do
     end
   end
 end
-
-# context '#permit_special_move?' do
-#   xit 'lets a white pawn move forward 2 spaces on its first move' do
-#     player = double('Player', move: %w[f2 f4], color: 'White')
-#     expect(MoveChecks.new(player, @board).permit_special_move?).to eq true
-#   end
-# end

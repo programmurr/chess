@@ -2,7 +2,7 @@
 
 require 'pry'
 require 'colorize'
-require_relative 'cell'
+# require_relative 'cell'
 require_relative 'piece'
 
 class Board
@@ -86,6 +86,42 @@ class Board
       ).concat(" #{current_row}")
     end
     puts '   a  b  c  d  e  f  g  h '
+  end
+
+  def execute_a1_castle
+    grid[7][3].value = grid[7][0].value
+    grid[7][0].value = nil
+    grid[7][3].value.first_move = false
+    grid[7][2].value = grid[7][4].value
+    grid[7][4].value = nil
+    grid[7][2].value.first_move = false
+  end
+
+  def execute_a8_castle
+    grid[0][3].value = grid[0][0].value
+    grid[0][0].value = nil
+    grid[0][3].value.first_move = false
+    grid[0][2].value = grid[0][4].value
+    grid[0][4].value = nil
+    grid[0][2].value.first_move = false
+  end
+
+  def execute_h1_castle
+    grid[7][5].value = grid[7][7].value
+    grid[7][7].value = nil
+    grid[7][5].value.first_move = false
+    grid[7][6].value = grid[7][4].value
+    grid[7][4].value = nil
+    grid[7][6].value.first_move = false
+  end
+
+  def execute_h8_castle
+    grid[0][5].value = grid[0][7].value
+    grid[0][7].value = nil
+    grid[0][5].value.first_move = false
+    grid[0][6].value = grid[0][4].value
+    grid[0][4].value = nil
+    grid[0][6].value.first_move = false
   end
 
   private
@@ -208,6 +244,7 @@ class Board
     end
   end
 
+  Cell = Struct.new(:co_ord, :value)
   def default_grid
     Array.new(8) { Array.new(8) { Cell.new } }
   end

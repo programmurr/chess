@@ -66,6 +66,7 @@ class GamePlay
       piece.move_filter(cells, end_co_ordinate)
       if piece.valid_move?(cells, end_co_ordinate)
         player_move_actions
+        execute_promotion if promote_pawn?
         break
       else
         invalid_move_message
@@ -92,7 +93,53 @@ class GamePlay
     false
   end
 
+  def move_check
+    MoveChecks.new(active_player, board)
+  end
+
+  def promote_pawn?
+    if active_player.color == 'White'
+      board.grid[0].each do |cell|
+        next if cell.value.nil?
+        return true if cell.value.class == WhitePawn
+      end
+    elsif active_player.color == 'Black'
+      board.grid[7].each do |cell|
+        next if cell.value.nil?
+        return true if cell.value.class == BlackPawn
+      end
+    end
+    false
+  end
+
+  def player_move_actions
+    active_player.move_piece(board)
+    active_player.take_enemy_piece
+  end
+
+  def execute_promotion
+    promotion_message
+    cell = board.get_cell(active_player.move[1])
+    choice = $stdin.gets.chomp.to_s.downcase.capitalize
+    cell.value = promotion_choice(choice)
+  rescue KeyError
+    puts "Please enter either 'Bishop', 'Rook', 'Knight' or 'Queen'"
+    sleep 2
+    retry
+  end
+
   private
+
+  def promotion_choice(choice)
+    { 'Rook' => Rook.new(active_player.color),
+      'Queen' => Queen.new(active_player.color),
+      'Bishop' => Bishop.new(active_player.color),
+      'Knight' => Knight.new(active_player.color) }.fetch(choice)
+  end
+
+  def promotion_message
+    puts "Your pawn has landed on the last row of the board!\n According to the FIDE laws of chess, you must promote this piece!\n That's a good thing!\n Enter 'queen', 'bishop', 'rook' or 'knight' to promote your pawn to that piece and finish the move!".colorize(:green)
+  end
 
   def select_correct_piece_message
     puts 'Please select a piece matching your color'.colorize(:red)
@@ -112,41 +159,22 @@ class GamePlay
     retry
   end
 
-  def move_check
-    MoveChecks.new(active_player, board)
-  end
-
   def execute_castle_move
     case active_player.move[-2, 2]
     when 'a1'
-      board.grid[7][3].value = board.grid[7][0].value
-      board.grid[7][0].value = nil
-      board.grid[7][3].value.first_move = false
-      board.grid[7][2].value = board.grid[7][4].value
-      board.grid[7][4].value = nil
-      board.grid[7][2].value.first_move = false
+      board.execute_a1_castle
     when 'a8'
-      board.grid[0][3].value = board.grid[0][0].value
-      board.grid[0][0].value = nil
-      board.grid[0][3].value.first_move = false
-      board.grid[0][2].value = board.grid[0][4].value
-      board.grid[0][4].value = nil
-      board.grid[0][2].value.first_move = false
+      board.execute_a8_castle
     when 'h1'
-      board.grid[7][5].value = board.grid[7][7].value
-      board.grid[7][7].value = nil
-      board.grid[7][5].value.first_move = false
-      board.grid[7][6].value = board.grid[7][4].value
-      board.grid[7][4].value = nil
-      board.grid[7][6].value.first_move = false
+      board.execute_h1_castle
     when 'h8'
-      board.grid[0][5].value = board.grid[0][7].value
-      board.grid[0][7].value = nil
-      board.grid[0][5].value.first_move = false
-      board.grid[0][6].value = board.grid[0][4].value
-      board.grid[0][4].value = nil
-      board.grid[0][6].value.first_move = false
+      board.execute_h8_castle
     end
+  end
+
+  def invalid_castle_message
+    puts 'Cannot castle, please re-enter your move'.colorize(:red)
+    sleep 2
   end
 
   def enter_move
@@ -155,8 +183,7 @@ class GamePlay
       if castle_check?
         break
       elsif castle_check? == false && active_player.move.include?('castle')
-        puts 'Cannot castle, please re-enter your move'.colorize(:red)
-        sleep 2
+        invalid_castle_message
         refresh_display
       elsif move_check.start_cell_contains_piece? == false || move_check.matching_piece_class? == false
         select_correct_piece_message
@@ -196,11 +223,6 @@ class GamePlay
 
   def end_co_ordinate
     active_player.move[1]
-  end
-
-  def player_move_actions
-    active_player.move_piece(board)
-    active_player.take_enemy_piece
   end
 end
 
