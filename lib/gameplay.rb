@@ -5,6 +5,7 @@ require_relative 'board'
 require_relative 'player'
 require_relative 'move_checks'
 
+# Coordinates the game actions and flow
 class GamePlay
   attr_accessor :board, :player1, :player2, :active_player, :next_player
 
@@ -99,15 +100,9 @@ class GamePlay
 
   def promote_pawn?
     if active_player.color == 'White'
-      board.grid[0].each do |cell|
-        next if cell.value.nil?
-        return true if cell.value.class == WhitePawn
-      end
+      return true if white_pawn_on_row?
     elsif active_player.color == 'Black'
-      board.grid[7].each do |cell|
-        next if cell.value.nil?
-        return true if cell.value.class == BlackPawn
-      end
+      return true if black_pawn_on_row?
     end
     false
   end
@@ -130,6 +125,22 @@ class GamePlay
 
   private
 
+  def black_pawn_on_row?
+    board.grid[7].each do |cell|
+      next if cell.value.nil?
+      return true if cell.value.class == BlackPawn
+    end
+    false
+  end
+
+  def white_pawn_on_row?
+    board.grid[0].each do |cell|
+      next if cell.value.nil?
+      return true if cell.value.class == WhitePawn
+    end
+    false
+  end
+
   def promotion_choice(choice)
     { 'Rook' => Rook.new(active_player.color),
       'Queen' => Queen.new(active_player.color),
@@ -138,23 +149,15 @@ class GamePlay
   end
 
   def promotion_message
-    puts "Your pawn has landed on the last row of the board!\n According to the FIDE laws of chess, you must promote this piece!\n That's a good thing!\n Enter 'queen', 'bishop', 'rook' or 'knight' to promote your pawn to that piece and finish the move!".colorize(:green)
-  end
-
-  def select_correct_piece_message
-    puts 'Please select a piece matching your color'.colorize(:red)
-    sleep 2
-  end
-
-  def attack_own_piece_message
-    puts 'You cannot attack your own pieces'.colorize(:red)
-    sleep 2
+    puts "Your pawn has landed on the last row of the board!\n
+    According to the FIDE laws of chess, you must promote this piece!\n
+    Enter 'queen', 'bishop', 'rook' or 'knight' to promote your pawn to that piece and finish the move".colorize(:green)
   end
 
   def user_move_input
     active_player.enter_move
   rescue RuntimeError
-    select_correct_piece_message
+    invalid_move_message
     refresh_display
     retry
   end
@@ -172,24 +175,19 @@ class GamePlay
     end
   end
 
-  def invalid_castle_message
-    puts 'Cannot castle, please re-enter your move'.colorize(:red)
-    sleep 2
-  end
-
   def enter_move
     loop do
       user_move_input
       if castle_check?
         break
       elsif castle_check? == false && active_player.move.include?('castle')
-        invalid_castle_message
+        invalid_move_message
         refresh_display
       elsif move_check.start_cell_contains_piece? == false || move_check.matching_piece_class? == false
-        select_correct_piece_message
+        invalid_move_message
         refresh_display
       elsif move_check.end_cell_matches_player_color?
-        attack_own_piece_message
+        invalid_move_message
         refresh_display
       else
         break
@@ -226,10 +224,10 @@ class GamePlay
   end
 end
 
-game = GamePlay.new
-game.setup_board
-game.assign_player1_white_piece
-game.player1_as_active_player
-loop do
-  game.test_loop
-end
+# game = GamePlay.new
+# game.setup_board
+# game.assign_player1_white_piece
+# game.player1_as_active_player
+# loop do
+#   game.test_loop
+# end

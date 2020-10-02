@@ -13,7 +13,6 @@ class MoveChecks
   end
 
   def player_entered_castle?
-    binding.pry
     player.move.include?('castle')
   end
 

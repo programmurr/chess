@@ -60,6 +60,7 @@ describe Board do
 
   context '#place_royalty' do
     before do
+      Cell = Struct.new(:co_ord, :value)
       @board = Board.new
       @board.set_cell_coordinates
       @board.place_royalty

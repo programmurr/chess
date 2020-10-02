@@ -45,15 +45,11 @@ class Player
 
   def enter_move
     enter_move_message
-    move = $stdin.gets.chomp.to_s.downcase.split('')
-    return self.move = move.join if castle_check?(move.join)
+    move = $stdin.gets.chomp.to_s.downcase
+    return self.move = move if castle_check?(move)
+    raise 'That is not a valid coordinate, please re-enter'.colorize(:red) unless move.match?(/^[a-h][1-8][a-h][1-8]$/)
 
-    move.each.with_index do |char, index|
-      if move.length > 4 || move.length < 4 || validation_checks?(char, index) == false
-        raise 'That is not a valid coordinate, please re-enter'.colorize(:red)
-      end
-    end
-    self.move = convert_to_move(move)
+    self.move = move.chars.each_slice(move.length / 2).map(&:join)
   end
 
   def assign_black_piece
@@ -69,36 +65,12 @@ class Player
   private
 
   def castle_check?(move)
-    if move == 'castleh1'
-      return true
-    elsif move == 'castleh8'
-      return true
-    elsif move == 'castlea1'
-      return true
-    elsif move == 'castlea8'
-      return true
-    end
-
+    { 'castleh1' => true,
+      'castleh8' => true,
+      'castlea1' => true,
+      'castlea8' => true }.fetch(move)
+  rescue KeyError
     false
-  end
-
-  def validation_checks?(char, index)
-    return false if character_is_not_a_valid_letter?(char, index)
-    return false if character_is_not_a_valid_number?(char, index)
-  end
-
-  def character_is_not_a_valid_number?(char, index)
-    return true if index == 1 && !('1'..'8').include?(char)
-    return true if index == 3 && !('1'..'8').include?(char)
-  end
-
-  def character_is_not_a_valid_letter?(char, index)
-    return true if index.zero? && !('a'..'h').include?(char)
-    return true if index == 2 && !('a'..'h').include?(char)
-  end
-
-  def convert_to_move(move)
-    [move[0] + move[1], move[2] + move[3]]
   end
 
   def enter_move_message

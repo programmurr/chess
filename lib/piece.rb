@@ -101,7 +101,6 @@ class WhitePawn < Piece
 
   def special_moves
     # En passant - if pawn in adjascent left/right just completed a first move
-    # Promotion
   end
 end
 
@@ -159,7 +158,6 @@ class BlackPawn < Piece
 
   def special_moves
     # En passant - if pawn in adjascent left/right just completed a first move
-    # Promotion
   end
 end
 

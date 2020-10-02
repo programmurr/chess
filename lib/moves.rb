@@ -36,31 +36,50 @@ end
 
 class BlackPawnMoves < Moves
   def first_moves
-    all_moves = { 'down' => [[x + 1, y]], 'double_down' => [[x + 2, y]], 'down_left' => [[x + 1, y - 1]], 'down_right' => [[x + 1, y + 1]] }
+    all_moves = { 'down' => [[x + 1, y]],
+                  'double_down' => [[x + 2, y]],
+                  'down_left' => [[x + 1, y - 1]],
+                  'down_right' => [[x + 1, y + 1]] }
     Moves.remove_moves_beyond_the_board(all_moves)
   end
 
   def moves
-    all_moves = { 'down' => [[x + 1, y]], 'double_down' => [], 'down_left' => [[x + 1, y - 1]], 'down_right' => [[x + 1, y + 1]] }
+    all_moves = { 'down' => [[x + 1, y]],
+                  'double_down' => [],
+                  'down_left' => [[x + 1, y - 1]],
+                  'down_right' => [[x + 1, y + 1]] }
     Moves.remove_moves_beyond_the_board(all_moves)
   end
 end
 
 class WhitePawnMoves < Moves
   def first_moves
-    all_moves = { 'up' => [[x - 1, y]], 'double_up' => [[x - 2, y]], 'up_left' => [[x - 1, y - 1]], 'up_right' => [[x - 1, y + 1]] }
+    all_moves = { 'up' => [[x - 1, y]],
+                  'double_up' => [[x - 2, y]],
+                  'up_left' => [[x - 1, y - 1]],
+                  'up_right' => [[x - 1, y + 1]] }
     Moves.remove_moves_beyond_the_board(all_moves)
   end
 
   def moves
-    all_moves = { 'up' => [[x - 1, y]], 'double_up' => [], 'up_left' => [[x - 1, y - 1]], 'up_right' => [[x - 1, y + 1]] }
+    all_moves = { 'up' => [[x - 1, y]],
+                  'double_up' => [],
+                  'up_left' => [[x - 1, y - 1]],
+                  'up_right' => [[x - 1, y + 1]] }
     Moves.remove_moves_beyond_the_board(all_moves)
   end
 end
 
 class KingMoves < Moves
   def moves
-    all_moves = { 'up' => [[x - 1, y]], 'up_right' => [[x - 1, y + 1]], 'right' => [[x, y + 1]], 'down_right' => [[x + 1, y + 1]], 'down' => [[x + 1, y]], 'down_left' => [[x + 1, y - 1]], 'left' => [[x, y - 1]], 'up_left' => [[x - 1, y - 1]] }
+    all_moves = { 'up' => [[x - 1, y]],
+                  'up_right' => [[x - 1, y + 1]],
+                  'right' => [[x, y + 1]],
+                  'down_right' => [[x + 1, y + 1]],
+                  'down' => [[x + 1, y]],
+                  'down_left' => [[x + 1, y - 1]],
+                  'left' => [[x, y - 1]],
+                  'up_left' => [[x - 1, y - 1]] }
     Moves.remove_moves_beyond_the_board(all_moves)
   end
 end

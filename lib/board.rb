@@ -5,6 +5,8 @@ require 'colorize'
 # require_relative 'cell'
 require_relative 'piece'
 
+# Represents an 8x8 chess board. Responsible for displaying and setting itself up
+#   and retrieving information from cells
 class Board
   attr_accessor :grid, :white_pawn, :black_pawn
 
