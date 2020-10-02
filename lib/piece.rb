@@ -6,7 +6,7 @@ require_relative 'moves'
 # Remove color attribute for Piece? Is not cascading to subclasses, and causes trouble
 #   Not really useful for the player either
 class Piece
-  attr_accessor :color, :first_move, :number_of_moves
+  attr_accessor :color, :first_move
   def initialize(color)
     @color = color
     @first_move = true
@@ -58,11 +58,12 @@ class WhitePawn < Piece
 
   START_CO_ORDS = [[6, 0], [6, 1], [6, 2], [6, 3], [6, 4], [6, 5], [6, 6], [6, 7]].freeze
 
-  attr_reader :color, :number_of_moves
+  attr_reader :color
+  attr_accessor :en_passant, :number_of_moves
 
   def initialize(color)
-    @number_of_moves = 0
     @color = color
+    @number_of_moves = 0
   end
 
   def display_on_board
@@ -98,10 +99,6 @@ class WhitePawn < Piece
     end
     false
   end
-
-  def special_moves
-    # En passant - if pawn in adjascent left/right just completed a first move
-  end
 end
 
 class BlackPawn < Piece
@@ -115,10 +112,12 @@ class BlackPawn < Piece
 
   START_CO_ORDS = [[1, 0], [1, 1], [1, 2], [1, 3], [1, 4], [1, 5], [1, 6], [1, 7]].freeze
 
-  attr_reader :color, :number_of_moves
+  attr_reader :color
+  attr_accessor :en_passant, :number_of_moves
 
   def initialize(color)
     @color = color
+    @en_passant = false
     @number_of_moves = 0
   end
 
@@ -193,7 +192,8 @@ class Bishop < Piece
     BishopMoves.new(co_ord).moves
   end
 
-  attr_reader :color, :number_of_moves
+  attr_reader :color
+  attr_accessor :number_of_moves
 
   def initialize(color)
     @color = color
@@ -218,7 +218,8 @@ class Knight < Piece
     KnightMoves.new(co_ord).moves
   end
 
-  attr_reader :color, :number_of_moves
+  attr_reader :color
+  attr_accessor :number_of_moves
 
   def initialize(color)
     @color = color
@@ -255,7 +256,8 @@ class Queen < Piece
     RookMoves.new(co_ord).moves.merge(BishopMoves.new(co_ord).moves)
   end
 
-  attr_reader :color, :number_of_moves
+  attr_reader :color
+  attr_accessor :number_of_moves
 
   def initialize(color)
     @color = color

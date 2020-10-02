@@ -12,10 +12,6 @@ class MoveChecks
     @temp_cell = nil
   end
 
-  def player_entered_castle?
-    player.move.include?('castle')
-  end
-
   def end_cell_matches_player_color?
     unless end_cell.value.nil?
       return true if end_cell.value.color == player.color

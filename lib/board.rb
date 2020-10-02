@@ -8,12 +8,10 @@ require_relative 'piece'
 # Represents an 8x8 chess board. Responsible for displaying and setting itself up
 #   and retrieving information from cells
 class Board
-  attr_accessor :grid, :white_pawn, :black_pawn
+  attr_accessor :grid
 
-  def initialize(grid: default_grid, white_pawn: WhitePawn.new('White'), black_pawn: BlackPawn.new('Black'))
+  def initialize(grid: default_grid)
     @grid = grid
-    @white_pawn = white_pawn
-    @black_pawn = black_pawn
   end
 
   def setup
@@ -22,16 +20,22 @@ class Board
     place_royalty
   end
 
+  def adjascent_cells_from_current_position(co_ord)
+    array_co_ord = grid_coordinate_map.fetch(co_ord)
+    x = array_co_ord[0]
+    y = array_co_ord[1]
+    [grid_coordinate_array_map.fetch([x, y - 1]), grid_coordinate_array_map.fetch([x, y + 1])]
+  end
+
+  def en_passant_rows
+    [grid[3], grid[4]]
+  end
+
   def get_castle_cells(co_ord)
-    if co_ord == 'a1'
-      [grid[7][0], grid[7][1], grid[7][2], grid[7][3], grid[7][4]]
-    elsif co_ord == 'a8'
-      [grid[0][0], grid[0][1], grid[0][2], grid[0][3], grid[0][4]]
-    elsif co_ord == 'h1'
-      [grid[7][4], grid[7][5], grid[7][6], grid[7][7]]
-    elsif co_ord == 'h8'
-      [grid[0][4], grid[0][5], grid[0][6], grid[0][7]]
-    end
+    { 'a1' => [grid[7][0], grid[7][1], grid[7][2], grid[7][3], grid[7][4]],
+      'a8' => [grid[0][0], grid[0][1], grid[0][2], grid[0][3], grid[0][4]],
+      'h1' => [grid[7][4], grid[7][5], grid[7][6], grid[7][7]],
+      'h8' => [grid[0][4], grid[0][5], grid[0][6], grid[0][7]] }.fetch(co_ord)
   end
 
   def get_cell(co_ord)
@@ -67,8 +71,8 @@ class Board
   end
 
   def place_pawns
-    grid[6].each { |cell| cell.value = white_pawn }
-    grid[1].each { |cell| cell.value = black_pawn }
+    grid[6].each { |cell| cell.value = WhitePawn.new('White') }
+    grid[1].each { |cell| cell.value = BlackPawn.new('Black') }
   end
 
   def set_cell_coordinates

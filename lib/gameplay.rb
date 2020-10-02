@@ -110,6 +110,7 @@ class GamePlay
   def player_move_actions
     active_player.move_piece(board)
     active_player.take_enemy_piece
+    active_player.move_counter += 1
   end
 
   def execute_promotion
@@ -124,6 +125,21 @@ class GamePlay
   end
 
   private
+
+  def en_passant_cache
+    # if activer_player moves a pawn in a double move
+    # put that piece here
+    # on their next move, empty this cache
+    []
+  end
+
+  def en_passant?
+    # if active player piece is a pawn and on grid[3](white)/grid[4](black)
+    #   are they adjascent to an enemy pawn?
+    #   is that pawn in the en_passant_cache?
+    #   if yes - allow that diagional move
+    #   if not, scrub it
+  end
 
   def black_pawn_on_row?
     board.grid[7].each do |cell|

@@ -5,7 +5,7 @@ require 'colorize'
 require_relative 'piece'
 
 class Player
-  attr_accessor :name, :piece, :move, :color, :captured_pieces, :temp_cell
+  attr_accessor :name, :piece, :move, :color, :captured_pieces, :temp_cell, :move_counter
   def initialize(num)
     @name = "Player#{num}"
     @piece = nil
@@ -13,6 +13,7 @@ class Player
     @move = nil
     @captured_pieces = []
     @temp_cell = nil
+    @move_counter = 0
   end
 
   def move_piece(board)
