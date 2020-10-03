@@ -4,6 +4,7 @@ require 'pry'
 require 'colorize'
 require_relative 'piece'
 
+# Represent the users playing the game. 2 will be generated and allow the players to interact with the game
 class Player
   attr_accessor :name, :piece, :move, :color, :captured_pieces, :temp_cell, :move_counter
   def initialize(num)
@@ -25,10 +26,20 @@ class Player
     start_cell.value = nil
   end
 
-  def take_enemy_piece
+  def take_enemy_piece(board, next_player)
     unless temp_cell.nil?
       captured_pieces << temp_cell
       self.temp_cell = nil
+    end
+
+    unless captured_pieces.empty?
+      if captured_pieces[-1].class == InvisiblePawn && next_player.color == 'White'
+        board.get_cell_from_array_co_ord(captured_pieces[-1].linked_cell_co_ord).value = nil
+        captured_pieces[-1] = WhitePawn.new('White')
+      elsif captured_pieces[-1].class == InvisiblePawn && next_player.color == 'Black'
+        board.get_cell_from_array_co_ord(captured_pieces[-1].linked_cell_co_ord).value = nil
+        captured_pieces[-1] = BlackPawn.new('Black')
+      end
     end
   end
 

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Compares player and board information to determine if moves are valid
 class MoveChecks
   attr_reader :player, :board
   attr_accessor :start_cell, :end_cell, :temp_cell

@@ -3,7 +3,8 @@
 require 'colorize'
 require_relative 'moves'
 
-# Remove color attribute for Piece? Is not cascading to subclasses, and causes trouble
+# Superclass of the other pieces
+#   Remove color attribute for Piece? Is not cascading to subclasses, and causes trouble
 #   Not really useful for the player either
 class Piece
   attr_accessor :color, :first_move
@@ -47,6 +48,9 @@ class Piece
   end
 end
 
+# Represent white pawns on a chess board
+#   Responsible for displaying themselves, knowing their color and where they can move
+#   Possibly refactor this and black pawns together in the future
 class WhitePawn < Piece
   def self.moves(co_ord)
     if START_CO_ORDS.include?(co_ord)
@@ -63,6 +67,7 @@ class WhitePawn < Piece
 
   def initialize(color)
     @color = color
+    @en_passant = false
     @number_of_moves = 0
   end
 
@@ -101,6 +106,9 @@ class WhitePawn < Piece
   end
 end
 
+# Represent black pawns on a chess board
+#   Responsible for displaying themselves, knowing their color and where they can move
+#   Possibly refactor this and black pawns together in the future
 class BlackPawn < Piece
   def self.moves(co_ord)
     if START_CO_ORDS.include?(co_ord)
@@ -154,12 +162,10 @@ class BlackPawn < Piece
     end
     false
   end
-
-  def special_moves
-    # En passant - if pawn in adjascent left/right just completed a first move
-  end
 end
 
+# Represent rooks on a chess board
+#   Responsible for displaying themselves, knowing their color and where they can move
 class Rook < Piece
   def self.moves(co_ord)
     RookMoves.new(co_ord).moves
@@ -187,6 +193,8 @@ class Rook < Piece
   end
 end
 
+# Represent rooks on a chess board
+#   Responsible for displaying themselves, knowing their color and where they can move
 class Bishop < Piece
   def self.moves(co_ord)
     BishopMoves.new(co_ord).moves
@@ -213,6 +221,8 @@ class Bishop < Piece
   end
 end
 
+# Represent rooks on a chess board
+#   Responsible for displaying themselves, knowing their color and where they can move
 class Knight < Piece
   def self.moves(co_ord)
     KnightMoves.new(co_ord).moves
@@ -251,6 +261,8 @@ class Knight < Piece
   end
 end
 
+# Represent rooks on a chess board
+#   Responsible for displaying themselves, knowing their color and where they can move
 class Queen < Piece
   def self.moves(co_ord)
     RookMoves.new(co_ord).moves.merge(BishopMoves.new(co_ord).moves)
@@ -277,6 +289,8 @@ class Queen < Piece
   end
 end
 
+# Represent rooks on a chess board
+#   Responsible for displaying themselves, knowing their color and where they can move
 class King < Piece
   def self.moves(co_ord)
     KingMoves.new(co_ord).moves
@@ -302,4 +316,22 @@ class King < Piece
   def display_for_capture
     " \u265A ".colorize(color: :white)
   end
+end
+
+# A ghost of a pawn that allows en passant to take place
+#   Once taken, they get converted to the according color of pawn to be displayed in the game
+#   Also holds a reference to it's twin 'real' pawn to allow that pawn to be captured en passant
+class InvisiblePawn
+  attr_reader :color, :linked_cell_co_ord
+
+  def initialize(linked_cell_co_ord)
+    @linked_cell_co_ord = linked_cell_co_ord
+    @color = 'CadburyCremeEgg'
+  end
+
+  def display_on_board
+    " \u200C  "
+  end
+
+  def display_for_capture; end
 end

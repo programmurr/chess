@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+# Superclass for the move calculations of each piece class
+#   Retains the information of the original coordinate the piece is placed...
+#   ... so that impossible moves beyond board limits can be removed
 class Moves
   def self.remove_moves_beyond_the_board(all_moves)
     possible_hash = {}
@@ -34,6 +37,7 @@ class Moves
   end
 end
 
+# Calculates all possible moves in all directions for black pawns, regardless of board size limits
 class BlackPawnMoves < Moves
   def first_moves
     all_moves = { 'down' => [[x + 1, y]],
@@ -52,6 +56,7 @@ class BlackPawnMoves < Moves
   end
 end
 
+# Calculates all possible moves in all directions for white pawns, regardless of board size limits
 class WhitePawnMoves < Moves
   def first_moves
     all_moves = { 'up' => [[x - 1, y]],
@@ -70,6 +75,7 @@ class WhitePawnMoves < Moves
   end
 end
 
+# Calculates all possible moves in all directions for kings, regardless of board size limits
 class KingMoves < Moves
   def moves
     all_moves = { 'up' => [[x - 1, y]],
@@ -84,6 +90,7 @@ class KingMoves < Moves
   end
 end
 
+# Calculates all possible moves in all directions for knights, regardless of board size limits
 class KnightMoves < Moves
   KNIGHT_MOVES_LIST = [2, 2, -2, -2, 1, 1, -1, -1].zip([1, -1, 1, -1, 2, -2, 2, -2])
 
@@ -93,6 +100,7 @@ class KnightMoves < Moves
   end
 end
 
+# Calculates all possible moves in all directions for bishops, regardless of board size limits
 class BishopMoves < Moves
   def moves
     all_moves = bishop_up_right
@@ -154,6 +162,7 @@ class BishopMoves < Moves
   end
 end
 
+# Calculates all possible moves in all directions for rooks, regardless of board size limits
 class RookMoves < Moves
   def moves
     all_moves = rook_vertical_up

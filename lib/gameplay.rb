@@ -6,8 +6,10 @@ require_relative 'player'
 require_relative 'move_checks'
 
 # Coordinates the game actions and flow
+#   This class is getting too big and complicated. Need to refactor
+#   Possibly move some logic to move_checks and update tests
 class GamePlay
-  attr_accessor :board, :player1, :player2, :active_player, :next_player
+  attr_accessor :board, :player1, :player2, :active_player, :next_player, :en_passant_cache
 
   def initialize(board: Board.new, player1: Player.new(1), player2: Player.new(2))
     @board = board
@@ -15,6 +17,7 @@ class GamePlay
     @player2 = player2
     @active_player = nil
     @next_player = nil
+    @en_passant_cache = []
   end
 
   def setup_board
@@ -73,6 +76,12 @@ class GamePlay
         invalid_move_message
       end
     end
+    remove_invisible_pawn
+    set_en_passant_to_false
+    clear_en_passant_cache
+    set_en_passant_to_true
+    add_to_en_passant_cache
+    place_invisible_pawn
     switch_active_player
   end
 
@@ -109,7 +118,7 @@ class GamePlay
 
   def player_move_actions
     active_player.move_piece(board)
-    active_player.take_enemy_piece
+    active_player.take_enemy_piece(board, next_player)
     active_player.move_counter += 1
   end
 
@@ -126,19 +135,87 @@ class GamePlay
 
   private
 
-  def en_passant_cache
-    # if activer_player moves a pawn in a double move
-    # put that piece here
-    # on their next move, empty this cache
-    []
+  def place_invisible_pawn
+    return if en_passant_cache.length.zero?
+
+    string_co_ord = en_passant_cache[0].co_ord
+    array_co_ord = board.grid_coordinate_map.fetch(string_co_ord)
+    x = array_co_ord[0]
+    y = array_co_ord[1]
+    if active_player.color == 'White'
+      board.get_cell_from_array_co_ord([x + 1, y]).value = InvisiblePawn.new(array_co_ord)
+    elsif active_player.color == 'Black'
+      board.get_cell_from_array_co_ord([x - 1, y]).value = InvisiblePawn.new(array_co_ord)
+    end
   end
 
-  def en_passant?
-    # if active player piece is a pawn and on grid[3](white)/grid[4](black)
-    #   are they adjascent to an enemy pawn?
-    #   is that pawn in the en_passant_cache?
-    #   if yes - allow that diagional move
-    #   if not, scrub it
+  def remove_invisible_pawn
+    board.grid.each do |row|
+      row.each do |cell|
+        if cell.value.nil?
+          next
+        elsif cell.value.class == InvisiblePawn
+          cell.value = nil
+        end
+      end
+    end
+  end
+
+  def clear_en_passant_cache
+    self.en_passant_cache = []
+  end
+
+  def set_en_passant_to_false
+    board.grid[3].each do |cell|
+      if cell.value.nil?
+        next
+      elsif cell.value.en_passant == true
+        cell.value.en_passant = false
+        cell.value.number_of_moves += 1
+      end
+    end
+    board.grid[4].each do |cell|
+      if cell.value.nil?
+        next
+      elsif cell.value.en_passant == true
+        cell.value.en_passant = false
+        cell.value.number_of_moves += 1
+      end
+    end
+  end
+
+  def set_en_passant_to_true
+    board.grid[3].each do |cell|
+      if cell.value.nil?
+        next
+      elsif cell.value.class == BlackPawn && cell.value.number_of_moves == 1
+        cell.value.en_passant = true
+      end
+    end
+    board.grid[4].each do |cell|
+      if cell.value.nil?
+        next
+      elsif cell.value.class == WhitePawn && cell.value.number_of_moves == 1
+        cell.value.en_passant = true
+      end
+    end
+  end
+
+  def add_to_en_passant_cache
+    board.grid[3].each do |cell|
+      if cell.value.nil?
+        next
+      elsif cell.value.en_passant == true
+        en_passant_cache << cell
+      end
+    end
+    board.grid[4].each do |cell|
+      if cell.value.nil?
+        next
+      elsif cell.value.en_passant == true
+        en_passant_cache << cell
+      end
+    end
   end
 
   def black_pawn_on_row?
@@ -240,10 +317,10 @@ class GamePlay
   end
 end
 
-# game = GamePlay.new
-# game.setup_board
-# game.assign_player1_white_piece
-# game.player1_as_active_player
-# loop do
-#   game.test_loop
-# end
+game = GamePlay.new
+game.setup_board
+game.assign_player1_white_piece
+game.player1_as_active_player
+loop do
+  game.test_loop
+end
