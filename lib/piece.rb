@@ -47,6 +47,101 @@ class Piece
   end
 end
 
+class Pawn < Piece
+  def self.moves(co_ord)
+    if color == 'White' && WHITE_START_CO_ORDS.include?(co_ord)
+      WhitePawnMoves.new(co_ord).first_moves
+    elsif color == 'Black' && BLACK_START_CO_ORDS.include?(co_ord)
+      BlackPawnMoves.new(co_ord).first_moves
+    elsif color == 'White'
+      WhitePawnMoves.new(co_ord).moves
+    elsif color == 'Black'
+      BlackPawnMoves.new(co_ord).moves
+    end
+  end
+
+  WHITE_START_CO_ORDS = [[6, 0], [6, 1], [6, 2], [6, 3], [6, 4], [6, 5], [6, 6], [6, 7]].freeze
+  BLACK_START_CO_ORDS = [[1, 0], [1, 1], [1, 2], [1, 3], [1, 4], [1, 5], [1, 6], [1, 7]].freeze
+
+  attr_reader :color
+  attr_accessor :en_passant, :number_of_moves
+
+  def initialize(color)
+    @color = color
+    @en_passant = false
+    @number_of_moves = 0
+  end
+
+  def display_on_board
+    if color == 'White'
+      " \u2659 ".colorize(color: :black)
+    elsif color == 'Black'
+      " \u265F ".colorize(color: :black)
+    end
+  end
+
+  def display_for_capture
+    if color == 'White'
+      " \u265F ".colorize(color: :light_white)
+    elsif color == 'Black'
+      " \u265F ".colorize(color: :white)
+    end
+  end
+
+  def move_filter(_cells, _end_co_ord)
+    if color == 'White'
+      white_move_filter
+    elsif color == 'Black'
+      black_move_filter
+    end
+  end
+
+  def valid_move?(cells, end_co_ord)
+    cells.each_value do |move|
+      move.each do |position|
+        return true if end_co_ord == position.co_ord
+      end
+    end
+    false
+  end
+
+  private
+
+  def white_move_filter(cells, _end_co_ord)
+    unless cells['up_right'].empty?
+      cells['up_right'] = [] if cells['up_right'][0].value.nil?
+    end
+    unless cells['up_left'].empty?
+      cells['up_left'] = [] if cells['up_left'][0].value.nil?
+    end
+    unless cells['up'].empty?
+      cells['up'] = [] unless cells['up'][0].value.nil?
+      cells['double_up'] = [] if cells['up'] == []
+    end
+    unless cells['double_up'].empty?
+      cells['double_up'] = [] unless cells['double_up'][0].value.nil?
+    end
+    cells
+  end
+
+  def black_move_filter(cells, _end_co_ord)
+    unless cells['down'].empty?
+      cells['down'] = [] unless cells['down'][0].value.nil?
+      cells['double_down'] = [] if cells['down'] == []
+    end
+    unless cells['double_down'].empty?
+      cells['double_down'] = [] unless cells['double_down'][0].value.nil?
+    end
+    unless cells['down_right'].empty?
+      cells['down_right'] = [] if cells['down_right'][0].value.nil?
+    end
+    unless cells['down_left'].empty?
+      cells['down_left'] = [] if cells['down_left'][0].value.nil?
+    end
+    cells
+  end
+end
+
 # Represent white pawns on a chess board
 #   Responsible for displaying themselves, knowing their color and where they can move
 #   Possibly refactor this and black pawns together in the future
