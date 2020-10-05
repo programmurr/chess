@@ -76,12 +76,7 @@ class GamePlay
         invalid_move_message
       end
     end
-    remove_invisible_pawn
-    set_en_passant_to_false
-    clear_en_passant_cache
-    set_en_passant_to_true
-    add_to_en_passant_cache
-    place_invisible_pawn
+    en_passant_actions
     switch_active_player
   end
 
@@ -98,7 +93,7 @@ class GamePlay
     cells.each do |cell|
       return false unless cell.value.nil?
     end
-    return true if first_cell.value.first_move == true && last_cell.value.first_move == true
+    return true if first_cell.value.number_of_moves.zero? && last_cell.value.number_of_moves.zero?
 
     false
   end
@@ -131,6 +126,15 @@ class GamePlay
     puts "Please enter either 'Bishop', 'Rook', 'Knight' or 'Queen'"
     sleep 2
     retry
+  end
+
+  def en_passant_actions
+    remove_invisible_pawn
+    set_en_passant_to_false
+    clear_en_passant_cache
+    set_en_passant_to_true
+    add_to_en_passant_cache
+    place_invisible_pawn
   end
 
   private
@@ -169,7 +173,7 @@ class GamePlay
     board.grid[3].each do |cell|
       if cell.value.nil?
         next
-      elsif cell.value.en_passant == true
+      elsif cell.value.class == BlackPawn && cell.value.en_passant
         cell.value.en_passant = false
         cell.value.number_of_moves += 1
       end
@@ -177,7 +181,7 @@ class GamePlay
     board.grid[4].each do |cell|
       if cell.value.nil?
         next
-      elsif cell.value.en_passant == true
+      elsif cell.value.class == WhitePawn && cell.value.en_passant
         cell.value.en_passant = false
         cell.value.number_of_moves += 1
       end
@@ -203,16 +207,16 @@ class GamePlay
 
   def add_to_en_passant_cache
     board.grid[3].each do |cell|
-      if cell.value.nil?
+      if cell.value.nil? || cell.value.class != BlackPawn
         next
-      elsif cell.value.en_passant == true
+      elsif cell.value.en_passant
         en_passant_cache << cell
       end
     end
     board.grid[4].each do |cell|
-      if cell.value.nil?
+      if cell.value.nil? || cell.value.class != WhitePawn
         next
-      elsif cell.value.en_passant == true
+      elsif cell.value.en_passant
         en_passant_cache << cell
       end
     end
@@ -317,10 +321,10 @@ class GamePlay
   end
 end
 
-game = GamePlay.new
-game.setup_board
-game.assign_player1_white_piece
-game.player1_as_active_player
-loop do
-  game.test_loop
-end
+# game = GamePlay.new
+# game.setup_board
+# game.assign_player1_white_piece
+# game.player1_as_active_player
+# loop do
+#   game.test_loop
+# end

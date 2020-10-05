@@ -28,7 +28,7 @@ describe GamePlay do
     end
 
     it 'returns false if the spaces between the a1 rook and the king are unoccupied and it is not the first move of the rook' do
-      @game.board.grid[7][0].value.first_move = false
+      @game.board.grid[7][0].value.number_of_moves = 2
       @game.board.grid[7][1].value = nil
       @game.board.grid[7][2].value = nil
       @game.board.grid[7][3].value = nil
@@ -37,7 +37,7 @@ describe GamePlay do
     end
 
     it 'returns false if the spaces between the a1 rook and the king are unoccupied and it is not the first move of the king' do
-      @game.board.grid[7][4].value.first_move = false
+      @game.board.grid[7][4].value.number_of_moves = 2
       @game.board.grid[7][1].value = nil
       @game.board.grid[7][2].value = nil
       @game.board.grid[7][3].value = nil
@@ -46,8 +46,8 @@ describe GamePlay do
     end
 
     it 'returns false if the spaces between the a1 rook and the king are unoccupied and it is not the first move of the king and not the first move of the rook' do
-      @game.board.grid[7][4].value.first_move = false
-      @game.board.grid[7][0].value.first_move = false
+      @game.board.grid[7][4].value.number_of_moves = 1
+      @game.board.grid[7][0].value.number_of_moves = 1
       @game.board.grid[7][1].value = nil
       @game.board.grid[7][2].value = nil
       @game.board.grid[7][3].value = nil
@@ -68,7 +68,7 @@ describe GamePlay do
     end
 
     it 'returns false if the spaces between the h1 rook and the king are unoccupied and it is not the first move of the rook' do
-      @game.board.grid[7][7].value.first_move = false
+      @game.board.grid[7][7].value.number_of_moves = 2
       @game.board.grid[7][5].value = nil
       @game.board.grid[7][6].value = nil
       @game.active_player.move = 'castleh1'
@@ -76,7 +76,7 @@ describe GamePlay do
     end
 
     it 'returns false if the spaces between the h1 rook and the king are unoccupied and it is not the first move of the king' do
-      @game.board.grid[7][4].value.first_move = false
+      @game.board.grid[7][4].value.number_of_moves = 2
       @game.board.grid[7][5].value = nil
       @game.board.grid[7][6].value = nil
       @game.active_player.move = 'castleh1'
@@ -84,8 +84,8 @@ describe GamePlay do
     end
 
     it 'returns false if the spaces between the h1 rook and the king are unoccupied and it is not the first move of the king and not the first move of the rook' do
-      @game.board.grid[7][4].value.first_move = false
-      @game.board.grid[7][7].value.first_move = false
+      @game.board.grid[7][4].value.number_of_moves = 2
+      @game.board.grid[7][7].value.number_of_moves = 2
       @game.board.grid[7][5].value = nil
       @game.board.grid[7][6].value = nil
       @game.active_player.move = 'castleh1'
@@ -106,7 +106,7 @@ describe GamePlay do
     end
 
     it 'returns false if the spaces between the h8 rook and the king are unoccupied and it is not the first move of the rook' do
-      @game.board.grid[0][7].value.first_move = false
+      @game.board.grid[0][7].value.number_of_moves = 2
       @game.board.grid[0][5].value = nil
       @game.board.grid[0][6].value = nil
       @game.active_player.move = 'castleh8'
@@ -114,7 +114,7 @@ describe GamePlay do
     end
 
     it 'returns false if the spaces between the h8 rook and the king are unoccupied and it is not the first move of the king' do
-      @game.board.grid[0][4].value.first_move = false
+      @game.board.grid[0][4].value.number_of_moves = 1
       @game.board.grid[0][5].value = nil
       @game.board.grid[0][6].value = nil
       @game.active_player.move = 'castleh8'
@@ -122,8 +122,8 @@ describe GamePlay do
     end
 
     it 'returns false if the spaces between the h8 rook and the king are unoccupied and it is not the first move of the king and not the first move of the rook' do
-      @game.board.grid[0][4].value.first_move = false
-      @game.board.grid[0][7].value.first_move = false
+      @game.board.grid[0][4].value.number_of_moves = 3
+      @game.board.grid[0][7].value.number_of_moves = 1
       @game.board.grid[0][5].value = nil
       @game.board.grid[0][6].value = nil
       @game.active_player.move = 'castleh8'
@@ -147,7 +147,7 @@ describe GamePlay do
     end
 
     it 'returns false if the spaces between the a8 rook and the king are unoccupied and it is not the first move of the rook' do
-      @game.board.grid[0][0].value.first_move = false
+      @game.board.grid[0][0].value.number_of_moves = 2
       @game.board.grid[0][1].value = nil
       @game.board.grid[0][2].value = nil
       @game.board.grid[0][3].value = nil
@@ -156,7 +156,7 @@ describe GamePlay do
     end
 
     it 'returns false if the spaces between the a8 rook and the king are unoccupied and it is not the first move of the king' do
-      @game.board.grid[0][4].value.first_move = false
+      @game.board.grid[0][4].value.number_of_moves = 21
       @game.board.grid[0][1].value = nil
       @game.board.grid[0][2].value = nil
       @game.board.grid[0][3].value = nil
@@ -165,8 +165,8 @@ describe GamePlay do
     end
 
     it 'returns false if the spaces between the a8 rook and the king are unoccupied and it is not the first move of the king and not the first move of the rook' do
-      @game.board.grid[0][4].value.first_move = false
-      @game.board.grid[0][0].value.first_move = false
+      @game.board.grid[0][4].value.number_of_moves = 2
+      @game.board.grid[0][0].value.number_of_moves = 21
       @game.board.grid[0][1].value = nil
       @game.board.grid[0][2].value = nil
       @game.board.grid[0][3].value = nil
@@ -283,6 +283,94 @@ describe GamePlay do
       $stdin = StringIO.new('bishop')
       @game.active_player.move = %w[f2 f1]
       expect { @game.execute_promotion }.to change { @game.board.grid[7][5].value.class.to_s }.from('BlackPawn'). to('Bishop')
+    end
+  end
+
+  context '#en_passant_actions' do
+    before do
+      @game = GamePlay.new
+      @game.setup_board
+      @game.assign_player1_white_piece
+    end
+
+    it 'allows the white player to execute an en passant move when opposing pawns are adjascent, one of which completed a double jump first move' do
+      @game.board.grid[3][0].value = WhitePawn.new('White')
+      @game.board.grid[3][0].value.number_of_moves = 2
+      @game.player2_as_active_player
+      @game.active_player.move = %w[b7 b5]
+      @game.player_move_actions
+      @game.en_passant_actions
+      @game.switch_active_player
+      @game.active_player.move = %w[a5 b6]
+      expect {@game.player_move_actions }.to change { @game.board.grid[3][1].value.class }.from(BlackPawn). to(NilClass)
+    end
+
+    it 'allows the black player to execute an en passant move when opposing pawns are adjascent, one of which completed a double jump first move' do
+      @game.board.grid[4][6].value = BlackPawn.new('Black')
+      @game.board.grid[4][6].value.number_of_moves = 2
+      @game.player1_as_active_player
+      @game.active_player.move = %w[f2 f4]
+      @game.player_move_actions
+      @game.en_passant_actions
+      @game.switch_active_player
+      @game.active_player.move = %w[g4 f3]
+      expect {@game.player_move_actions }.to change { @game.board.grid[4][5].value.class }.from(WhitePawn). to(NilClass)
+    end
+
+    it 'does not allow the white player to execute an en passant move when opposing pawns are adjascent with more than 1 move completed' do
+      @game.board.grid[3][0].value = WhitePawn.new('White')
+      @game.board.grid[3][0].value.number_of_moves = 2
+      @game.board.grid[2][1].value = BlackPawn.new('Black')
+      @game.board.grid[2][1].value.number_of_moves = 1
+      @game.player2_as_active_player
+      @game.active_player.move = %w[b6 b5]
+      @game.player_move_actions
+      @game.en_passant_actions
+      @game.switch_active_player
+      @game.active_player.move = %w[a5 b6]
+      expect {@game.player_move_actions }.not_to change { @game.board.grid[3][1].value.class }
+    end
+
+    it 'does not allow the black player to execute an en passant move when opposing pawns are adjascent with more than 1 move completed' do
+      @game.board.grid[4][6].value = BlackPawn.new('Black')
+      @game.board.grid[4][6].value.number_of_moves = 2
+      @game.board.grid[5][5].value = WhitePawn.new('White')
+      @game.board.grid[5][5].value.number_of_moves = 1
+      @game.player1_as_active_player
+      @game.active_player.move = %w[f3 f4]
+      @game.player_move_actions
+      @game.en_passant_actions
+      @game.switch_active_player
+      @game.active_player.move = %w[g4 f3]
+      expect {@game.player_move_actions }.not_to change { @game.board.grid[4][5].value.class }
+    end
+
+    it 'does not raise errors with other pieces on the black en passant row' do
+      @game.board.grid[3][0].value = WhitePawn.new('White')
+      @game.board.grid[3][0].value.number_of_moves = 2
+      @game.board.grid[3][4].value = Knight.new('White')
+      @game.board.grid[3][7].value = Knight.new('Black')
+      @game.player2_as_active_player
+      @game.active_player.move = %w[b7 b5]
+      @game.player_move_actions
+      @game.en_passant_actions
+      @game.switch_active_player
+      @game.active_player.move = %w[a5 b6]
+      expect {@game.player_move_actions }.to change { @game.board.grid[3][1].value.class }.from(BlackPawn). to(NilClass)
+    end
+
+    it 'does not raise errors with other pieces on the white en passant row' do
+      @game.board.grid[4][6].value = BlackPawn.new('Black')
+      @game.board.grid[4][6].value.number_of_moves = 2
+      @game.board.grid[4][2].value = Rook.new('Black')
+      @game.board.grid[4][0].value = Queen.new('White')
+      @game.player1_as_active_player
+      @game.active_player.move = %w[f2 f4]
+      @game.player_move_actions
+      @game.en_passant_actions
+      @game.switch_active_player
+      @game.active_player.move = %w[g4 f3]
+      expect {@game.player_move_actions }.to change { @game.board.grid[4][5].value.class }.from(WhitePawn). to(NilClass)
     end
   end
 end

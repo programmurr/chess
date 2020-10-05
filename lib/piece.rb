@@ -7,10 +7,9 @@ require_relative 'moves'
 #   Remove color attribute for Piece? Is not cascading to subclasses, and causes trouble
 #   Not really useful for the player either
 class Piece
-  attr_accessor :color, :first_move
+  attr_accessor :color
   def initialize(color)
     @color = color
-    @first_move = true
   end
 
   def move_filter(cells, end_co_ord)
@@ -172,11 +171,10 @@ class Rook < Piece
   end
 
   attr_reader :color
-  attr_accessor :first_move, :number_of_moves
+  attr_accessor :number_of_moves
 
   def initialize(color)
     @color = color
-    @first_move = true
     @number_of_moves = 0
   end
 
@@ -297,11 +295,10 @@ class King < Piece
   end
 
   attr_reader :color
-  attr_accessor :first_move, :number_of_moves
+  attr_accessor :number_of_moves
 
   def initialize(color)
     @color = color
-    @first_move = true
     @number_of_moves = 0
   end
 

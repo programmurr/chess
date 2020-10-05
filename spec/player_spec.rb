@@ -129,7 +129,8 @@ describe Player do
     end
 
     it "places the captured piece into the player's captured pieces attribute" do
-      expect { @player.take_enemy_piece }.to change { @player.captured_pieces }
+      next_player = double(color: 'White')
+      expect { @player.take_enemy_piece(@board, next_player) }.to change { @player.captured_pieces }
     end
   end
 end

@@ -4,6 +4,9 @@ require 'pry'
 require_relative '../lib/board'
 
 describe Board do
+  before do
+    Cell = Struct.new(:co_ord, :value)
+  end
   context '#initialize' do
     it 'can create an 8x8 grid made of nested arrays' do
       test_grid = Array.new(8) { Array.new(8) }
@@ -60,7 +63,6 @@ describe Board do
 
   context '#place_royalty' do
     before do
-      Cell = Struct.new(:co_ord, :value)
       @board = Board.new
       @board.set_cell_coordinates
       @board.place_royalty

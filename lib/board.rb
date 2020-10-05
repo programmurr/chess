@@ -2,12 +2,13 @@
 
 require 'pry'
 require 'colorize'
-# require_relative 'cell'
 require_relative 'piece'
 
 # Represents an 8x8 chess board. Responsible for displaying and setting itself up
 #   and retrieving information from cells
 class Board
+  Cell = Struct.new(:co_ord, :value)
+
   attr_accessor :grid
 
   def initialize(grid: default_grid)
@@ -25,10 +26,6 @@ class Board
     x = array_co_ord[0]
     y = array_co_ord[1]
     [grid_coordinate_array_map.fetch([x, y - 1]), grid_coordinate_array_map.fetch([x, y + 1])]
-  end
-
-  def en_passant_rows
-    [grid[3], grid[4]]
   end
 
   def get_castle_cells(co_ord)
@@ -97,37 +94,37 @@ class Board
   def execute_a1_castle
     grid[7][3].value = grid[7][0].value
     grid[7][0].value = nil
-    grid[7][3].value.first_move = false
+    grid[7][3].value.number_of_moves = 1
     grid[7][2].value = grid[7][4].value
     grid[7][4].value = nil
-    grid[7][2].value.first_move = false
+    grid[7][2].value.number_of_moves = 1
   end
 
   def execute_a8_castle
     grid[0][3].value = grid[0][0].value
     grid[0][0].value = nil
-    grid[0][3].value.first_move = false
+    grid[0][3].value.number_of_moves = 1
     grid[0][2].value = grid[0][4].value
     grid[0][4].value = nil
-    grid[0][2].value.first_move = false
+    grid[0][2].value.number_of_moves = 1
   end
 
   def execute_h1_castle
     grid[7][5].value = grid[7][7].value
     grid[7][7].value = nil
-    grid[7][5].value.first_move = false
+    grid[7][5].value.number_of_moves = 1
     grid[7][6].value = grid[7][4].value
     grid[7][4].value = nil
-    grid[7][6].value.first_move = false
+    grid[7][6].value.number_of_moves = 1
   end
 
   def execute_h8_castle
     grid[0][5].value = grid[0][7].value
     grid[0][7].value = nil
-    grid[0][5].value.first_move = false
+    grid[0][5].value.number_of_moves = 1
     grid[0][6].value = grid[0][4].value
     grid[0][4].value = nil
-    grid[0][6].value.first_move = false
+    grid[0][6].value.number_of_moves = 1
   end
 
   def grid_coordinate_map
@@ -251,7 +248,6 @@ class Board
     end
   end
 
-  Cell = Struct.new(:co_ord, :value)
   def default_grid
     Array.new(8) { Array.new(8) { Cell.new } }
   end
