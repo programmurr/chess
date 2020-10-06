@@ -173,7 +173,7 @@ class GamePlay
     board.grid[3].each do |cell|
       if cell.value.nil?
         next
-      elsif cell.value.class == BlackPawn && cell.value.en_passant
+      elsif cell.value.class == Pawn && cell.value.en_passant
         cell.value.en_passant = false
         cell.value.number_of_moves += 1
       end
@@ -181,7 +181,7 @@ class GamePlay
     board.grid[4].each do |cell|
       if cell.value.nil?
         next
-      elsif cell.value.class == WhitePawn && cell.value.en_passant
+      elsif cell.value.class == Pawn && cell.value.en_passant
         cell.value.en_passant = false
         cell.value.number_of_moves += 1
       end
@@ -192,14 +192,14 @@ class GamePlay
     board.grid[3].each do |cell|
       if cell.value.nil?
         next
-      elsif cell.value.class == BlackPawn && cell.value.number_of_moves == 1
+      elsif cell.value.class == Pawn && cell.value.number_of_moves == 1
         cell.value.en_passant = true
       end
     end
     board.grid[4].each do |cell|
       if cell.value.nil?
         next
-      elsif cell.value.class == WhitePawn && cell.value.number_of_moves == 1
+      elsif cell.value.class == Pawn && cell.value.number_of_moves == 1
         cell.value.en_passant = true
       end
     end
@@ -207,14 +207,14 @@ class GamePlay
 
   def add_to_en_passant_cache
     board.grid[3].each do |cell|
-      if cell.value.nil? || cell.value.class != BlackPawn
+      if cell.value.nil? || cell.value.class != Pawn
         next
       elsif cell.value.en_passant
         en_passant_cache << cell
       end
     end
     board.grid[4].each do |cell|
-      if cell.value.nil? || cell.value.class != WhitePawn
+      if cell.value.nil? || cell.value.class != Pawn
         next
       elsif cell.value.en_passant
         en_passant_cache << cell
@@ -225,7 +225,7 @@ class GamePlay
   def black_pawn_on_row?
     board.grid[7].each do |cell|
       next if cell.value.nil?
-      return true if cell.value.class == BlackPawn
+      return true if cell.value.class == Pawn
     end
     false
   end
@@ -233,7 +233,7 @@ class GamePlay
   def white_pawn_on_row?
     board.grid[0].each do |cell|
       next if cell.value.nil?
-      return true if cell.value.class == WhitePawn
+      return true if cell.value.class == Pawn
     end
     false
   end
@@ -313,7 +313,7 @@ class GamePlay
   end
 
   def moves
-    piece.all_move_coordinates_from_current_position(co_ord)
+    piece.all_move_coordinates_from_current_position(co_ord, active_player.color)
   end
 
   def end_co_ordinate
@@ -321,10 +321,10 @@ class GamePlay
   end
 end
 
-# game = GamePlay.new
-# game.setup_board
-# game.assign_player1_white_piece
-# game.player1_as_active_player
-# loop do
-#   game.test_loop
-# end
+game = GamePlay.new
+game.setup_board
+game.assign_player1_white_piece
+game.player1_as_active_player
+loop do
+  game.test_loop
+end

@@ -53,11 +53,11 @@ describe Board do
     end
 
     it 'places white pawns along the 6th row' do
-      expect { @board.place_pawns }.to change { @board.grid[6][2].value }.from(nil).to be_instance_of WhitePawn
+      expect { @board.place_pawns }.to change { @board.grid[6][2].value }.from(nil).to be_instance_of Pawn
     end
 
     it 'places black pawns along the 2nd row' do
-      expect { @board.place_pawns }.to change { @board.grid[1][5].value }.from(nil).to be_instance_of BlackPawn
+      expect { @board.place_pawns }.to change { @board.grid[1][5].value }.from(nil).to be_instance_of Pawn
     end
   end
 

@@ -209,7 +209,7 @@ describe MoveChecks do
     it 'returns true if the player decides to move a piece to a cell containing an enemy piece' do
       player = double('Player', move: %w[c4 f4], color: 'Black')
       @board.grid[4][2].value = Rook.new('Black')
-      @board.grid[4][5].value = WhitePawn.new('White')
+      @board.grid[4][5].value = Pawn.new('White')
       expect(MoveChecks.new(player, @board).attack_move?).to eq true
     end
 

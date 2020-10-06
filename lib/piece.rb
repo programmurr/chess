@@ -42,13 +42,15 @@ class Piece
     false
   end
 
-  def all_move_coordinates_from_current_position(co_ord)
-    self.class.moves(co_ord)
+  def all_move_coordinates_from_current_position(co_ord, color)
+    self.class.moves(co_ord, color)
   end
 end
 
+# Represent pawns on a chess board
+#   Responsible for displaying themselves and knowing where they can move
 class Pawn < Piece
-  def self.moves(co_ord)
+  def self.moves(co_ord, color)
     if color == 'White' && WHITE_START_CO_ORDS.include?(co_ord)
       WhitePawnMoves.new(co_ord).first_moves
     elsif color == 'Black' && BLACK_START_CO_ORDS.include?(co_ord)
@@ -88,11 +90,11 @@ class Pawn < Piece
     end
   end
 
-  def move_filter(_cells, _end_co_ord)
+  def move_filter(cells, _end_co_ord)
     if color == 'White'
-      white_move_filter
+      white_move_filter(cells)
     elsif color == 'Black'
-      black_move_filter
+      black_move_filter(cells)
     end
   end
 
@@ -107,161 +109,33 @@ class Pawn < Piece
 
   private
 
-  def white_move_filter(cells, _end_co_ord)
-    unless cells['up_right'].empty?
-      cells['up_right'] = [] if cells['up_right'][0].value.nil?
-    end
-    unless cells['up_left'].empty?
-      cells['up_left'] = [] if cells['up_left'][0].value.nil?
-    end
+  def white_move_filter(cells)
+    cells['up_right'] = [] if !cells['up_right'].empty? && cells['up_right'][0].value.nil?
+    cells['up_left'] = [] if !cells['up_left'].empty? && cells['up_left'][0].value.nil?
+    cells['double_up'] = [] if !cells['double_up'].empty? && !cells['double_up'][0].value.nil?
     unless cells['up'].empty?
       cells['up'] = [] unless cells['up'][0].value.nil?
       cells['double_up'] = [] if cells['up'] == []
     end
-    unless cells['double_up'].empty?
-      cells['double_up'] = [] unless cells['double_up'][0].value.nil?
-    end
     cells
   end
 
-  def black_move_filter(cells, _end_co_ord)
+  def black_move_filter(cells)
     unless cells['down'].empty?
       cells['down'] = [] unless cells['down'][0].value.nil?
       cells['double_down'] = [] if cells['down'] == []
     end
-    unless cells['double_down'].empty?
-      cells['double_down'] = [] unless cells['double_down'][0].value.nil?
-    end
-    unless cells['down_right'].empty?
-      cells['down_right'] = [] if cells['down_right'][0].value.nil?
-    end
-    unless cells['down_left'].empty?
-      cells['down_left'] = [] if cells['down_left'][0].value.nil?
-    end
+    cells['double_down'] = [] if !cells['double_down'].empty? && !cells['double_down'][0].value.nil?
+    cells['down_right'] = [] if !cells['down_right'].empty? && cells['down_right'][0].value.nil?
+    cells['down_left'] = [] if !cells['down_left'].empty? && cells['down_left'][0].value.nil?
     cells
-  end
-end
-
-# Represent white pawns on a chess board
-#   Responsible for displaying themselves, knowing their color and where they can move
-#   Possibly refactor this and black pawns together in the future
-class WhitePawn < Piece
-  def self.moves(co_ord)
-    if START_CO_ORDS.include?(co_ord)
-      WhitePawnMoves.new(co_ord).first_moves
-    else
-      WhitePawnMoves.new(co_ord).moves
-    end
-  end
-
-  START_CO_ORDS = [[6, 0], [6, 1], [6, 2], [6, 3], [6, 4], [6, 5], [6, 6], [6, 7]].freeze
-
-  attr_reader :color
-  attr_accessor :en_passant, :number_of_moves
-
-  def initialize(color)
-    @color = color
-    @en_passant = false
-    @number_of_moves = 0
-  end
-
-  def display_on_board
-    " \u2659 ".colorize(color: :black)
-  end
-
-  def display_for_capture
-    " \u265F ".colorize(color: :light_white)
-  end
-
-  def move_filter(cells, _end_co_ord)
-    unless cells['up_right'].empty?
-      cells['up_right'] = [] if cells['up_right'][0].value.nil?
-    end
-    unless cells['up_left'].empty?
-      cells['up_left'] = [] if cells['up_left'][0].value.nil?
-    end
-    unless cells['up'].empty?
-      cells['up'] = [] unless cells['up'][0].value.nil?
-      cells['double_up'] = [] if cells['up'] == []
-    end
-    unless cells['double_up'].empty?
-      cells['double_up'] = [] unless cells['double_up'][0].value.nil?
-    end
-    cells
-  end
-
-  def valid_move?(cells, end_co_ord)
-    cells.each_value do |move|
-      move.each do |position|
-        return true if end_co_ord == position.co_ord
-      end
-    end
-    false
-  end
-end
-
-# Represent black pawns on a chess board
-#   Responsible for displaying themselves, knowing their color and where they can move
-#   Possibly refactor this and black pawns together in the future
-class BlackPawn < Piece
-  def self.moves(co_ord)
-    if START_CO_ORDS.include?(co_ord)
-      BlackPawnMoves.new(co_ord).first_moves
-    else
-      BlackPawnMoves.new(co_ord).moves
-    end
-  end
-
-  START_CO_ORDS = [[1, 0], [1, 1], [1, 2], [1, 3], [1, 4], [1, 5], [1, 6], [1, 7]].freeze
-
-  attr_reader :color
-  attr_accessor :en_passant, :number_of_moves
-
-  def initialize(color)
-    @color = color
-    @en_passant = false
-    @number_of_moves = 0
-  end
-
-  def display_on_board
-    " \u265F ".colorize(color: :black)
-  end
-
-  def display_for_capture
-    " \u265F ".colorize(color: :white)
-  end
-
-  def move_filter(cells, _end_co_ord)
-    unless cells['down'].empty?
-      cells['down'] = [] unless cells['down'][0].value.nil?
-      cells['double_down'] = [] if cells['down'] == []
-    end
-    unless cells['double_down'].empty?
-      cells['double_down'] = [] unless cells['double_down'][0].value.nil?
-    end
-    unless cells['down_right'].empty?
-      cells['down_right'] = [] if cells['down_right'][0].value.nil?
-    end
-    unless cells['down_left'].empty?
-      cells['down_left'] = [] if cells['down_left'][0].value.nil?
-    end
-    cells
-  end
-
-  def valid_move?(cells, end_co_ord)
-    cells.each_value do |move|
-      move.each do |position|
-        return true if end_co_ord == position.co_ord
-      end
-    end
-    false
   end
 end
 
 # Represent rooks on a chess board
 #   Responsible for displaying themselves, knowing their color and where they can move
 class Rook < Piece
-  def self.moves(co_ord)
+  def self.moves(co_ord, _color)
     RookMoves.new(co_ord).moves
   end
 
@@ -289,7 +163,7 @@ end
 # Represent rooks on a chess board
 #   Responsible for displaying themselves, knowing their color and where they can move
 class Bishop < Piece
-  def self.moves(co_ord)
+  def self.moves(co_ord, _color)
     BishopMoves.new(co_ord).moves
   end
 
@@ -317,7 +191,7 @@ end
 # Represent rooks on a chess board
 #   Responsible for displaying themselves, knowing their color and where they can move
 class Knight < Piece
-  def self.moves(co_ord)
+  def self.moves(co_ord, _color)
     KnightMoves.new(co_ord).moves
   end
 
@@ -357,7 +231,7 @@ end
 # Represent rooks on a chess board
 #   Responsible for displaying themselves, knowing their color and where they can move
 class Queen < Piece
-  def self.moves(co_ord)
+  def self.moves(co_ord, _color)
     RookMoves.new(co_ord).moves.merge(BishopMoves.new(co_ord).moves)
   end
 
@@ -385,7 +259,7 @@ end
 # Represent rooks on a chess board
 #   Responsible for displaying themselves, knowing their color and where they can move
 class King < Piece
-  def self.moves(co_ord)
+  def self.moves(co_ord, _color)
     KingMoves.new(co_ord).moves
   end
 

@@ -36,7 +36,7 @@ describe Piece do
       knight = Knight.new('White')
       co_ord = [3, 3]
       predicted_moves = [[2, 1], [4, 1], [1, 2], [1, 4], [2, 5], [4, 5], [5, 4], [5, 2]]
-      actual_moves = knight.all_move_coordinates_from_current_position(co_ord)
+      actual_moves = knight.all_move_coordinates_from_current_position(co_ord, knight.color)
       expect(predicted_moves.difference(actual_moves)).to eq []
     end
 
@@ -47,7 +47,7 @@ describe Piece do
                           'down_right' => [[5, 5], [6, 6], [7, 7]],
                           'down_left' => [[5, 3], [6, 2], [7, 1]],
                           'up_left' => [[3, 3], [2, 2], [1, 1], [0, 0]] }
-      actual_moves = bishop.all_move_coordinates_from_current_position(co_ord)
+      actual_moves = bishop.all_move_coordinates_from_current_position(co_ord, bishop.color)
       expect(predicted_moves).to eq actual_moves
     end
 
@@ -58,7 +58,7 @@ describe Piece do
                           'right' => [[3, 3], [3, 4], [3, 5], [3, 6], [3, 7]],
                           'down' => [[4, 2], [5, 2], [6, 2], [7, 2]],
                           'left' => [[3, 1], [3, 0]] }
-      actual_moves = rook.all_move_coordinates_from_current_position(co_ord)
+      actual_moves = rook.all_move_coordinates_from_current_position(co_ord, rook.color)
       expect(predicted_moves).to eq actual_moves
     end
 
@@ -73,7 +73,7 @@ describe Piece do
                           'down_right' => [[4, 3], [5, 4], [6, 5], [7, 6]],
                           'down_left' => [[4, 1], [5, 0]],
                           'up_left' => [[2, 1], [1, 0]] }
-      actual_moves = queen.all_move_coordinates_from_current_position(co_ord)
+      actual_moves = queen.all_move_coordinates_from_current_position(co_ord, queen.color)
       expect(predicted_moves).to eq actual_moves
     end
 
@@ -81,54 +81,64 @@ describe Piece do
       king = King.new('White')
       co_ord = [5, 6]
       predicted_moves = { 'up' => [[4, 6]], 'up_right' => [[4, 7]], 'right' => [[5, 7]], 'down_right' => [[6, 7]], 'down' => [[6, 6]], 'down_left' => [[6, 5]], 'left' => [[5, 5]], 'up_left' => [[4, 5]] }
-      actual_moves = king.all_move_coordinates_from_current_position(co_ord)
+      actual_moves = king.all_move_coordinates_from_current_position(co_ord, king.color)
       expect(predicted_moves).to eq actual_moves
     end
 
-    it 'can list all co_ordinates, including attacks, a WHITEPAWN can move to on its first move' do
-      pawn = WhitePawn.new('White')
+    # FAIL
+    it 'can list all co_ordinates, including attacks, a white pawn can move to on its first move' do
+      pawn = Pawn.new('White')
       co_ord = [6, 1]
       predicted_moves = { 'up' => [[5, 1]], 'double_up' => [[4, 1]], 'up_left' => [[5, 0]], 'up_right' => [[5, 2]] }
-      actual_moves = pawn.all_move_coordinates_from_current_position(co_ord)
+      actual_moves = pawn.all_move_coordinates_from_current_position(co_ord, pawn.color)
       expect(predicted_moves).to eq actual_moves
     end
 
-    it 'can list all co_ordinates, including attacks, a WHITEPAWN can move to on a move other than its first move' do
-      pawn = WhitePawn.new('White')
+    it 'can list all co_ordinates, including attacks, a white pawn can move to on a move other than its first move' do
+      pawn = Pawn.new('White')
       co_ord = [5, 6]
       predicted_moves = { 'up' => [[4, 6]], 'double_up' => [], 'up_left' => [[4, 5]], 'up_right' => [[4, 7]] }
-      actual_moves = pawn.all_move_coordinates_from_current_position(co_ord)
+      actual_moves = pawn.all_move_coordinates_from_current_position(co_ord, pawn.color)
       expect(predicted_moves).to eq actual_moves
     end
 
-    it 'can list all co_ordinates, including attacks, a BLACKPAWN can move to on its first move' do
-      pawn = BlackPawn.new('Black')
+    it 'can list all co_ordinates, including attacks, a black pawn can move to on its first move' do
+      pawn = Pawn.new('Black')
       co_ord = [1, 3]
       predicted_moves = { 'down' => [[2, 3]], 'double_down' => [[3, 3]], 'down_left' => [[2, 2]], 'down_right' => [[2, 4]] }
-      actual_moves = pawn.all_move_coordinates_from_current_position(co_ord)
+      actual_moves = pawn.all_move_coordinates_from_current_position(co_ord, pawn.color)
       expect(predicted_moves).to eq actual_moves
     end
 
-    it 'can list all co_ordinates, including attacks, a BLACKPAWN can move to on a move other than its first move' do
-      pawn = BlackPawn.new('Black')
+    it 'can list all co_ordinates, including attacks, a black  can move to on a move other than its first move' do
+      pawn = Pawn.new('Black')
       co_ord = [3, 2]
       predicted_moves = { 'down' => [[4, 2]], 'double_down' => [], 'down_left' => [[4, 1]], 'down_right' => [[4, 3]] }
-      actual_moves = pawn.all_move_coordinates_from_current_position(co_ord)
+      actual_moves = pawn.all_move_coordinates_from_current_position(co_ord, pawn.color)
       expect(predicted_moves).to eq actual_moves
     end
   end
 end
 
-describe WhitePawn do
-  let(:white_pawn) { WhitePawn.new('White') }
+describe Pawn do
+  let(:white_pawn) { Pawn.new('White') }
+  let(:black_pawn) { Pawn.new('Black') }
 
   context '#initialize' do
     it 'can have a color attribute of White' do
       expect(white_pawn.color).to eq 'White'
     end
 
+    it 'can have a color attribute of Black' do
+      expect(black_pawn.color).to eq 'Black'
+    end
+
     it 'generates its own name based on its sub-class name' do
-      expect(white_pawn.name).to eq 'WhitePawn'
+      expect(black_pawn.name).to eq 'Pawn'
+    end
+
+    it 'generates its own name based on its sub-class name' do
+      expect(white_pawn.name).to eq 'Pawn'
     end
   end
 
@@ -136,23 +146,7 @@ describe WhitePawn do
     it 'can display a unicode character representing a White chess pawn' do
       expect(white_pawn.display_on_board).to eq ' ♙ '.colorize(color: :black)
     end
-  end
-end
 
-describe BlackPawn do
-  let(:black_pawn) { BlackPawn.new('Black') }
-
-  context '#initialize' do
-    it 'can have a color attribute of Black' do
-      expect(black_pawn.color).to eq 'Black'
-    end
-
-    it 'generates its own name based on its sub-class name' do
-      expect(black_pawn.name).to eq 'BlackPawn'
-    end
-  end
-
-  context '#display' do
     it 'can display a unicode character representing a Black chess pawn' do
       expect(black_pawn.display_on_board).to eq " \u265F ".colorize(color: :black)
     end

@@ -110,7 +110,7 @@ describe Player do
     it 'can move the selected piece from one square to another' do
       player = Player.new(1)
       player.move = %w[a2 a4]
-      expect { player.move_piece(@board) }.to change { @board.grid[4][0].value }.from(nil).to be_instance_of WhitePawn
+      expect { player.move_piece(@board) }.to change { @board.grid[4][0].value }.from(nil).to be_instance_of Pawn
     end
   end
 

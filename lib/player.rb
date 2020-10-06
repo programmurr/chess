@@ -35,10 +35,10 @@ class Player
     unless captured_pieces.empty?
       if captured_pieces[-1].class == InvisiblePawn && next_player.color == 'White'
         board.get_cell_from_array_co_ord(captured_pieces[-1].linked_cell_co_ord).value = nil
-        captured_pieces[-1] = WhitePawn.new('White')
+        captured_pieces[-1] = Pawn.new('White')
       elsif captured_pieces[-1].class == InvisiblePawn && next_player.color == 'Black'
         board.get_cell_from_array_co_ord(captured_pieces[-1].linked_cell_co_ord).value = nil
-        captured_pieces[-1] = BlackPawn.new('Black')
+        captured_pieces[-1] = Pawn.new('Black')
       end
     end
   end

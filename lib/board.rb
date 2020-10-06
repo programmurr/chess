@@ -68,8 +68,8 @@ class Board
   end
 
   def place_pawns
-    grid[6].each { |cell| cell.value = WhitePawn.new('White') }
-    grid[1].each { |cell| cell.value = BlackPawn.new('Black') }
+    grid[6].each { |cell| cell.value = Pawn.new('White') }
+    grid[1].each { |cell| cell.value = Pawn.new('Black') }
   end
 
   def set_cell_coordinates
