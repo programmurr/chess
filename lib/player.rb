@@ -26,20 +26,14 @@ class Player
     start_cell.value = nil
   end
 
-  def take_enemy_piece(board, next_player)
+  def take_enemy_piece(board)
     unless temp_cell.nil?
       captured_pieces << temp_cell
       self.temp_cell = nil
     end
-
-    unless captured_pieces.empty?
-      if captured_pieces[-1].class == InvisiblePawn && next_player.color == 'White'
-        board.get_cell_from_array_co_ord(captured_pieces[-1].linked_cell_co_ord).value = nil
-        captured_pieces[-1] = Pawn.new('White')
-      elsif captured_pieces[-1].class == InvisiblePawn && next_player.color == 'Black'
-        board.get_cell_from_array_co_ord(captured_pieces[-1].linked_cell_co_ord).value = nil
-        captured_pieces[-1] = Pawn.new('Black')
-      end
+    if !captured_pieces.empty? && captured_pieces[-1].class == InvisiblePawn2
+      board.get_cell(captured_pieces[-1].enemy_cell.co_ord).value = nil
+      captured_pieces[-1] = captured_pieces[-1].enemy_cell.value
     end
   end
 

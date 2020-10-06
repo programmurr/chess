@@ -3,13 +3,14 @@
 require 'colorize'
 require_relative 'moves'
 
-# Superclass of the other pieces
-#   Remove color attribute for Piece? Is not cascading to subclasses, and causes trouble
-#   Not really useful for the player either
+# Superclass of the chess board pieces
+#   Responsible for knowing colors and triggering calculations of moves for each subclass
 class Piece
-  attr_accessor :color
+  attr_accessor :color, :number_of_moves
+
   def initialize(color)
     @color = color
+    @number_of_moves = 0
   end
 
   def move_filter(cells, end_co_ord)
@@ -36,12 +37,6 @@ class Piece
     self.class.to_s
   end
 
-  def first_move?
-    return true if first_move == true
-
-    false
-  end
-
   def all_move_coordinates_from_current_position(co_ord, color)
     self.class.moves(co_ord, color)
   end
@@ -65,29 +60,21 @@ class Pawn < Piece
   WHITE_START_CO_ORDS = [[6, 0], [6, 1], [6, 2], [6, 3], [6, 4], [6, 5], [6, 6], [6, 7]].freeze
   BLACK_START_CO_ORDS = [[1, 0], [1, 1], [1, 2], [1, 3], [1, 4], [1, 5], [1, 6], [1, 7]].freeze
 
-  attr_reader :color
-  attr_accessor :en_passant, :number_of_moves
+  attr_accessor :en_passant
 
   def initialize(color)
-    @color = color
+    super
     @en_passant = false
-    @number_of_moves = 0
   end
 
   def display_on_board
-    if color == 'White'
-      " \u2659 ".colorize(color: :black)
-    elsif color == 'Black'
-      " \u265F ".colorize(color: :black)
-    end
+    { 'White' => " \u2659 ".colorize(color: :black),
+      'Black' => " \u265F ".colorize(color: :black) }.fetch(color)
   end
 
   def display_for_capture
-    if color == 'White'
-      " \u265F ".colorize(color: :light_white)
-    elsif color == 'Black'
-      " \u265F ".colorize(color: :white)
-    end
+    { 'White' => " \u265F ".colorize(color: :light_white),
+      'Black' => " \u265F ".colorize(color: :white) }.fetch(color)
   end
 
   def move_filter(cells, _end_co_ord)
@@ -133,18 +120,10 @@ class Pawn < Piece
 end
 
 # Represent rooks on a chess board
-#   Responsible for displaying themselves, knowing their color and where they can move
+#   Responsible for displaying themselves and where they can move
 class Rook < Piece
   def self.moves(co_ord, _color)
     RookMoves.new(co_ord).moves
-  end
-
-  attr_reader :color
-  attr_accessor :number_of_moves
-
-  def initialize(color)
-    @color = color
-    @number_of_moves = 0
   end
 
   def display_on_board
@@ -160,19 +139,11 @@ class Rook < Piece
   end
 end
 
-# Represent rooks on a chess board
-#   Responsible for displaying themselves, knowing their color and where they can move
+# Represent bishops on a chess board
+#   Responsible for displaying themselves and where they can move
 class Bishop < Piece
   def self.moves(co_ord, _color)
     BishopMoves.new(co_ord).moves
-  end
-
-  attr_reader :color
-  attr_accessor :number_of_moves
-
-  def initialize(color)
-    @color = color
-    @number_of_moves = 0
   end
 
   def display_on_board
@@ -188,19 +159,11 @@ class Bishop < Piece
   end
 end
 
-# Represent rooks on a chess board
-#   Responsible for displaying themselves, knowing their color and where they can move
+# Represent knights on a chess board
+#   Responsible for displaying themselves and where they can move
 class Knight < Piece
   def self.moves(co_ord, _color)
     KnightMoves.new(co_ord).moves
-  end
-
-  attr_reader :color
-  attr_accessor :number_of_moves
-
-  def initialize(color)
-    @color = color
-    @number_of_moves = 0
   end
 
   def display_on_board
@@ -228,19 +191,11 @@ class Knight < Piece
   end
 end
 
-# Represent rooks on a chess board
-#   Responsible for displaying themselves, knowing their color and where they can move
+# Represent queens on a chess board
+#   Responsible for displaying themselves and where they can move
 class Queen < Piece
   def self.moves(co_ord, _color)
     RookMoves.new(co_ord).moves.merge(BishopMoves.new(co_ord).moves)
-  end
-
-  attr_reader :color
-  attr_accessor :number_of_moves
-
-  def initialize(color)
-    @color = color
-    @number_of_moves = 0
   end
 
   def display_on_board
@@ -256,19 +211,11 @@ class Queen < Piece
   end
 end
 
-# Represent rooks on a chess board
-#   Responsible for displaying themselves, knowing their color and where they can move
+# Represent kings on a chess board
+#   Responsible for displaying themselves and where they can move
 class King < Piece
   def self.moves(co_ord, _color)
     KingMoves.new(co_ord).moves
-  end
-
-  attr_reader :color
-  attr_accessor :number_of_moves
-
-  def initialize(color)
-    @color = color
-    @number_of_moves = 0
   end
 
   def display_on_board
@@ -282,6 +229,21 @@ class King < Piece
   def display_for_capture
     " \u265A ".colorize(color: :white)
   end
+end
+
+class InvisiblePawn2
+  attr_reader :color, :enemy_cell
+
+  def initialize(enemy_cell)
+    @enemy_cell = enemy_cell
+    @color = 'CadburyCremeEgg'
+  end
+
+  def display_on_board
+    " \u200C  "
+  end
+
+  def display_for_capture; end
 end
 
 # A ghost of a pawn that allows en passant to take place

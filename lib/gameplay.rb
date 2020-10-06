@@ -62,7 +62,7 @@ class GamePlay
     loop do
       refresh_display
       enter_move
-      if castle_check?
+      if move_check.castle_check?
         execute_castle_move
         break
       end
@@ -80,40 +80,19 @@ class GamePlay
     switch_active_player
   end
 
-  def castle_check?
-    return false unless active_player.move.include?('castle')
-
-    move_co_ord = active_player.move[-2, 2]
-    cells = board.get_castle_cells(move_co_ord)
-    first_cell = cells.shift
-    last_cell = cells.pop
-    return false if first_cell.value.nil? || last_cell.value.nil?
-    return false if active_player.color != first_cell.value.color || active_player.color != last_cell.value.color
-
-    cells.each do |cell|
-      return false unless cell.value.nil?
-    end
-    return true if first_cell.value.number_of_moves.zero? && last_cell.value.number_of_moves.zero?
-
-    false
-  end
-
   def move_check
     MoveChecks.new(active_player, board)
   end
 
   def promote_pawn?
-    if active_player.color == 'White'
-      return true if white_pawn_on_row?
-    elsif active_player.color == 'Black'
-      return true if black_pawn_on_row?
-    end
+    return true if pawn_on_row?
+
     false
   end
 
   def player_move_actions
     active_player.move_piece(board)
-    active_player.take_enemy_piece(board, next_player)
+    active_player.take_enemy_piece(board)
     active_player.move_counter += 1
   end
 
@@ -142,25 +121,23 @@ class GamePlay
   def place_invisible_pawn
     return if en_passant_cache.length.zero?
 
-    string_co_ord = en_passant_cache[0].co_ord
-    array_co_ord = board.grid_coordinate_map.fetch(string_co_ord)
+    enemy_cell = board.get_cell(en_passant_cache[0].co_ord)
+    array_co_ord = board.grid_coordinate_map.fetch(en_passant_cache[0].co_ord)
     x = array_co_ord[0]
     y = array_co_ord[1]
     if active_player.color == 'White'
-      board.get_cell_from_array_co_ord([x + 1, y]).value = InvisiblePawn.new(array_co_ord)
+      board.get_cell_from_array_co_ord([x + 1, y]).value = InvisiblePawn2.new(enemy_cell)
     elsif active_player.color == 'Black'
-      board.get_cell_from_array_co_ord([x - 1, y]).value = InvisiblePawn.new(array_co_ord)
+      board.get_cell_from_array_co_ord([x - 1, y]).value = InvisiblePawn2.new(enemy_cell)
     end
   end
 
   def remove_invisible_pawn
     board.grid.each do |row|
       row.each do |cell|
-        if cell.value.nil?
-          next
-        elsif cell.value.class == InvisiblePawn
-          cell.value = nil
-        end
+        next if cell.value.nil? || cell.value.class != InvisiblePawn2
+
+        cell.value = nil
       end
     end
   end
@@ -170,18 +147,10 @@ class GamePlay
   end
 
   def set_en_passant_to_false
-    board.grid[3].each do |cell|
-      if cell.value.nil?
-        next
-      elsif cell.value.class == Pawn && cell.value.en_passant
-        cell.value.en_passant = false
-        cell.value.number_of_moves += 1
-      end
-    end
-    board.grid[4].each do |cell|
-      if cell.value.nil?
-        next
-      elsif cell.value.class == Pawn && cell.value.en_passant
+    (board.grid[3] + board.grid[4]).each do |cell|
+      next if cell.value.nil? || cell.value.class != Pawn
+
+      if cell.value.en_passant
         cell.value.en_passant = false
         cell.value.number_of_moves += 1
       end
@@ -189,49 +158,23 @@ class GamePlay
   end
 
   def set_en_passant_to_true
-    board.grid[3].each do |cell|
-      if cell.value.nil?
-        next
-      elsif cell.value.class == Pawn && cell.value.number_of_moves == 1
-        cell.value.en_passant = true
-      end
-    end
-    board.grid[4].each do |cell|
-      if cell.value.nil?
-        next
-      elsif cell.value.class == Pawn && cell.value.number_of_moves == 1
-        cell.value.en_passant = true
-      end
+    (board.grid[3] + board.grid[4]).each do |cell|
+      next if cell.value.nil? || cell.value.class != Pawn
+
+      cell.value.en_passant = true if cell.value.number_of_moves == 1
     end
   end
 
   def add_to_en_passant_cache
-    board.grid[3].each do |cell|
-      if cell.value.nil? || cell.value.class != Pawn
-        next
-      elsif cell.value.en_passant
-        en_passant_cache << cell
-      end
-    end
-    board.grid[4].each do |cell|
-      if cell.value.nil? || cell.value.class != Pawn
-        next
-      elsif cell.value.en_passant
-        en_passant_cache << cell
-      end
+    (board.grid[3] + board.grid[4]).each do |cell|
+      next if cell.value.nil? || cell.value.class != Pawn
+
+      en_passant_cache << cell if cell.value.en_passant
     end
   end
 
-  def black_pawn_on_row?
-    board.grid[7].each do |cell|
-      next if cell.value.nil?
-      return true if cell.value.class == Pawn
-    end
-    false
-  end
-
-  def white_pawn_on_row?
-    board.grid[0].each do |cell|
+  def pawn_on_row?
+    (board.grid[7] + board.grid[0]).each do |cell|
       next if cell.value.nil?
       return true if cell.value.class == Pawn
     end
@@ -275,9 +218,9 @@ class GamePlay
   def enter_move
     loop do
       user_move_input
-      if castle_check?
+      if move_check.castle_check?
         break
-      elsif castle_check? == false && active_player.move.include?('castle')
+      elsif move_check.castle_check? == false && active_player.move.include?('castle')
         invalid_move_message
         refresh_display
       elsif move_check.start_cell_contains_piece? == false || move_check.matching_piece_class? == false
@@ -321,10 +264,10 @@ class GamePlay
   end
 end
 
-game = GamePlay.new
-game.setup_board
-game.assign_player1_white_piece
-game.player1_as_active_player
-loop do
-  game.test_loop
-end
+# game = GamePlay.new
+# game.setup_board
+# game.assign_player1_white_piece
+# game.player1_as_active_player
+# loop do
+#   game.test_loop
+# end
