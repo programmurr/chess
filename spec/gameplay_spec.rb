@@ -4,40 +4,6 @@ require 'pry'
 require_relative '../lib/gameplay'
 
 describe GamePlay do
-  context '#promote_pawn?' do
-    before do
-      @game = GamePlay.new
-      @game.setup_board
-      @game.assign_player1_white_piece
-      @game.player1_as_active_player
-    end
-
-    it 'returns true if there is a white Pawn present on board row 0' do
-      @game.board.grid[0][0].value = nil
-      @game.board.grid[1][0].value = Pawn.new('White')
-      @game.active_player.move = %w[a7 a8]
-      @game.player_move_actions
-      expect(@game.promote_pawn?).to eq true
-    end
-
-    it 'returns false if there is not white Pawn present on board row 0' do
-      expect(@game.promote_pawn?).to eq false
-    end
-
-    it 'returns true if there is a wlack Pawn present on board row 7' do
-      @game.player2_as_active_player
-      @game.board.grid[7][0].value = nil
-      @game.board.grid[6][0].value = Pawn.new('Black')
-      @game.active_player.move = %w[a2 a1]
-      @game.player_move_actions
-      expect(@game.promote_pawn?).to eq true
-    end
-
-    it 'returns false if there is not black Pawn present on board row 7' do
-      expect(@game.promote_pawn?).to eq false
-    end
-  end
-
   context '#execute_promotion' do
     before do
       @game = GamePlay.new
@@ -200,6 +166,20 @@ describe GamePlay do
       @game.switch_active_player
       @game.active_player.move = %w[g4 f3]
       expect {@game.player_move_actions }.to change { @game.board.grid[4][5].value.class }.from(Pawn). to(NilClass)
+    end
+  end
+
+  context '#cells_under_attack' do
+    before do
+      @game = GamePlay.new
+      @game.setup_board
+      @game.assign_player1_white_piece
+      @game.player1_as_active_player
+    end
+
+    it 'generates an array of all cells that can be attacked by the opposing color' do
+      dangerous_cells = %w[a6 b6 c6 d6 e6 f6 g6 h6]
+      expect(@game.cells_under_attack).to eq dangerous_cells
     end
   end
 end

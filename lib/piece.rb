@@ -97,12 +97,18 @@ class Pawn < Piece
   private
 
   def white_move_filter(cells)
-    cells['up_right'] = [] if !cells['up_right'].empty? && cells['up_right'][0].value.nil?
-    cells['up_left'] = [] if !cells['up_left'].empty? && cells['up_left'][0].value.nil?
-    cells['double_up'] = [] if !cells['double_up'].empty? && !cells['double_up'][0].value.nil?
+    unless cells['up_right'].empty?
+      cells['up_right'] = [] if cells['up_right'][0].value.nil?
+    end
+    unless cells['up_left'].empty?
+      cells['up_left'] = [] if cells['up_left'][0].value.nil?
+    end
     unless cells['up'].empty?
       cells['up'] = [] unless cells['up'][0].value.nil?
       cells['double_up'] = [] if cells['up'] == []
+    end
+    unless cells['double_up'].empty?
+      cells['double_up'] = [] unless cells['double_up'][0].value.nil?
     end
     cells
   end
@@ -112,9 +118,15 @@ class Pawn < Piece
       cells['down'] = [] unless cells['down'][0].value.nil?
       cells['double_down'] = [] if cells['down'] == []
     end
-    cells['double_down'] = [] if !cells['double_down'].empty? && !cells['double_down'][0].value.nil?
-    cells['down_right'] = [] if !cells['down_right'].empty? && cells['down_right'][0].value.nil?
-    cells['down_left'] = [] if !cells['down_left'].empty? && cells['down_left'][0].value.nil?
+    unless cells['double_down'].empty?
+      cells['double_down'] = [] unless cells['double_down'][0].value.nil?
+    end
+    unless cells['down_right'].empty?
+      cells['down_right'] = [] if cells['down_right'][0].value.nil?
+    end
+    unless cells['down_left'].empty?
+      cells['down_left'] = [] if cells['down_left'][0].value.nil?
+    end
     cells
   end
 end
@@ -231,30 +243,15 @@ class King < Piece
   end
 end
 
-class InvisiblePawn2
-  attr_reader :color, :enemy_cell
-
-  def initialize(enemy_cell)
-    @enemy_cell = enemy_cell
-    @color = 'CadburyCremeEgg'
-  end
-
-  def display_on_board
-    " \u200C  "
-  end
-
-  def display_for_capture; end
-end
-
 # A ghost of a pawn that allows en passant to take place
 #   Once taken, they get converted to the according color of pawn to be displayed in the game
 #   Also holds a reference to it's twin 'real' pawn to allow that pawn to be captured en passant
 class InvisiblePawn
-  attr_reader :color, :linked_cell_co_ord
+  attr_reader :color, :enemy_cell
 
-  def initialize(linked_cell_co_ord)
-    @linked_cell_co_ord = linked_cell_co_ord
-    @color = 'CadburyCremeEgg'
+  def initialize(enemy_cell, color)
+    @enemy_cell = enemy_cell
+    @color = color
   end
 
   def display_on_board

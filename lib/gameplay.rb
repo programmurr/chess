@@ -17,7 +17,7 @@ class GamePlay
     @player2 = player2
     @active_player = nil
     @next_player = nil
-    @en_passant_cache = []
+    @en_passant_cache = nil
   end
 
   def setup_board
@@ -70,7 +70,7 @@ class GamePlay
       piece.move_filter(cells, end_co_ordinate)
       if piece.valid_move?(cells, end_co_ordinate)
         player_move_actions
-        execute_promotion if promote_pawn?
+        execute_promotion if move_check.promote_pawn?
         break
       else
         invalid_move_message
@@ -80,14 +80,24 @@ class GamePlay
     switch_active_player
   end
 
-  def move_check
-    MoveChecks.new(active_player, board)
+  def cells_under_attack
+    attack_array = []
+    board.grid.each do |row|
+      row.each do |cell|
+        next unless !cell.value.nil? && cell.value.class != InvisiblePawn
+
+        co_ord = board.get_cell_grid_co_ord(cell.co_ord)
+        attack_array << cell.value.all_move_coordinates_from_current_position(co_ord, cell.value.color)
+      end
+    end
+    # Get all moves
+    # Hash? E.g. Rook => *cells, Knight => *cells
+    # Filter out the impossible moves e.g. the piece is blocked
+    # Remaining cells are under attack
   end
 
-  def promote_pawn?
-    return true if pawn_on_row?
-
-    false
+  def move_check
+    MoveChecks.new(active_player, board)
   end
 
   def player_move_actions
@@ -119,23 +129,23 @@ class GamePlay
   private
 
   def place_invisible_pawn
-    return if en_passant_cache.length.zero?
+    return if en_passant_cache.nil?
 
-    enemy_cell = board.get_cell(en_passant_cache[0].co_ord)
-    array_co_ord = board.grid_coordinate_map.fetch(en_passant_cache[0].co_ord)
+    enemy_cell = board.get_cell(en_passant_cache.co_ord)
+    array_co_ord = board.grid_coordinate_map.fetch(en_passant_cache.co_ord)
     x = array_co_ord[0]
     y = array_co_ord[1]
     if active_player.color == 'White'
-      board.get_cell_from_array_co_ord([x + 1, y]).value = InvisiblePawn2.new(enemy_cell)
+      board.get_cell_from_array_co_ord([x + 1, y]).value = InvisiblePawn.new(enemy_cell, active_player.color)
     elsif active_player.color == 'Black'
-      board.get_cell_from_array_co_ord([x - 1, y]).value = InvisiblePawn2.new(enemy_cell)
+      board.get_cell_from_array_co_ord([x - 1, y]).value = InvisiblePawn.new(enemy_cell, active_player.color)
     end
   end
 
   def remove_invisible_pawn
     board.grid.each do |row|
       row.each do |cell|
-        next if cell.value.nil? || cell.value.class != InvisiblePawn2
+        next if cell.value.nil? || cell.value.class != InvisiblePawn
 
         cell.value = nil
       end
@@ -143,7 +153,7 @@ class GamePlay
   end
 
   def clear_en_passant_cache
-    self.en_passant_cache = []
+    self.en_passant_cache = nil
   end
 
   def set_en_passant_to_false
@@ -169,16 +179,8 @@ class GamePlay
     (board.grid[3] + board.grid[4]).each do |cell|
       next if cell.value.nil? || cell.value.class != Pawn
 
-      en_passant_cache << cell if cell.value.en_passant
+      self.en_passant_cache = cell if cell.value.en_passant
     end
-  end
-
-  def pawn_on_row?
-    (board.grid[7] + board.grid[0]).each do |cell|
-      next if cell.value.nil?
-      return true if cell.value.class == Pawn
-    end
-    false
   end
 
   def promotion_choice(choice)

@@ -9,6 +9,14 @@ class MoveChecks
     @board = board
   end
 
+  def promote_pawn?
+    (board.grid[7] + board.grid[0]).each do |cell|
+      next if cell.value.nil?
+      return true if cell.value.class == Pawn
+    end
+    false
+  end
+
   def castle_check?
     return false unless player.move.include?('castle')
 

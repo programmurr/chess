@@ -27,14 +27,13 @@ class Player
   end
 
   def take_enemy_piece(board)
-    unless temp_cell.nil?
+    if !temp_cell.nil? && temp_cell.class == InvisiblePawn
+      captured_pieces << temp_cell.enemy_cell.value
+      board.get_cell(temp_cell.enemy_cell.co_ord).value = nil
+    elsif !temp_cell.nil?
       captured_pieces << temp_cell
-      self.temp_cell = nil
     end
-    if !captured_pieces.empty? && captured_pieces[-1].class == InvisiblePawn2
-      board.get_cell(captured_pieces[-1].enemy_cell.co_ord).value = nil
-      captured_pieces[-1] = captured_pieces[-1].enemy_cell.value
-    end
+    self.temp_cell = nil
   end
 
   def display_captured_pieces

@@ -9,6 +9,29 @@ describe MoveChecks do
     @board.place_pawns
     @board.place_royalty
   end
+  context '#promote_pawn?' do
+    it 'returns true if there is a white Pawn present on board row 0' do
+      @board.grid[0][0].value = Pawn.new('White')
+      player = double
+      expect(MoveChecks.new(player, @board).promote_pawn?).to eq true
+    end
+
+    it 'returns false if there is not white Pawn present on board row 0' do
+      player = double
+      expect(MoveChecks.new(player, @board).promote_pawn?).to eq false
+    end
+
+    it 'returns true if there is a black Pawn present on board row 7' do
+      @board.grid[7][0].value = Pawn.new('Black')
+      player = double
+      expect(MoveChecks.new(player, @board).promote_pawn?).to eq true
+    end
+
+    it 'returns false if there is not black Pawn present on board row 7' do
+      player = double
+      expect(MoveChecks.new(player, @board).promote_pawn?).to eq false
+    end
+  end
 
   context '#castle_check?' do
     it 'returns false if the spaces between the a1 rook and the king are occupied' do
