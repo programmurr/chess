@@ -81,19 +81,26 @@ class GamePlay
   end
 
   def cells_under_attack
-    attack_array = []
+    # binding.pry
+    # white_king = board.grid[0][4].value
+    # # get list of adjascent cells for white_king
+    return_array = []
     board.grid.each do |row|
       row.each do |cell|
-        next unless !cell.value.nil? && cell.value.class != InvisiblePawn
+        next if cell.value.nil? || cell.value.color == active_player.color
 
         co_ord = board.get_cell_grid_co_ord(cell.co_ord)
-        attack_array << cell.value.all_move_coordinates_from_current_position(co_ord, cell.value.color)
+        moves = cell.value.all_move_coordinates_from_current_position(co_ord, cell.value.color)
+        move_cells = if cell.value.class == Knight
+                       board.get_cells_from_array(moves)
+                     else
+                       board.get_cells_from_hash(moves)
+                     end
+        return_array << cell.value.check_move_filter(move_cells)
+        # binding.pry
       end
     end
-    # Get all moves
-    # Hash? E.g. Rook => *cells, Knight => *cells
-    # Filter out the impossible moves e.g. the piece is blocked
-    # Remaining cells are under attack
+    return_array.flatten.uniq.map { |cell| cell.co_ord }.sort
   end
 
   def move_check

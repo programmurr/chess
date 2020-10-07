@@ -13,6 +13,25 @@ class Piece
     @number_of_moves = 0
   end
 
+  # Problem here. Seems to work with rook but not bishop. Not sure about other classes
+  def check_move_filter(cells)
+    return_array = []
+    cells.each_value do |moves|
+      binding.pry
+      next if moves.length.zero?
+
+      moves.each.with_index do |cell, index|
+        unless cell.value.nil?
+          binding.pry
+          moves.slice!(index..-1)
+          return_array << moves
+          next
+        end
+      end
+    end
+    return_array
+  end
+
   def move_filter(cells, end_co_ord)
     cells.each_value do |positions|
       if positions.length.zero?
@@ -77,6 +96,14 @@ class Pawn < Piece
       'Black' => " \u265F ".colorize(color: :white) }.fetch(color)
   end
 
+  def check_move_filter(cells)
+    if color == 'White'
+      white_check_move_filter(cells)
+    elsif color == 'Black'
+      black_check_move_filter(cells)
+    end
+  end
+
   def move_filter(cells, _end_co_ord)
     if color == 'White'
       white_move_filter(cells)
@@ -95,6 +122,24 @@ class Pawn < Piece
   end
 
   private
+
+  def white_check_move_filter(cells)
+    return_array = []
+    cells['up'] = []
+    cells['double_up'] = []
+    return_array << cells['up_left'] unless cells['up_left'].empty?
+    return_array << cells['up_right'] unless cells['up_right'].empty?
+    return_array
+  end
+
+  def black_check_move_filter(cells)
+    return_array = []
+    cells['down'] = []
+    cells['double_down'] = []
+    return_array << cells['down_left'] unless cells['down_left'].empty?
+    return_array << cells['down_right'] unless cells['down_right'].empty?
+    return_array
+  end
 
   def white_move_filter(cells)
     unless cells['up_right'].empty?
@@ -188,6 +233,13 @@ class Knight < Piece
 
   def display_for_capture
     " \u265E ".colorize(color: :white)
+  end
+
+  def check_move_filter(cells)
+    return if cells.length.zero?
+
+    cells.select! { |cell| cell.value.nil? }
+    cells
   end
 
   def move_filter(cells, _end_co_ord)

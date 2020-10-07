@@ -109,7 +109,7 @@ describe GamePlay do
       @game.en_passant_actions
       @game.switch_active_player
       @game.active_player.move = %w[g4 f3]
-      expect {@game.player_move_actions }.to change { @game.board.grid[4][5].value.class }.from(Pawn). to(NilClass)
+      expect { @game.player_move_actions }.to change { @game.board.grid[4][5].value.class }.from(Pawn). to(NilClass)
     end
 
     it 'does not allow the white player to execute an en passant move when opposing pawns are adjascent with more than 1 move completed' do
@@ -177,8 +177,24 @@ describe GamePlay do
       @game.player1_as_active_player
     end
 
-    it 'generates an array of all cells that can be attacked by the opposing color' do
+    xit 'generates an array of all cells that can be attacked by the black color' do
       dangerous_cells = %w[a6 b6 c6 d6 e6 f6 g6 h6]
+      expect(@game.cells_under_attack).to eq dangerous_cells
+    end
+
+    xit 'generates an array of all cells that can be attacked by the black color' do
+      dangerous_cells = %w[a3 b3 c3 d3 e3 f3 g3 h3]
+      @game.player2_as_active_player
+      expect(@game.cells_under_attack).to eq dangerous_cells
+    end
+
+    it 'generates an array of all cells that can be attacked by the white color' do
+      @game.board.grid[1][0].value = nil
+      @game.board.grid[5][0].value = Pawn.new('Black')
+      @game.board.grid[1][3].value = nil
+      @game.board.grid[3][3].value = Pawn.new('Black')
+      @game.board.display
+      dangerous_cells = %w[a6 b6 c6 d6 e6 f6 g6 h6 a7 c4 e4 d7 f5 g4 h3 a5 a4 b2].sort
       expect(@game.cells_under_attack).to eq dangerous_cells
     end
   end
