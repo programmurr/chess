@@ -13,19 +13,19 @@ class Piece
     @number_of_moves = 0
   end
 
-  # Problem here. Seems to work with rook but not bishop. Not sure about other classes
   def check_move_filter(cells)
     return_array = []
+    cells.delete_if { |_direction, moves| moves.empty? }
     cells.each_value do |moves|
-      binding.pry
-      next if moves.length.zero?
-
-      moves.each.with_index do |cell, index|
-        unless cell.value.nil?
-          binding.pry
-          moves.slice!(index..-1)
-          return_array << moves
-          next
+      if moves.all? { |cell| cell.value.nil? }
+        return_array << moves
+      else
+        moves.each.with_index do |cell, index|
+          unless cell.value.nil?
+            moves.slice!(index..-1)
+            return_array << moves
+            next
+          end
         end
       end
     end

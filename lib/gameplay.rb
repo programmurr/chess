@@ -97,7 +97,6 @@ class GamePlay
                        board.get_cells_from_hash(moves)
                      end
         return_array << cell.value.check_move_filter(move_cells)
-        # binding.pry
       end
     end
     return_array.flatten.uniq.map { |cell| cell.co_ord }.sort

@@ -177,18 +177,18 @@ describe GamePlay do
       @game.player1_as_active_player
     end
 
-    xit 'generates an array of all cells that can be attacked by the black color' do
+    it 'generates an array of all cells that can be attacked by the black color' do
       dangerous_cells = %w[a6 b6 c6 d6 e6 f6 g6 h6]
       expect(@game.cells_under_attack).to eq dangerous_cells
     end
 
-    xit 'generates an array of all cells that can be attacked by the black color' do
+    it 'generates an array of all cells that can be attacked by the black color' do
       dangerous_cells = %w[a3 b3 c3 d3 e3 f3 g3 h3]
       @game.player2_as_active_player
       expect(@game.cells_under_attack).to eq dangerous_cells
     end
 
-    it 'generates an array of all cells that can be attacked by the white color' do
+    it 'generates an array of all cells that can be attacked by the black color' do
       @game.board.grid[1][0].value = nil
       @game.board.grid[5][0].value = Pawn.new('Black')
       @game.board.grid[1][3].value = nil
