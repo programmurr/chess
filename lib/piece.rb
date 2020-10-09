@@ -13,7 +13,8 @@ class Piece
     @number_of_moves = 0
   end
 
-  def check_move_filter(cells)
+  # this is chopping off cells with enemy pieces on them 
+  def check_move_filter(cells, next_player)
     return_array = []
     cells.delete_if { |_direction, moves| moves.empty? }
     cells.each_value do |moves|
@@ -21,8 +22,11 @@ class Piece
         return_array << moves
       else
         moves.each.with_index do |cell, index|
-          unless cell.value.nil?
-            moves.slice!(index..-1)
+          next if cell.value.nil?
+
+          if cell.value.color == next_player.color || cell.value.color == color
+            # be aware of this causing a problem if the last cell is also the one to trigger the slice i.e. index+1 and -1 overlap
+            moves.slice!((index + 1)..-1)
             return_array << moves
             next
           end
@@ -96,7 +100,7 @@ class Pawn < Piece
       'Black' => " \u265F ".colorize(color: :white) }.fetch(color)
   end
 
-  def check_move_filter(cells)
+  def check_move_filter(cells, _next_player)
     if color == 'White'
       white_check_move_filter(cells)
     elsif color == 'Black'
@@ -235,10 +239,10 @@ class Knight < Piece
     " \u265E ".colorize(color: :white)
   end
 
-  def check_move_filter(cells)
+  def check_move_filter(cells, _next_player)
     return if cells.length.zero?
 
-    cells.select! { |cell| cell.value.nil? }
+    cells.select! { |cell| cell.value.nil? || cell.value.color != color }
     cells
   end
 
@@ -293,6 +297,14 @@ class King < Piece
   def display_for_capture
     " \u265A ".colorize(color: :white)
   end
+
+  def adjascent_cells(co_ord, board)
+    moves = KingMoves.new(co_ord).moves
+    board.get_cells_from_hash(moves)
+         .delete_if { |_direction, move| move.empty? }.flatten(2)
+         .delete_if { |element| element.is_a? String }
+         .map(&:co_ord).sort
+  end
 end
 
 # A ghost of a pawn that allows en passant to take place
@@ -311,4 +323,12 @@ class InvisiblePawn
   end
 
   def display_for_capture; end
+
+  def all_move_coordinates_from_current_position(_co_ord, _color)
+    {'direction' => []}
+  end
+
+  def check_move_filter(_cells, _next_player)
+    []
+  end
 end

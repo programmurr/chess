@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'colorize'
+require 'observer'
 require_relative 'board'
 require_relative 'player'
 require_relative 'move_checks'
@@ -9,6 +10,8 @@ require_relative 'move_checks'
 #   This class is getting too big and complicated. Need to refactor
 #   Possibly move some logic to move_checks and update tests
 class GamePlay
+  include Observable
+
   attr_accessor :board, :player1, :player2, :active_player, :next_player, :en_passant_cache
 
   def initialize(board: Board.new, player1: Player.new(1), player2: Player.new(2))
@@ -62,7 +65,7 @@ class GamePlay
     loop do
       refresh_display
       enter_move
-      if move_check.castle_check?
+      if move_check.castle?
         execute_castle_move
         break
       end
@@ -71,6 +74,8 @@ class GamePlay
       if piece.valid_move?(cells, end_co_ordinate)
         player_move_actions
         execute_promotion if move_check.promote_pawn?
+        # binding.pry
+        game_over_checks
         break
       else
         invalid_move_message
@@ -80,14 +85,13 @@ class GamePlay
     switch_active_player
   end
 
+  # Test check/mate/stalemate scenarios. Should be working
   def cells_under_attack
-    # binding.pry
-    # white_king = board.grid[0][4].value
-    # # get list of adjascent cells for white_king
-    return_array = []
+    attack_array = []
+    final_array = []
     board.grid.each do |row|
       row.each do |cell|
-        next if cell.value.nil? || cell.value.color == active_player.color
+        next if cell.value.nil? || cell.value.color == next_player.color
 
         co_ord = board.get_cell_grid_co_ord(cell.co_ord)
         moves = cell.value.all_move_coordinates_from_current_position(co_ord, cell.value.color)
@@ -96,20 +100,17 @@ class GamePlay
                      else
                        board.get_cells_from_hash(moves)
                      end
-        return_array << cell.value.check_move_filter(move_cells)
+        attack_array << cell.value.check_move_filter(move_cells, next_player)
       end
     end
-    return_array.flatten.uniq.map { |cell| cell.co_ord }.sort
+    attack_array.flatten.uniq.each do |cell|
+      final_array << cell if cell.value.nil? || cell.value.color != active_player.color  
+    end
+    final_array.map(&:co_ord).sort
   end
 
   def move_check
     MoveChecks.new(active_player, board)
-  end
-
-  def player_move_actions
-    active_player.move_piece(board)
-    active_player.take_enemy_piece(board)
-    active_player.move_counter += 1
   end
 
   def execute_promotion
@@ -132,7 +133,37 @@ class GamePlay
     place_invisible_pawn
   end
 
+  def player_move_actions
+    active_player.move_piece(board)
+    active_player.take_enemy_piece(board)
+    active_player.move_counter += 1
+  end
+
   private
+
+  def game_over_checks
+    binding.pry
+    if move_check.check?(cells_under_attack, king_cell)
+      puts 'Check!'
+      sleep 2
+    end
+    if move_check.checkmate?(cells_under_attack, king_cell)
+      puts 'Checkmate!'
+      sleep 2
+    end
+    if move_check.stalemate?(cells_under_attack, king_cell)
+      puts 'Stalemate!'
+      sleep 2
+    end
+  end
+
+  def king_cell
+    board.grid.each do |row|
+      row.each do |cell|
+        return cell if cell.value.class == King && cell.value.color == next_player.color
+      end
+    end
+  end
 
   def place_invisible_pawn
     return if en_passant_cache.nil?
@@ -226,9 +257,9 @@ class GamePlay
   def enter_move
     loop do
       user_move_input
-      if move_check.castle_check?
+      if move_check.castle?
         break
-      elsif move_check.castle_check? == false && active_player.move.include?('castle')
+      elsif move_check.castle? == false && active_player.move.include?('castle')
         invalid_move_message
         refresh_display
       elsif move_check.start_cell_contains_piece? == false || move_check.matching_piece_class? == false

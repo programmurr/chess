@@ -9,6 +9,31 @@ class MoveChecks
     @board = board
   end
 
+  def check?(cells_under_attack, king_cell)
+    # binding.pry
+    return true if cells_under_attack.include?(king_cell.co_ord)
+
+    false
+  end
+
+  def checkmate?(cells_under_attack, king_cell)
+    # binding.pry
+    array_co_ord = board.get_cell_grid_co_ord(king_cell.co_ord)
+    adjascent_king_cells = king_cell.value.adjascent_cells(array_co_ord, board)
+    return true if check?(cells_under_attack, king_cell) && (cells_under_attack - adjascent_king_cells) == []
+
+    false
+  end
+
+  def stalemate?(cells_under_attack, king_cell)
+    # binding.pry
+    array_co_ord = board.get_cell_grid_co_ord(king_cell.co_ord)
+    adjascent_king_cells = king_cell.value.adjascent_cells(array_co_ord, board)
+    return true if check?(cells_under_attack, king_cell) == false && (cells_under_attack - adjascent_king_cells) == []
+
+    false
+  end
+
   def promote_pawn?
     (board.grid[7] + board.grid[0]).each do |cell|
       next if cell.value.nil?
@@ -17,7 +42,7 @@ class MoveChecks
     false
   end
 
-  def castle_check?
+  def castle?
     return false unless player.move.include?('castle')
 
     move_co_ord = player.move[-2, 2]

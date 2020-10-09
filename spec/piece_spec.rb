@@ -85,7 +85,6 @@ describe Piece do
       expect(predicted_moves).to eq actual_moves
     end
 
-    # FAIL
     it 'can list all co_ordinates, including attacks, a white pawn can move to on its first move' do
       pawn = Pawn.new('White')
       co_ord = [6, 1]
@@ -292,6 +291,37 @@ describe King do
 
     it 'can display a unicode character representing a White chess king' do
       expect(white_king.display_on_board).to eq ' ♔ '.colorize(color: :black)
+    end
+  end
+
+  context '#adjascent_cells' do
+    before do 
+      @board = Board.new
+      @board.set_cell_coordinates
+      @board.place_pawns
+      @board.place_royalty  
+    end
+
+    it 'returns all adjascent cell co ords around the white king, regardless of what is on them, from the start position' do
+      expected_cells = %w[d1 d2 e2 f1 f2]
+      expect(@board.grid[7][4].value.adjascent_cells([7, 4], @board)).to eq expected_cells
+    end
+
+    it 'returns all adjascent cell co ords around the black king, regardless of what is on them, from the start position' do
+      expected_cells = %w[d7 d8 e7 f7 f8]
+      expect(@board.grid[0][4].value.adjascent_cells([0, 4], @board)).to eq expected_cells
+    end
+
+    it 'returns all adjascent cell co ords around the white king, regardless of what is on them, from a random board position' do
+      @board.grid[3][1].value = King.new('White')
+      expected_cells = %w[a4 a5 a6 b4 b6 c4 c5 c6]
+      expect(@board.grid[3][1].value.adjascent_cells([3, 1], @board)).to eq expected_cells
+    end
+
+    it 'returns all adjascent cell co ords around the black king, regardless of what is on them, from a random board position' do
+      @board.grid[4][6].value = King.new('Black')
+      expected_cells = %w[f3 f4 f5 g3 g5 h3 h4 h5]
+      expect(@board.grid[4][6].value.adjascent_cells([4, 6], @board)).to eq expected_cells
     end
   end
 end

@@ -9,6 +9,23 @@ describe MoveChecks do
     @board.place_pawns
     @board.place_royalty
   end
+
+  context '#check?' do
+    it 'returns true if the king cell co ord is in the list of co ords under attack' do
+      player = double
+      cells_under_attack = %w[b5 c6 d7 e8]
+      king = double('King', co_ord: 'e8')
+      expect(MoveChecks.new(player, @board).check?(cells_under_attack, king)).to eq true
+    end
+
+    it 'returns false if the king cell co ord is not in the list of co ords under attack' do
+      player = double
+      cells_under_attack = %w[b5 c6 d7 e8]
+      king = double('King', co_ord: 'a2')
+      expect(MoveChecks.new(player, @board).check?(cells_under_attack, king)).to eq false
+    end
+  end
+
   context '#promote_pawn?' do
     it 'returns true if there is a white Pawn present on board row 0' do
       @board.grid[0][0].value = Pawn.new('White')
@@ -33,12 +50,12 @@ describe MoveChecks do
     end
   end
 
-  context '#castle_check?' do
+  context '#castle?' do
     it 'returns false if the spaces between the a1 rook and the king are occupied' do
       @board.grid[7][2].value = nil
       @board.grid[7][3].value = nil
       player = double('Player', move: 'castlea1', color: 'White')
-      expect(MoveChecks.new(player, @board).castle_check?).to eq false
+      expect(MoveChecks.new(player, @board).castle?).to eq false
     end
 
     it 'returns true if the spaces between the a1 rook and the king are unoccupied and it is the first move of the rook and the king' do
@@ -46,7 +63,7 @@ describe MoveChecks do
       @board.grid[7][2].value = nil
       @board.grid[7][3].value = nil
       player = double('Player', move: 'castlea1', color: 'White')
-      expect(MoveChecks.new(player, @board).castle_check?).to eq true
+      expect(MoveChecks.new(player, @board).castle?).to eq true
     end
 
     it 'returns false if the spaces between the a1 rook and the king are unoccupied and it is not the first move of the rook' do
@@ -55,7 +72,7 @@ describe MoveChecks do
       @board.grid[7][2].value = nil
       @board.grid[7][3].value = nil
       player = double('Player', move: 'castlea1', color: 'White')
-      expect(MoveChecks.new(player, @board).castle_check?).to eq false
+      expect(MoveChecks.new(player, @board).castle?).to eq false
     end
 
     it 'returns false if the spaces between the a1 rook and the king are unoccupied and it is not the first move of the king' do
@@ -64,7 +81,7 @@ describe MoveChecks do
       @board.grid[7][2].value = nil
       @board.grid[7][3].value = nil
       player = double('Player', move: 'castlea1', color: 'White')
-      expect(MoveChecks.new(player, @board).castle_check?).to eq false
+      expect(MoveChecks.new(player, @board).castle?).to eq false
     end
 
     it 'returns false if the spaces between the a1 rook and the king are unoccupied and it is not the first move of the king and not the first move of the rook' do
@@ -74,19 +91,19 @@ describe MoveChecks do
       @board.grid[7][2].value = nil
       @board.grid[7][3].value = nil
       player = double('Player', move: 'castlea1', color: 'White')
-      expect(MoveChecks.new(player, @board).castle_check?).to eq false
+      expect(MoveChecks.new(player, @board).castle?).to eq false
     end
 
     it 'returns false if the spaces between the h1 rook and the king are occupied' do
       player = double('Player', move: 'castlea1', color: 'White')
-      expect(MoveChecks.new(player, @board).castle_check?).to eq false
+      expect(MoveChecks.new(player, @board).castle?).to eq false
     end
 
     it 'returns true if the spaces between the h1 rook and the king are unoccupied and it is the first move of the rook and the king' do
       @board.grid[7][5].value = nil
       @board.grid[7][6].value = nil
       player = double('Player', move: 'castleh1', color: 'White')
-      expect(MoveChecks.new(player, @board).castle_check?).to eq true
+      expect(MoveChecks.new(player, @board).castle?).to eq true
     end
 
     it 'returns false if the spaces between the h1 rook and the king are unoccupied and it is not the first move of the rook' do
@@ -94,7 +111,7 @@ describe MoveChecks do
       @board.grid[7][5].value = nil
       @board.grid[7][6].value = nil
       player = double('Player', move: 'castleh1', color: 'White')
-      expect(MoveChecks.new(player, @board).castle_check?).to eq false
+      expect(MoveChecks.new(player, @board).castle?).to eq false
     end
 
     it 'returns false if the spaces between the h1 rook and the king are unoccupied and it is not the first move of the king' do
@@ -102,7 +119,7 @@ describe MoveChecks do
       @board.grid[7][5].value = nil
       @board.grid[7][6].value = nil
       player = double('Player', move: 'castleh1', color: 'White')
-      expect(MoveChecks.new(player, @board).castle_check?).to eq false
+      expect(MoveChecks.new(player, @board).castle?).to eq false
     end
 
     it 'returns false if the spaces between the h1 rook and the king are unoccupied and it is not the first move of the king and not the first move of the rook' do
@@ -111,19 +128,19 @@ describe MoveChecks do
       @board.grid[7][5].value = nil
       @board.grid[7][6].value = nil
       player = double('Player', move: 'castleh1', color: 'White')
-      expect(MoveChecks.new(player, @board).castle_check?).to eq false
+      expect(MoveChecks.new(player, @board).castle?).to eq false
     end
 
     it 'returns false if the spaces between the h8 rook and the king are occupied' do
       player = double('Player', move: 'castleh8', color: 'Black')
-      expect(MoveChecks.new(player, @board).castle_check?).to eq false
+      expect(MoveChecks.new(player, @board).castle?).to eq false
     end
 
     it 'returns true if the spaces between the h8 rook and the king are unoccupied and it is the first move of the rook and the king' do
       @board.grid[0][5].value = nil
       @board.grid[0][6].value = nil
       player = double('Player', move: 'castleh8', color: 'Black')
-      expect(MoveChecks.new(player, @board).castle_check?).to eq true
+      expect(MoveChecks.new(player, @board).castle?).to eq true
     end
 
     it 'returns false if the spaces between the h8 rook and the king are unoccupied and it is not the first move of the rook' do
@@ -131,7 +148,7 @@ describe MoveChecks do
       @board.grid[0][5].value = nil
       @board.grid[0][6].value = nil
       player = double('Player', move: 'castleh8', color: 'Black')
-      expect(MoveChecks.new(player, @board).castle_check?).to eq false
+      expect(MoveChecks.new(player, @board).castle?).to eq false
     end
 
     it 'returns false if the spaces between the h8 rook and the king are unoccupied and it is not the first move of the king' do
@@ -139,7 +156,7 @@ describe MoveChecks do
       @board.grid[0][5].value = nil
       @board.grid[0][6].value = nil
       player = double('Player', move: 'castleh8', color: 'Black')
-      expect(MoveChecks.new(player, @board).castle_check?).to eq false
+      expect(MoveChecks.new(player, @board).castle?).to eq false
     end
 
     it 'returns false if the spaces between the h8 rook and the king are unoccupied and it is not the first move of the king and not the first move of the rook' do
@@ -148,14 +165,14 @@ describe MoveChecks do
       @board.grid[0][5].value = nil
       @board.grid[0][6].value = nil
       player = double('Player', move: 'castleh8', color: 'Black')
-      expect(MoveChecks.new(player, @board).castle_check?).to eq false
+      expect(MoveChecks.new(player, @board).castle?).to eq false
     end
 
     it 'returns false if the spaces between the a8 rook and the king are occupied' do
       @board.grid[0][2].value = nil
       @board.grid[0][3].value = nil
       player = double('Player', move: 'castlea8', color: 'Black')
-      expect(MoveChecks.new(player, @board).castle_check?).to eq false
+      expect(MoveChecks.new(player, @board).castle?).to eq false
     end
 
     it 'returns true if the spaces between the a8 rook and the king are unoccupied and it is the first move of the rook and the king' do
@@ -163,7 +180,7 @@ describe MoveChecks do
       @board.grid[0][2].value = nil
       @board.grid[0][3].value = nil
       player = double('Player', move: 'castlea8', color: 'Black')
-      expect(MoveChecks.new(player, @board).castle_check?).to eq true
+      expect(MoveChecks.new(player, @board).castle?).to eq true
     end
 
     it 'returns false if the spaces between the a8 rook and the king are unoccupied and it is not the first move of the rook' do
@@ -172,7 +189,7 @@ describe MoveChecks do
       @board.grid[0][2].value = nil
       @board.grid[0][3].value = nil
       player = double('Player', move: 'castlea8', color: 'Black')
-      expect(MoveChecks.new(player, @board).castle_check?).to eq false
+      expect(MoveChecks.new(player, @board).castle?).to eq false
     end
 
     it 'returns false if the spaces between the a8 rook and the king are unoccupied and it is not the first move of the king' do
@@ -181,7 +198,7 @@ describe MoveChecks do
       @board.grid[0][2].value = nil
       @board.grid[0][3].value = nil
       player = double('Player', move: 'castlea8', color: 'Black')
-      expect(MoveChecks.new(player, @board).castle_check?).to eq false
+      expect(MoveChecks.new(player, @board).castle?).to eq false
     end
 
     it 'returns false if the spaces between the a8 rook and the king are unoccupied and it is not the first move of the king and not the first move of the rook' do
@@ -191,7 +208,7 @@ describe MoveChecks do
       @board.grid[0][2].value = nil
       @board.grid[0][3].value = nil
       player = double('Player', move: 'castlea8', color: 'Black')
-      expect(MoveChecks.new(player, @board).castle_check?).to eq false
+      expect(MoveChecks.new(player, @board).castle?).to eq false
     end
   end
 
