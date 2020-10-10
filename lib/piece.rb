@@ -13,7 +13,6 @@ class Piece
     @number_of_moves = 0
   end
 
-  # this is chopping off cells with enemy pieces on them 
   def check_move_filter(cells, next_player)
     return_array = []
     cells.delete_if { |_direction, moves| moves.empty? }
@@ -22,10 +21,9 @@ class Piece
         return_array << moves
       else
         moves.each.with_index do |cell, index|
-          next if cell.value.nil?
+          next if cell.value.nil? || cell.value.class == InvisiblePawn
 
           if cell.value.color == next_player.color || cell.value.color == color
-            # be aware of this causing a problem if the last cell is also the one to trigger the slice i.e. index+1 and -1 overlap
             moves.slice!((index + 1)..-1)
             return_array << moves
             next
@@ -300,10 +298,14 @@ class King < Piece
 
   def adjascent_cells(co_ord, board)
     moves = KingMoves.new(co_ord).moves
-    board.get_cells_from_hash(moves)
-         .delete_if { |_direction, move| move.empty? }.flatten(2)
-         .delete_if { |element| element.is_a? String }
-         .map(&:co_ord).sort
+    return_array = []
+    cells = board.get_cells_from_hash(moves)
+                 .delete_if { |_direction, move| move.empty? }.flatten(2)
+                 .delete_if { |element| element.is_a? String }
+    cells.each do |cell|
+      return_array << cell if cell.value.nil? || cell.value.color != color
+    end
+    return_array.map(&:co_ord).sort
   end
 end
 

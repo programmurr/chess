@@ -10,26 +10,25 @@ class MoveChecks
   end
 
   def check?(cells_under_attack, king_cell)
-    # binding.pry
     return true if cells_under_attack.include?(king_cell.co_ord)
 
     false
   end
 
   def checkmate?(cells_under_attack, king_cell)
-    # binding.pry
     array_co_ord = board.get_cell_grid_co_ord(king_cell.co_ord)
     adjascent_king_cells = king_cell.value.adjascent_cells(array_co_ord, board)
-    return true if check?(cells_under_attack, king_cell) && (cells_under_attack - adjascent_king_cells) == []
+    return true if check?(cells_under_attack, king_cell) && (adjascent_king_cells - cells_under_attack) == []
 
     false
   end
 
-  def stalemate?(cells_under_attack, king_cell)
-    # binding.pry
+  def stalemate?(cells_under_attack, king_cell, board)
     array_co_ord = board.get_cell_grid_co_ord(king_cell.co_ord)
-    adjascent_king_cells = king_cell.value.adjascent_cells(array_co_ord, board)
-    return true if check?(cells_under_attack, king_cell) == false && (cells_under_attack - adjascent_king_cells) == []
+    move_hash = king_cell.value.all_move_coordinates_from_current_position(array_co_ord, king_cell.value.color)
+    move_cells = board.get_cells_from_hash(move_hash)
+    clean_cells = move_cells.flatten(2).delete_if { |element| element.is_a? String }.map(&:co_ord).sort
+    return true if clean_cells - cells_under_attack == []
 
     false
   end

@@ -61,6 +61,9 @@ class GamePlay
     end
   end
 
+  # If check is true, the king MUST be moved out of danger
+  # The next move must remove it from the cells under attack list
+  # If checkmate - game over
   def test_loop
     loop do
       refresh_display
@@ -74,7 +77,6 @@ class GamePlay
       if piece.valid_move?(cells, end_co_ordinate)
         player_move_actions
         execute_promotion if move_check.promote_pawn?
-        # binding.pry
         game_over_checks
         break
       else
@@ -142,7 +144,6 @@ class GamePlay
   private
 
   def game_over_checks
-    binding.pry
     if move_check.check?(cells_under_attack, king_cell)
       puts 'Check!'
       sleep 2
@@ -151,7 +152,7 @@ class GamePlay
       puts 'Checkmate!'
       sleep 2
     end
-    if move_check.stalemate?(cells_under_attack, king_cell)
+    if move_check.stalemate?(cells_under_attack, king_cell, board)
       puts 'Stalemate!'
       sleep 2
     end
@@ -303,10 +304,10 @@ class GamePlay
   end
 end
 
-# game = GamePlay.new
-# game.setup_board
-# game.assign_player1_white_piece
-# game.player1_as_active_player
-# loop do
-#   game.test_loop
-# end
+game = GamePlay.new
+game.setup_board
+game.assign_player1_white_piece
+game.player1_as_active_player
+loop do
+  game.test_loop
+end
