@@ -304,10 +304,10 @@ class GamePlay
   end
 end
 
-game = GamePlay.new
-game.setup_board
-game.assign_player1_white_piece
-game.player1_as_active_player
-loop do
-  game.test_loop
-end
+# game = GamePlay.new
+# game.setup_board
+# game.assign_player1_white_piece
+# game.player1_as_active_player
+# loop do
+#   game.test_loop
+# end
