@@ -3,6 +3,15 @@
 require_relative 'gameplay'
 require_relative 'menus'
 
+# TODO:
+#   If check is true, the king MUST be moved out of danger
+#      The next move must remove it from the cells under attack list
+#   If checkmate - game over - break out of loop
+#   Castling:
+#      King must not pass over any cells under attack
+#      King must not land in check
+#   Serializable module
+
 def selections
   Welcome.new
 

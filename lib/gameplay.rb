@@ -61,9 +61,6 @@ class GamePlay
     end
   end
 
-  # If check is true, the king MUST be moved out of danger
-  # The next move must remove it from the cells under attack list
-  # If checkmate - game over
   def game_loop
     loop do
       refresh_display
@@ -87,7 +84,6 @@ class GamePlay
     switch_active_player
   end
 
-  # Test check/mate/stalemate scenarios. Should be working
   def cells_under_attack
     attack_array = []
     final_array = []
