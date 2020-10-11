@@ -64,7 +64,7 @@ class GamePlay
   # If check is true, the king MUST be moved out of danger
   # The next move must remove it from the cells under attack list
   # If checkmate - game over
-  def test_loop
+  def game_loop
     loop do
       refresh_display
       enter_move
@@ -309,5 +309,5 @@ end
 # game.assign_player1_white_piece
 # game.player1_as_active_player
 # loop do
-#   game.test_loop
+#   game.game_loop
 # end

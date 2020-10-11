@@ -27,10 +27,20 @@ module DisplayInterface
     puts 'Enter 4 for instructions on how to play'.center(70)
     puts
   end
+
+  def player1_enter_name
+    puts
+    puts
+    puts "Player 1 will be the white color and will go first."
+    puts "\nPlayer 1, please type your name then press enter."
+    puts
+  end
+
+  def player2_enter_name
+    puts
+    puts
+    puts 'Player 2 will be the black color and will go second.'
+    puts "\nPlayer 2, please type your name then press enter."
+    puts
+  end
 end
-# Displays welcome screen
-# Displays the captured pieces for both players
-# Displays the board
-# Asks player to input a valid move
-# Can display instructions when triggered
-# Can save game when triggered

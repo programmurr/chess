@@ -41,6 +41,8 @@ class MoveChecks
     false
   end
 
+  # Need to ensure no cells between the king and the rook are under attack
+  #    And that the king does not land in check
   def castle?
     return false unless player.move.include?('castle')
 

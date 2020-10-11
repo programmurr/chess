@@ -1,0 +1,82 @@
+
+
+				INSTRUCTIONS
+
+				    ***
+
+Player 1 captured pieces:
+
+Player 2 captured pieces:
+   
+
+			   a  b  c  d  e  f  g  h 
+			8  ♜  ♞  ♝  ♛  ♚  ♝  ♞  ♜  8
+			7  ♟  ♟  ♟  ♟  ♟  ♟  ♟  ♟  7
+			6     ░     ░     ░     ░  6
+			5  ░     ░     ░     ░     5
+			4     ░     ░     ░     ░  4
+			3  ░     ░     ░     ░     3
+			2  ♙  ♙  ♙  ♙  ♙  ♙  ♙  ♙  2
+			1  ♖  ♘  ♗  ♕  ♔  ♗  ♘  ♖  1
+			   a  b  c  d  e  f  g  h 
+
+MOVEMENT
+
+When the game begins, you will see a board that looks similar to this. The chess
+board is an 8x8 checkered board, with letters labelling the columns and numbers
+labelling the rows. 
+
+The black pieces are located on rows 7 and 8 while the white pieces are located 
+on rows 1 and 2.
+
+The white player moves first. To make a move, simply locate the piece you want
+to move, enter the coordinate of the piece, then enter the coordinate of the
+square you want the piece to land on.
+
+So to move the white pawn on a2 to a4, simply type: 'a2a4' then press Enter.
+
+Player 1 captured pieces:
+
+Player 2 captured pieces:
+
+   			   a  b  c  d  e  f  g  h 
+			8  ♜  ♞  ♝  ♛  ♚  ♝  ♞  ♜  8
+			7  ♟  ♟  ♟  ♟  ♟  ♟  ♟  ♟  7
+			6     ░     ░     ░     ░  6
+			5  ░     ░     ░     ░     5
+			4  ♙  ░     ░     ░     ░  4
+			3  ░     ░     ░     ░     3
+			2     ♙  ♙  ♙  ♙  ♙  ♙  ♙  2
+			1  ♖  ♘  ♗  ♕  ♔  ♗  ♘  ♖  1
+			   a  b  c  d  e  f  g  h 
+
+The board will then be updated to show the move. If enemy pieces are taken, they
+will be display in the 'captured pieces section shown above.
+
+If the player attempts to make a move that is not allowed, an error message will
+appear and the player will have to enter their move again correctly.
+
+
+CASTLING
+
+If the game permits, you may make a castling move by typing 'castle', then the
+coordinate of the rook to castle with, then pressing enter e.g. 'castlea1' to
+castle the a1 rook with the white king. 
+
+All other moves can take place by typing the coordinates directly, including
+taking en-passant.
+
+
+SAVE/LOAD
+
+Save the game at any time by typing 'save' as your move. It will be
+automatically saved with the names of both players and the date/time of the
+save. 
+
+This save can be loaded by selecting it from the Load menu when the game starts.
+
+				   ***
+
+Enter '1' to return to the title screen.
+
+
