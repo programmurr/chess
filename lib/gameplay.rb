@@ -10,9 +10,7 @@ require_relative 'move_checks'
 #   This class is getting too big and complicated. Need to refactor
 #   Possibly move some logic to move_checks and update tests
 class GamePlay
-  include Observable
-
-  attr_accessor :board, :player1, :player2, :active_player, :next_player, :en_passant_cache
+  attr_accessor :board, :player1, :player2, :active_player, :next_player, :en_passant_cache, :white_check_cells, :black_check_cells, :white_king_check, :black_king_check, :check_scenario, :do_not_switch_player
 
   def initialize(board: Board.new, player1: Player.new(1), player2: Player.new(2))
     @board = board
@@ -21,6 +19,12 @@ class GamePlay
     @active_player = nil
     @next_player = nil
     @en_passant_cache = nil
+    @white_check_cells = nil
+    @black_check_cells = nil
+    @check_scenario = false
+    @white_king_check = false
+    @black_king_check = false
+    @do_not_switch_player = false
   end
 
   def setup_board
@@ -71,20 +75,58 @@ class GamePlay
       end
       cells = change_move_array_to_cells
       piece.move_filter(cells, end_co_ordinate)
-      if piece.valid_move?(cells, end_co_ordinate)
+      if piece.valid_move?(cells, end_co_ordinate) && check_scenario == true
+        board_copy = Marshal.load(Marshal.dump(board))
+        player_copy = Marshal.load(Marshal.dump(active_player))
+        player_move_actions
+        if active_player.color == 'White' && move_check.check?(black_check_cells, white_king_cell)
+          puts 'You must make a move that removes your King from check!'.colorize(color: :red)
+          sleep 3
+          self.board = board_copy
+          self.active_player = player_copy
+          self.do_not_switch_player = true
+          break
+        elsif active_player.color == 'White'
+          self.check_scenario = false
+          self.white_king_check = false
+          self.do_not_switch_player = false
+          execute_promotion if move_check.promote_pawn?
+        elsif active_player.color == 'Black' && move_check.check?(white_check_cells, black_king_cell)
+          puts 'You must make a move that removes your King from check!'.colorize(color: :red)
+          sleep 3
+          self.board = board_copy
+          self.active_player = player_copy
+          self.do_not_switch_player = true
+          break
+        elsif active_player.color == 'Black'
+          self.check_scenario = false
+          self.white_king_check = false
+          self.do_not_switch_player = false
+          execute_promotion if move_check.promote_pawn?
+        end
+      elsif piece.valid_move?(cells, end_co_ordinate)
         player_move_actions
         execute_promotion if move_check.promote_pawn?
-        game_over_checks
-        break
       else
         invalid_move_message
       end
+      calculate_cells_under_attack
+      check_actions if check?
+      if checkmate?
+        checkmate_actions
+        exit
+      end
+      if stalemate?
+        stalemate_actions
+        exit
+      end
+      break
     end
     en_passant_actions
-    switch_active_player
+    switch_active_player if do_not_switch_player == false
   end
 
-  def cells_under_attack
+  def calculate_cells_under_attack
     attack_array = []
     final_array = []
     board.grid.each do |row|
@@ -104,7 +146,11 @@ class GamePlay
     attack_array.flatten.uniq.each do |cell|
       final_array << cell if cell.value.nil? || cell.value.color != active_player.color  
     end
-    final_array.map(&:co_ord).sort
+    if active_player.color == 'White'
+      self.white_check_cells = final_array.map(&:co_ord).sort
+    elsif active_player.color == 'Black'
+      self.black_check_cells = final_array.map(&:co_ord).sort
+    end
   end
 
   def move_check
@@ -139,25 +185,93 @@ class GamePlay
 
   private
 
-  def game_over_checks
-    if move_check.check?(cells_under_attack, king_cell)
-      puts 'Check!'
-      sleep 2
+  def king_check(color)
+    {'White' => white_king_check, 
+    'Black' => black_king_check}.fetch(color)
+  end
+
+  def checkmate_actions
+    refresh_display
+    puts 'Checkmate!'.colorize(color: :green)
+    puts "Congratulations #{active_player.name}! You are the winner!"
+    puts 'Thank you for playing!'
+    sleep 3
+  end
+
+  def stalemate_actions
+    refresh_display
+    puts 'Stalemate!'.colorize(color: :yellow)
+    puts "#{next_player.name}'s King cannot make a move without going into check!'"
+    puts 'This means the game is a draw!'
+    puts 'Thank you for playing!'
+    sleep 3
+  end
+
+  def check_actions
+    refresh_display
+    if active_player.color == 'White'
+      self.black_king_check = true
+      king_cell = black_king_cell
+    elsif active_player.color == 'Black'
+      self.white_king_check = true
+      king_cell = white_king_cell
     end
-    if move_check.checkmate?(cells_under_attack, king_cell)
-      puts 'Checkmate!'
-      sleep 2
+    self.check_scenario = true
+    puts "#{king_cell.value.color} #{king_cell.value.name} is in Check!".colorize(color: :yellow)
+    sleep 5
+  end
+
+  def check?
+    if active_player.color == 'White'
+      cells_under_attack = white_check_cells
+      king_cell = black_king_cell
+    elsif active_player.color == 'Black'
+      cells_under_attack = black_check_cells
+      king_cell = white_king_cell
     end
-    if move_check.stalemate?(cells_under_attack, king_cell, board)
-      puts 'Stalemate!'
-      sleep 2
+    return true if move_check.check?(cells_under_attack, king_cell)
+
+    false
+  end
+
+  def checkmate?
+    if active_player.color == 'White'
+      cells_under_attack = white_check_cells
+      king_cell = black_king_cell
+    elsif active_player.color == 'Black'
+      cells_under_attack = black_check_cells
+      king_cell = white_king_cell
+    end
+    return true if move_check.checkmate?(cells_under_attack, king_cell)
+
+    false
+  end
+
+  def stalemate?
+    if active_player.color == 'White'
+      cells_under_attack = white_check_cells
+      king_cell = black_king_cell
+    elsif active_player.color == 'Black'
+      cells_under_attack = black_check_cells
+      king_cell = white_king_cell
+    end
+    return true if move_check.stalemate?(cells_under_attack, king_cell, board)
+
+    false
+  end
+
+  def white_king_cell
+    board.grid.each do |row|
+      row.each do |cell|
+        return cell if cell.value.class == King && cell.value.color == 'White'
+      end
     end
   end
 
-  def king_cell
+  def black_king_cell
     board.grid.each do |row|
       row.each do |cell|
-        return cell if cell.value.class == King && cell.value.color == next_player.color
+        return cell if cell.value.class == King && cell.value.color == 'Black'
       end
     end
   end
@@ -300,10 +414,10 @@ class GamePlay
   end
 end
 
-# game = GamePlay.new
-# game.setup_board
-# game.assign_player1_white_piece
-# game.player1_as_active_player
-# loop do
-#   game.game_loop
-# end
+game = GamePlay.new
+game.setup_board
+game.assign_player1_white_piece
+game.player1_as_active_player
+loop do
+  game.game_loop
+end

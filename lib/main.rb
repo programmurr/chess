@@ -6,7 +6,6 @@ require_relative 'menus'
 # TODO:
 #   If check is true, the king MUST be moved out of danger
 #      The next move must remove it from the cells under attack list
-#   If checkmate - game over - break out of loop
 #   Castling:
 #      King must not pass over any cells under attack
 #      King must not land in check
@@ -62,7 +61,7 @@ def instructions
   while input = gets.chomp.to_s
     if input == '1'
       selections
-    else 
+    else
       puts "Enter '1' to return to the title screen"
     end
   end

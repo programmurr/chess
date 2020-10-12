@@ -37,7 +37,7 @@ class Player
   end
 
   def display_captured_pieces
-    puts "#{name} captured pieces:"
+    puts "#{name}'s captured pieces:"
     captured_pieces.each do |piece|
       if piece.color == 'Black'
         print piece.display_on_board.colorize(background: :light_white)
