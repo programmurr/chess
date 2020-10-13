@@ -4,12 +4,10 @@ require_relative 'gameplay'
 require_relative 'menus'
 
 # TODO:
-#   If check is true, the king MUST be moved out of danger
-#      The next move must remove it from the cells under attack list
-#   Castling:
-#      King must not pass over any cells under attack
-#      King must not land in check
-#   Serializable module
+# Prevent player putting their king into check
+#   This already works for the king directly, but not if moving another pieces inadvertently causes it
+# Serializable module
+# Make tests
 
 def selections
   Welcome.new
@@ -19,7 +17,7 @@ def selections
     when '1'
       new_game
     when '2'
-      # Load game
+      puts '<<< UNDER CONSTRUCTION >>>'
     when '3'
       rules
     when '4'
@@ -38,8 +36,7 @@ def new_game
   player2.name = Names.new.set_player2_name
   game = GamePlay.new(player1: player1, player2: player2)
   game.setup_board
-  game.assign_player1_white_piece
-  game.player1_as_active_player
+  game.assign_player_pieces
   loop do
     game.game_loop
   end

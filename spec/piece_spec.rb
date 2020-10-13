@@ -302,16 +302,6 @@ describe King do
       @board.place_royalty  
     end
 
-    it 'returns all adjascent cell co ords around the white king, regardless of what is on them, from the start position' do
-      expected_cells = %w[d1 d2 e2 f1 f2]
-      expect(@board.grid[7][4].value.adjascent_cells([7, 4], @board)).to eq expected_cells
-    end
-
-    it 'returns all adjascent cell co ords around the black king, regardless of what is on them, from the start position' do
-      expected_cells = %w[d7 d8 e7 f7 f8]
-      expect(@board.grid[0][4].value.adjascent_cells([0, 4], @board)).to eq expected_cells
-    end
-
     it 'returns all adjascent cell co ords around the white king, regardless of what is on them, from a random board position' do
       @board.grid[3][1].value = King.new('White')
       expected_cells = %w[a4 a5 a6 b4 b6 c4 c5 c6]

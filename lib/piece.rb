@@ -284,6 +284,13 @@ class King < Piece
     KingMoves.new(co_ord).moves
   end
 
+  attr_accessor :check
+
+  def initialize(color)
+    super
+    @check = false
+  end
+
   def display_on_board
     if color == 'White'
       " \u2654 ".colorize(color: :black)
@@ -327,7 +334,7 @@ class InvisiblePawn
   def display_for_capture; end
 
   def all_move_coordinates_from_current_position(_co_ord, _color)
-    {'direction' => []}
+    { 'direction' => [] }
   end
 
   def check_move_filter(_cells, _next_player)

@@ -140,7 +140,6 @@ class Board
 
   private
 
-  # 9/14 - HACK: I know this is awful, just please bear with me until I can refactor
   def grid_coordinate_cell_map
     { 'a8' => grid[0][0], 'b8' => grid[0][1], 'c8' => grid[0][2], 'd8' => grid[0][3], 'e8' => grid[0][4], 'f8' => grid[0][5], 'g8' => grid[0][6], 'h8' => grid[0][7],
       'a7' => grid[1][0], 'b7' => grid[1][1], 'c7' => grid[1][2], 'd7' => grid[1][3], 'e7' => grid[1][4], 'f7' => grid[1][5], 'g7' => grid[1][6], 'h7' => grid[1][7],
@@ -151,8 +150,6 @@ class Board
       'a2' => grid[6][0], 'b2' => grid[6][1], 'c2' => grid[6][2], 'd2' => grid[6][3], 'e2' => grid[6][4], 'f2' => grid[6][5], 'g2' => grid[6][6], 'h2' => grid[6][7],
       'a1' => grid[7][0], 'b1' => grid[7][1], 'c1' => grid[7][2], 'd1' => grid[7][3], 'e1' => grid[7][4], 'f1' => grid[7][5], 'g1' => grid[7][6], 'h1' => grid[7][7] }
   end
-
-  # 9/14 - HACK: Please see comment above
 
   def grid_coordinate_array_map
     { [0, 0] => grid[0][0], [0, 1] => grid[0][1], [0, 2] => grid[0][2], [0, 3] => grid[0][3], [0, 4] => grid[0][4], [0, 5] => grid[0][5], [0, 6] => grid[0][6], [0, 7] => grid[0][7],
@@ -165,7 +162,6 @@ class Board
       [7, 0] => grid[7][0], [7, 1] => grid[7][1], [7, 2] => grid[7][2], [7, 3] => grid[7][3], [7, 4] => grid[7][4], [7, 5] => grid[7][5], [7, 6] => grid[7][6], [7, 7] => grid[7][7] }
   end
 
-  # HACK: DRY it up
   def white_cells
     [grid[0][0], grid[0][2], grid[0][4], grid[0][6],
      grid[1][1], grid[1][3], grid[1][5], grid[1][7],

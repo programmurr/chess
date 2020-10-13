@@ -51,7 +51,7 @@ class Player
   def enter_move
     enter_move_message
     move = $stdin.gets.chomp.to_s.downcase
-    return self.move = move if castle?(move)
+    return self.move = move if castle?(move) || move == 'save'
     raise 'That is not a valid coordinate, please re-enter'.colorize(:red) unless move.match?(/^[a-h][1-8][a-h][1-8]$/)
 
     self.move = move.chars.each_slice(move.length / 2).map(&:join)

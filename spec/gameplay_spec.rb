@@ -8,8 +8,7 @@ describe GamePlay do
     before do
       @game = GamePlay.new
       @game.setup_board
-      @game.assign_player1_white_piece
-      @game.player1_as_active_player
+      @game.assign_player_pieces
     end
 
     after do
@@ -85,13 +84,13 @@ describe GamePlay do
     before do
       @game = GamePlay.new
       @game.setup_board
-      @game.assign_player1_white_piece
+      @game.assign_player_pieces
     end
 
     it 'allows the white player to execute an en passant move when opposing pawns are adjascent, one of which completed a double jump first move' do
       @game.board.grid[3][0].value = Pawn.new('White')
       @game.board.grid[3][0].value.number_of_moves = 2
-      @game.player2_as_active_player
+      @game.switch_active_player
       @game.active_player.move = %w[b7 b5]
       @game.player_move_actions
       @game.en_passant_actions
@@ -103,7 +102,6 @@ describe GamePlay do
     it 'allows the black player to execute an en passant move when opposing pawns are adjascent, one of which completed a double jump first move' do
       @game.board.grid[4][6].value = Pawn.new('Black')
       @game.board.grid[4][6].value.number_of_moves = 2
-      @game.player1_as_active_player
       @game.active_player.move = %w[f2 f4]
       @game.player_move_actions
       @game.en_passant_actions
@@ -117,7 +115,7 @@ describe GamePlay do
       @game.board.grid[3][0].value.number_of_moves = 2
       @game.board.grid[2][1].value = Pawn.new('Black')
       @game.board.grid[2][1].value.number_of_moves = 1
-      @game.player2_as_active_player
+      @game.switch_active_player
       @game.active_player.move = %w[b6 b5]
       @game.player_move_actions
       @game.en_passant_actions
@@ -131,7 +129,6 @@ describe GamePlay do
       @game.board.grid[4][6].value.number_of_moves = 2
       @game.board.grid[5][5].value = Pawn.new('White')
       @game.board.grid[5][5].value.number_of_moves = 1
-      @game.player1_as_active_player
       @game.active_player.move = %w[f3 f4]
       @game.player_move_actions
       @game.en_passant_actions
@@ -145,7 +142,7 @@ describe GamePlay do
       @game.board.grid[3][0].value.number_of_moves = 2
       @game.board.grid[3][4].value = Knight.new('White')
       @game.board.grid[3][7].value = Knight.new('Black')
-      @game.player2_as_active_player
+      @game.switch_active_player
       @game.active_player.move = %w[b7 b5]
       @game.player_move_actions
       @game.en_passant_actions
@@ -159,7 +156,6 @@ describe GamePlay do
       @game.board.grid[4][6].value.number_of_moves = 2
       @game.board.grid[4][2].value = Rook.new('Black')
       @game.board.grid[4][0].value = Queen.new('White')
-      @game.player1_as_active_player
       @game.active_player.move = %w[f2 f4]
       @game.player_move_actions
       @game.en_passant_actions
@@ -173,26 +169,28 @@ describe GamePlay do
     before do
       @game = GamePlay.new
       @game.setup_board
-      @game.assign_player1_white_piece
-      @game.player1_as_active_player
+      @game.assign_player_pieces
     end
 
     it 'generates an array of all cells that can be attacked by the white color' do
       attacked_cells = %w[a3 b3 c3 d3 e3 f3 g3 h3]
-      expect(@game.cells_under_attack).to eq attacked_cells
+      @game.calculate_cells_under_attack
+      expect(@game.white_check_cells).to eq attacked_cells
     end
 
     it 'generates an array of all cells that can be attacked by the black color' do
-      @game.player2_as_active_player
+      @game.switch_active_player
+      @game.calculate_cells_under_attack
       attacked_cells = %w[a6 b6 c6 d6 e6 f6 g6 h6]
-      expect(@game.cells_under_attack).to eq attacked_cells
+      expect(@game.black_check_cells).to eq attacked_cells
     end
 
     it 'includes enemy black cells in the cells that can be attacked' do
       @game.board.grid[6].each { |cell| cell.value = nil }
       @game.board.grid[1][0].value = nil
+      @game.calculate_cells_under_attack
       attacked_cells = %w[a2 a3 a4 a5 a6 a7 a8 b2 b3 b5 c2 c3 c4 d2 d3 d4 d5 d6 d7 e2 e3 f2 f3 f4 g2 g4 g5 h2 h3 h4 h5 h6 h7].sort.uniq
-      expect(@game.cells_under_attack).to eq attacked_cells
+      expect(@game.white_check_cells).to eq attacked_cells
     end
   end
 end

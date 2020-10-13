@@ -9,15 +9,13 @@ class MoveChecks
     @board = board
   end
 
-  # Keep 2 sets of cells under attack at all times
-  # Keep track of both kings at all times
-  # If check is true:
-  # Set if check is true for white or black
-  # Carry out the move
-  # Recalculate cells under attack
-  # Is the king cell still in that list?
-  # Reverse the move
-  # Tell the player to try again
+  def king_under_threat?(cells_under_attack)
+    return false if cells_under_attack.nil? || start_cell.value.class != King
+    return true if cells_under_attack.include?(end_cell.co_ord)
+
+    false
+  end
+
   def check?(cells_under_attack, king_cell)
     return true if cells_under_attack.include?(king_cell.co_ord)
 
@@ -50,9 +48,7 @@ class MoveChecks
     false
   end
 
-  # Need to ensure no cells between the king and the rook are under attack
-  #    And that the king does not land in check
-  def castle?
+  def castle?(check_cells)
     return false unless player.move.include?('castle')
 
     move_co_ord = player.move[-2, 2]
@@ -62,6 +58,12 @@ class MoveChecks
 
     cells[1...-1].each do |cell|
       return false unless cell.value.nil?
+    end
+
+    unless check_cells.nil?
+      cells.each do |cell|
+        return false if check_cells.include?(cell.co_ord)
+      end
     end
     return true if cells[0].value.number_of_moves.zero? && cells[-1].value.number_of_moves.zero?
 

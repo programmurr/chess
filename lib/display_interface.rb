@@ -1,4 +1,7 @@
 # frozen_string_literal: true
+
+require 'colorize'
+
 module DisplayInterface
   def title
     puts '
@@ -42,5 +45,29 @@ module DisplayInterface
     puts 'Player 2 will be the black color and will go second.'
     puts "\nPlayer 2, please type your name then press enter."
     puts
+  end
+
+  def castle_not_allowed
+    puts
+    puts 'That castling move is not allowed'.colorize(color: :red)
+    sleep 5
+  end
+
+  def select_piece(color)
+    puts
+    puts "Select a #{color} piece!".colorize(color: :red)
+    sleep 5
+  end
+
+  def cannot_attack_same_color
+    puts
+    puts 'You cannot land on pieces matching your color!'.colorize(color: :red)
+    sleep 5
+  end
+
+  def cannot_threaten_king
+    puts
+    puts 'You cannot put your King in a check situation!'.colorize(color: :red)
+    sleep 5
   end
 end
