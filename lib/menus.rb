@@ -28,7 +28,13 @@ class Load < Menu
       sleep 5
     elsif !Dir.glob('save_files/*.yaml').empty?
       load_options
+      load_selection
     end
+  end
+
+  def load_selection
+    user_input = gets.chomp.to_i
+    load_game(user_input)
   end
 end
 

@@ -9,7 +9,10 @@ module Serializable
 
   def load_game(choice)
     file_to_load = Dir.chdir('save_files') { Dir.glob('*.yaml').sort[choice] }
-    YAML.load(File.read("save_files/#{file_to_load}"))
+    game = YAML.load(File.read("save_files/#{file_to_load}"))
+    loop do
+      game.game_loop
+    end
   rescue Errno::EISDIR
     puts "That file doesn't exist, please choose again"
     sleep 5

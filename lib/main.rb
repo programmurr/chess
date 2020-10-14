@@ -9,8 +9,8 @@ include Serializable
 # TODO:
 # Prevent player putting their king into check
 #   This already works for the king directly, but not if moving another pieces inadvertently causes it
-# Serializable module
-# Make tests
+#   Also allow another piece to get king out of check
+#   Attempted solution is not working
 
 def selections
   Welcome.new
@@ -46,16 +46,9 @@ def new_game
 end
 
 def load_menu
-  Load.new.load_screen_check
-  user_input = gets.chomp.to_i
-  game = load_game(user_input)
-  if game.class == GamePlay
-    loop do
-      game.game_loop
-    end
-  else
-    selections
-  end
+  loader = Load.new 
+  loader.load_screen_check
+  selections
 end
 
 def rules

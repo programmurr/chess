@@ -79,6 +79,6 @@ class Player
   end
 
   def enter_move_message
-    puts "#{name}, enter the 'from' and 'to' coordinates for the piece you want to move e.g. 'a2a4'"
+    puts "\n#{name}, enter the 'from' and 'to' coordinates for the piece you want to move e.g. 'a2a4'"
   end
 end

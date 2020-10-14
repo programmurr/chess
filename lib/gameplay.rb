@@ -77,9 +77,24 @@ class GamePlay
           execute_promotion if move_check.promote_pawn?
         end
       elsif piece.valid_move?(cells, end_co_ordinate)
+        board_copy = Marshal.load(Marshal.dump(board))
+        player_copy = Marshal.load(Marshal.dump(active_player))
         player_move_actions
-        execute_promotion if move_check.promote_pawn?
-        self.do_not_switch_player = false
+        if active_player.color == 'White' && move_check.check?(black_check_cells, white_king_cell)
+          self.board = board_copy
+          self.active_player = player_copy
+          self.do_not_switch_player = true
+          cannot_threaten_king
+          break
+        elsif active_player.color == 'Black' && move_check.check?(white_check_cells, black_king_cell)
+          self.board = board_copy
+          self.active_player = player_copy
+          self.do_not_switch_player = true
+          break
+        else
+          execute_promotion if move_check.promote_pawn?
+          self.do_not_switch_player = false
+        end
       else
         self.do_not_switch_player = true
         invalid_move_message
@@ -315,7 +330,6 @@ class GamePlay
   def user_move_input
     active_player.enter_move
   rescue RuntimeError
-    binding.pry
     invalid_move_message
     refresh_display
     retry

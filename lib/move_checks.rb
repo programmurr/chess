@@ -17,6 +17,7 @@ class MoveChecks
   end
 
   def check?(cells_under_attack, king_cell)
+    return false if cells_under_attack.nil?
     return true if cells_under_attack.include?(king_cell.co_ord)
 
     false
