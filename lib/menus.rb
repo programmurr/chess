@@ -1,9 +1,12 @@
 # frozen_string_literal: true
 
 require_relative 'display_interface'
+require_relative 'serializable'
+require_relative 'gameplay'
 
 class Menu
   include DisplayInterface
+  include Serializable
 
   def initialize
     system 'clear'
@@ -15,6 +18,17 @@ class Welcome < Menu
   def initialize
     super
     welcome_options
+  end
+end
+
+class Load < Menu
+  def load_screen_check
+    if Dir.glob('save_files/*.yaml').empty?
+      puts "\nThere are no saved games. Returning to main menu."
+      sleep 5
+    elsif !Dir.glob('save_files/*.yaml').empty?
+      load_options
+    end
   end
 end
 
@@ -37,10 +51,6 @@ class Instructions < Menu
 end
 
 class Names < Menu
-  def initialize
-    super
-  end
-
   def set_player1_name
     player1_enter_name
     gets.chomp.to_s

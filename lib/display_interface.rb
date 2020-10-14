@@ -34,7 +34,7 @@ module DisplayInterface
   def player1_enter_name
     puts
     puts
-    puts "Player 1 will be the white color and will go first."
+    puts 'Player 1 will be the white color and will go first.'
     puts "\nPlayer 1, please type your name then press enter."
     puts
   end
@@ -69,5 +69,19 @@ module DisplayInterface
     puts
     puts 'You cannot put your King in a check situation!'.colorize(color: :red)
     sleep 5
+  end
+
+  def saved_message(file_name)
+    puts
+    puts "\nYour game has been saved as #{file_name}".colorize(color: :green)
+    puts "\nSelect it from the main menu when you play next".colorize(color: :green)
+    sleep 8
+  end
+
+  def load_options
+    puts "\nEnter the number of the file you want to load, or enter 'exit' to return to the main menu:"
+    puts
+    Dir.chdir('save_files') { puts Dir.glob('*.yaml').sort }
+    puts
   end
 end

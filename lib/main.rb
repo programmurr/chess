@@ -2,6 +2,9 @@
 
 require_relative 'gameplay'
 require_relative 'menus'
+require_relative 'serializable'
+
+include Serializable
 
 # TODO:
 # Prevent player putting their king into check
@@ -17,7 +20,7 @@ def selections
     when '1'
       new_game
     when '2'
-      puts '<<< UNDER CONSTRUCTION >>>'
+      load_menu
     when '3'
       rules
     when '4'
@@ -39,6 +42,19 @@ def new_game
   game.assign_player_pieces
   loop do
     game.game_loop
+  end
+end
+
+def load_menu
+  Load.new.load_screen_check
+  user_input = gets.chomp.to_i
+  game = load_game(user_input)
+  if game.class == GamePlay
+    loop do
+      game.game_loop
+    end
+  else
+    selections
   end
 end
 

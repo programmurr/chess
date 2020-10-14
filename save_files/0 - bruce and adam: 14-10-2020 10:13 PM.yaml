@@ -1,0 +1,332 @@
+--- !ruby/object:GamePlay
+board: !ruby/object:Board
+  grid:
+  - - !ruby/struct:Board::Cell
+      co_ord: a8
+      value: !ruby/object:Rook
+        color: Black
+        number_of_moves: 0
+    - !ruby/struct:Board::Cell
+      co_ord: b8
+      value: !ruby/object:Knight
+        color: Black
+        number_of_moves: 0
+    - !ruby/struct:Board::Cell
+      co_ord: c8
+      value: !ruby/object:Bishop
+        color: Black
+        number_of_moves: 0
+    - !ruby/struct:Board::Cell
+      co_ord: d8
+      value: !ruby/object:Queen
+        color: Black
+        number_of_moves: 0
+    - !ruby/struct:Board::Cell
+      co_ord: e8
+      value: !ruby/object:King
+        color: Black
+        number_of_moves: 0
+        check: false
+    - !ruby/struct:Board::Cell
+      co_ord: f8
+      value: !ruby/object:Bishop
+        color: Black
+        number_of_moves: 0
+    - !ruby/struct:Board::Cell
+      co_ord: g8
+      value: !ruby/object:Knight
+        color: Black
+        number_of_moves: 0
+    - !ruby/struct:Board::Cell
+      co_ord: h8
+      value: !ruby/object:Rook
+        color: Black
+        number_of_moves: 0
+  - - !ruby/struct:Board::Cell
+      co_ord: a7
+      value: !ruby/object:Pawn
+        color: Black
+        number_of_moves: 0
+        en_passant: false
+    - !ruby/struct:Board::Cell
+      co_ord: b7
+      value: 
+    - !ruby/struct:Board::Cell
+      co_ord: c7
+      value: !ruby/object:Pawn
+        color: Black
+        number_of_moves: 0
+        en_passant: false
+    - !ruby/struct:Board::Cell
+      co_ord: d7
+      value: !ruby/object:Pawn
+        color: Black
+        number_of_moves: 0
+        en_passant: false
+    - !ruby/struct:Board::Cell
+      co_ord: e7
+      value: !ruby/object:Pawn
+        color: Black
+        number_of_moves: 0
+        en_passant: false
+    - !ruby/struct:Board::Cell
+      co_ord: f7
+      value: !ruby/object:Pawn
+        color: Black
+        number_of_moves: 0
+        en_passant: false
+    - !ruby/struct:Board::Cell
+      co_ord: g7
+      value: !ruby/object:Pawn
+        color: Black
+        number_of_moves: 0
+        en_passant: false
+    - !ruby/struct:Board::Cell
+      co_ord: h7
+      value: !ruby/object:Pawn
+        color: Black
+        number_of_moves: 0
+        en_passant: false
+  - - !ruby/struct:Board::Cell
+      co_ord: a6
+      value: 
+    - !ruby/struct:Board::Cell
+      co_ord: b6
+      value: 
+    - !ruby/struct:Board::Cell
+      co_ord: c6
+      value: 
+    - !ruby/struct:Board::Cell
+      co_ord: d6
+      value: 
+    - !ruby/struct:Board::Cell
+      co_ord: e6
+      value: 
+    - !ruby/struct:Board::Cell
+      co_ord: f6
+      value: 
+    - !ruby/struct:Board::Cell
+      co_ord: g6
+      value: 
+    - !ruby/struct:Board::Cell
+      co_ord: h6
+      value: 
+  - - !ruby/struct:Board::Cell
+      co_ord: a5
+      value: 
+    - !ruby/struct:Board::Cell
+      co_ord: b5
+      value: !ruby/object:Pawn
+        color: White
+        number_of_moves: 3
+        en_passant: false
+    - !ruby/struct:Board::Cell
+      co_ord: c5
+      value: 
+    - !ruby/struct:Board::Cell
+      co_ord: d5
+      value: 
+    - !ruby/struct:Board::Cell
+      co_ord: e5
+      value: 
+    - !ruby/struct:Board::Cell
+      co_ord: f5
+      value: 
+    - !ruby/struct:Board::Cell
+      co_ord: g5
+      value: 
+    - !ruby/struct:Board::Cell
+      co_ord: h5
+      value: 
+  - - !ruby/struct:Board::Cell
+      co_ord: a4
+      value: 
+    - !ruby/struct:Board::Cell
+      co_ord: b4
+      value: 
+    - !ruby/struct:Board::Cell
+      co_ord: c4
+      value: 
+    - !ruby/struct:Board::Cell
+      co_ord: d4
+      value: 
+    - !ruby/struct:Board::Cell
+      co_ord: e4
+      value: 
+    - !ruby/struct:Board::Cell
+      co_ord: f4
+      value: 
+    - !ruby/struct:Board::Cell
+      co_ord: g4
+      value: 
+    - !ruby/struct:Board::Cell
+      co_ord: h4
+      value: 
+  - - !ruby/struct:Board::Cell
+      co_ord: a3
+      value: 
+    - !ruby/struct:Board::Cell
+      co_ord: b3
+      value: 
+    - !ruby/struct:Board::Cell
+      co_ord: c3
+      value: 
+    - !ruby/struct:Board::Cell
+      co_ord: d3
+      value: 
+    - !ruby/struct:Board::Cell
+      co_ord: e3
+      value: 
+    - !ruby/struct:Board::Cell
+      co_ord: f3
+      value: 
+    - !ruby/struct:Board::Cell
+      co_ord: g3
+      value: 
+    - !ruby/struct:Board::Cell
+      co_ord: h3
+      value: 
+  - - !ruby/struct:Board::Cell
+      co_ord: a2
+      value: 
+    - !ruby/struct:Board::Cell
+      co_ord: b2
+      value: !ruby/object:Pawn
+        color: White
+        number_of_moves: 0
+        en_passant: false
+    - !ruby/struct:Board::Cell
+      co_ord: c2
+      value: !ruby/object:Pawn
+        color: White
+        number_of_moves: 0
+        en_passant: false
+    - !ruby/struct:Board::Cell
+      co_ord: d2
+      value: !ruby/object:Pawn
+        color: White
+        number_of_moves: 0
+        en_passant: false
+    - !ruby/struct:Board::Cell
+      co_ord: e2
+      value: !ruby/object:Pawn
+        color: White
+        number_of_moves: 0
+        en_passant: false
+    - !ruby/struct:Board::Cell
+      co_ord: f2
+      value: !ruby/object:Pawn
+        color: White
+        number_of_moves: 0
+        en_passant: false
+    - !ruby/struct:Board::Cell
+      co_ord: g2
+      value: !ruby/object:Pawn
+        color: White
+        number_of_moves: 0
+        en_passant: false
+    - !ruby/struct:Board::Cell
+      co_ord: h2
+      value: !ruby/object:Pawn
+        color: White
+        number_of_moves: 0
+        en_passant: false
+  - - !ruby/struct:Board::Cell
+      co_ord: a1
+      value: !ruby/object:Rook
+        color: White
+        number_of_moves: 0
+    - !ruby/struct:Board::Cell
+      co_ord: b1
+      value: !ruby/object:Knight
+        color: White
+        number_of_moves: 0
+    - !ruby/struct:Board::Cell
+      co_ord: c1
+      value: !ruby/object:Bishop
+        color: White
+        number_of_moves: 0
+    - !ruby/struct:Board::Cell
+      co_ord: d1
+      value: !ruby/object:Queen
+        color: White
+        number_of_moves: 0
+    - !ruby/struct:Board::Cell
+      co_ord: e1
+      value: !ruby/object:King
+        color: White
+        number_of_moves: 0
+        check: false
+    - !ruby/struct:Board::Cell
+      co_ord: f1
+      value: !ruby/object:Bishop
+        color: White
+        number_of_moves: 0
+    - !ruby/struct:Board::Cell
+      co_ord: g1
+      value: !ruby/object:Knight
+        color: White
+        number_of_moves: 0
+    - !ruby/struct:Board::Cell
+      co_ord: h1
+      value: !ruby/object:Rook
+        color: White
+        number_of_moves: 0
+player1: &2 !ruby/object:Player
+  name: adam
+  piece: !ruby/object:Piece
+    color: White
+    number_of_moves: 0
+  color: White
+  move:
+  - a4
+  - b5
+  captured_pieces:
+  - !ruby/object:Pawn
+    color: Black
+    number_of_moves: 1
+    en_passant: true
+  temp_cell: 
+  move_counter: 2
+player2: &1 !ruby/object:Player
+  name: bruce
+  piece: !ruby/object:Piece
+    color: Black
+    number_of_moves: 0
+  color: Black
+  move: save
+  captured_pieces: []
+  temp_cell: 
+  move_counter: 1
+active_player: *1
+next_player: *2
+en_passant_cache: 
+white_check_cells:
+- a2
+- a3
+- a4
+- a5
+- a6
+- a7
+- b3
+- c3
+- c6
+- d3
+- e3
+- f3
+- g3
+- h3
+black_check_cells:
+- a4
+- a6
+- b6
+- b7
+- c4
+- c6
+- d6
+- e6
+- f6
+- g6
+- h6
+check_scenario: false
+do_not_switch_player: false

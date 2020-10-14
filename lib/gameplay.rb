@@ -5,12 +5,14 @@ require_relative 'board'
 require_relative 'player'
 require_relative 'move_checks'
 require_relative 'display_interface'
+require_relative 'serializable'
 
 # Coordinates the game actions and flow
 #   This class is getting too big and complicated. Need to refactor
 #   Possibly move some logic to move_checks and update tests
 class GamePlay
   include DisplayInterface
+  include Serializable
 
   attr_accessor :board, :player1, :player2, :active_player, :next_player, :en_passant_cache, :white_check_cells, :black_check_cells, :check_scenario, :do_not_switch_player
 
@@ -50,6 +52,7 @@ class GamePlay
     end
   end
 
+  # error - skipping player if invalid move eg pawn a4 to c5
   def game_loop
     loop do
       refresh_display
@@ -335,7 +338,12 @@ class GamePlay
       user_move_input
       break if move_check.castle?(get_check_cells(next_player.color))
 
-      if move_check.castle?(get_check_cells(next_player.color)) == false && active_player.move.include?('castle')
+      if active_player.move == 'save'
+        file_name = unique_file_name
+        serialize(file_name)
+        saved_message(file_name)
+        refresh_display
+      elsif move_check.castle?(get_check_cells(next_player.color)) == false && active_player.move.include?('castle')
         castle_not_allowed
         refresh_display
       elsif move_check.start_cell_contains_piece? == false || move_check.matching_piece_class? == false
