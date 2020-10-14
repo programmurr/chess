@@ -52,7 +52,6 @@ class GamePlay
     end
   end
 
-  # error - skipping player if invalid move eg pawn a4 to c5
   def game_loop
     loop do
       refresh_display
@@ -80,7 +79,9 @@ class GamePlay
       elsif piece.valid_move?(cells, end_co_ordinate)
         player_move_actions
         execute_promotion if move_check.promote_pawn?
+        self.do_not_switch_player = false
       else
+        self.do_not_switch_player = true
         invalid_move_message
       end
       calculate_cells_under_attack
@@ -314,6 +315,7 @@ class GamePlay
   def user_move_input
     active_player.enter_move
   rescue RuntimeError
+    binding.pry
     invalid_move_message
     refresh_display
     retry
