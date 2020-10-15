@@ -62,35 +62,20 @@ class GamePlay
       end
       cells = change_move_array_to_cells
       piece.move_filter(cells, end_co_ordinate)
-      if piece.valid_move?(cells, end_co_ordinate) && check_scenario == true
+      if piece.valid_move?(cells, end_co_ordinate)
         backup = backups
         player_move_actions
         calculate_cells_under_attack
         if active_player.color == 'White' && move_check.check?(black_check_cells, white_king_cell)
-          re_check_actions(backup)
-          remove_king_from_check
+          reverse_actions(backup)
+          error_message
           break
         elsif active_player.color == 'Black' && move_check.check?(white_check_cells, black_king_cell)
-          re_check_actions(backup)
-          remove_king_from_check
+          reverse_actions(backup)
+          error_message
           break
         else
           exit_check_actions
-          execute_promotion if move_check.promote_pawn?
-        end
-      elsif piece.valid_move?(cells, end_co_ordinate)
-        backup = backups
-        player_move_actions
-        calculate_cells_under_attack
-        if active_player.color == 'White' && move_check.check?(black_check_cells, white_king_cell)
-          re_check_actions(backup)
-          cannot_threaten_king
-          break
-        elsif active_player.color == 'Black' && move_check.check?(white_check_cells, black_king_cell)
-          re_check_actions(backup)
-          cannot_threaten_king
-          break
-        else
           execute_promotion if move_check.promote_pawn?
           self.do_not_switch_player = false
         end
@@ -123,11 +108,7 @@ class GamePlay
 
         co_ord = board.get_cell_grid_co_ord(cell.co_ord)
         moves = cell.value.all_move_coordinates_from_current_position(co_ord, cell.value.color)
-        move_cells = if cell.value.class == Knight
-                       board.get_cells_from_array(moves)
-                     else
-                       board.get_cells_from_hash(moves)
-                     end
+        move_cells = calculate_move_cells(cell, moves)
         attack_array << cell.value.check_move_filter(move_cells)
       end
     end
@@ -147,11 +128,7 @@ class GamePlay
 
         co_ord = board.get_cell_grid_co_ord(cell.co_ord)
         moves = cell.value.all_move_coordinates_from_current_position(co_ord, cell.value.color)
-        move_cells = if cell.value.class == Knight
-                       board.get_cells_from_array(moves)
-                     else
-                       board.get_cells_from_hash(moves)
-                     end
+        move_cells = calculate_move_cells(cell, moves)
         attack_array << cell.value.check_move_filter(move_cells)
       end
     end
@@ -159,6 +136,14 @@ class GamePlay
       final_array << cell if cell.value.nil? || cell.value.color == 'Black'
     end
     self.white_check_cells = final_array.map(&:co_ord).sort
+  end
+
+  def calculate_move_cells(cell, moves)
+    if cell.value.class == Knight
+      board.get_cells_from_array(moves)
+    else
+      board.get_cells_from_hash(moves)
+    end
   end
 
   def move_check
@@ -193,6 +178,14 @@ class GamePlay
 
   private
 
+  def error_message
+    if check_scenario == true
+      remove_king_from_check
+    else
+      cannot_threaten_king
+    end
+  end
+
   def backups
     board_copy = Marshal.load(Marshal.dump(board))
     active_player_copy = Marshal.load(Marshal.dump(active_player))
@@ -207,7 +200,7 @@ class GamePlay
     self.do_not_switch_player = false
   end
 
-  def re_check_actions(backups)
+  def reverse_actions(backups)
     self.board = backups[0]
     self.active_player = backups[1]
     self.next_player = backups[2]

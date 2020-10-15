@@ -6,6 +6,11 @@ require_relative 'serializable'
 
 include Serializable
 
+# TODO: False fool's mate
+#   Make the moves c2c3, d7d6, d1a4
+#   A CheckMate notification is given but black can rescue the situation by putting queen in front of king
+#   Look at checkmate logic and resolve
+
 def selections
   Welcome.new
 
