@@ -33,8 +33,8 @@ class Load < Menu
   end
 
   def load_selection
-    user_input = gets.chomp.to_i
-    load_game(user_input)
+    user_input = gets.chomp.to_s
+    load_game(user_input.to_i) if user_input != 'exit'
   end
 end
 

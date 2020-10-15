@@ -6,12 +6,6 @@ require_relative 'serializable'
 
 include Serializable
 
-# TODO:
-# Prevent player putting their king into check
-#   This already works for the king directly, but not if moving another pieces inadvertently causes it
-#   Also allow another piece to get king out of check
-#   Attempted solution is not working
-
 def selections
   Welcome.new
 
@@ -46,7 +40,7 @@ def new_game
 end
 
 def load_menu
-  loader = Load.new 
+  loader = Load.new
   loader.load_screen_check
   selections
 end

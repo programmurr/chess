@@ -13,7 +13,7 @@ class Piece
     @number_of_moves = 0
   end
 
-  def check_move_filter(cells, next_player)
+  def check_move_filter(cells)
     return_array = []
     cells.delete_if { |_direction, moves| moves.empty? }
     cells.each_value do |moves|
@@ -23,7 +23,7 @@ class Piece
         moves.each.with_index do |cell, index|
           next if cell.value.nil? || cell.value.class == InvisiblePawn
 
-          if cell.value.color == next_player.color || cell.value.color == color
+          if cell.value.color == 'Black' || cell.value.color == 'White'
             moves.slice!((index + 1)..-1)
             return_array << moves
             next
@@ -98,7 +98,7 @@ class Pawn < Piece
       'Black' => " \u265F ".colorize(color: :white) }.fetch(color)
   end
 
-  def check_move_filter(cells, _next_player)
+  def check_move_filter(cells)
     if color == 'White'
       white_check_move_filter(cells)
     elsif color == 'Black'
@@ -237,7 +237,7 @@ class Knight < Piece
     " \u265E ".colorize(color: :white)
   end
 
-  def check_move_filter(cells, _next_player)
+  def check_move_filter(cells)
     return if cells.length.zero?
 
     cells.select! { |cell| cell.value.nil? || cell.value.color != color }
@@ -337,7 +337,7 @@ class InvisiblePawn
     { 'direction' => [] }
   end
 
-  def check_move_filter(_cells, _next_player)
+  def check_move_filter(_cells)
     []
   end
 end

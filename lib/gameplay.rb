@@ -64,13 +64,15 @@ class GamePlay
       piece.move_filter(cells, end_co_ordinate)
       if piece.valid_move?(cells, end_co_ordinate) && check_scenario == true
         board_copy = Marshal.load(Marshal.dump(board))
-        player_copy = Marshal.load(Marshal.dump(active_player))
+        active_player_copy = Marshal.load(Marshal.dump(active_player))
+        next_player_copy = Marshal.load(Marshal.dump(next_player))
         player_move_actions
+        calculate_cells_under_attack
         if active_player.color == 'White' && move_check.check?(black_check_cells, white_king_cell)
-          re_check_actions(board_copy, player_copy)
+          re_check_actions(board_copy, active_player_copy, next_player_copy)
           break
         elsif active_player.color == 'Black' && move_check.check?(white_check_cells, black_king_cell)
-          re_check_actions(board_copy, player_copy)
+          re_check_actions(board_copy, active_player_copy, next_player_copy)
           break
         else
           exit_check_actions
@@ -78,18 +80,23 @@ class GamePlay
         end
       elsif piece.valid_move?(cells, end_co_ordinate)
         board_copy = Marshal.load(Marshal.dump(board))
-        player_copy = Marshal.load(Marshal.dump(active_player))
+        active_player_copy = Marshal.load(Marshal.dump(active_player))
+        next_player_copy = Marshal.load(Marshal.dump(next_player))
         player_move_actions
+        calculate_cells_under_attack
         if active_player.color == 'White' && move_check.check?(black_check_cells, white_king_cell)
           self.board = board_copy
-          self.active_player = player_copy
+          self.active_player = active_player_copy
+          self.next_player = next_player_copy
           self.do_not_switch_player = true
           cannot_threaten_king
           break
         elsif active_player.color == 'Black' && move_check.check?(white_check_cells, black_king_cell)
           self.board = board_copy
-          self.active_player = player_copy
+          self.active_player = active_player_copy
+          self.next_player = next_player_copy
           self.do_not_switch_player = true
+          cannot_threaten_king
           break
         else
           execute_promotion if move_check.promote_pawn?
@@ -110,11 +117,17 @@ class GamePlay
   end
 
   def calculate_cells_under_attack
+    white_attacking_cells
+    black_attacking_cells
+  end
+
+  def black_attacking_cells
+    self.black_check_cells = nil
     attack_array = []
     final_array = []
     board.grid.each do |row|
       row.each do |cell|
-        next if cell.value.nil? || cell.value.color == next_player.color
+        next if cell.value.nil? || cell.value.color == 'White'
 
         co_ord = board.get_cell_grid_co_ord(cell.co_ord)
         moves = cell.value.all_move_coordinates_from_current_position(co_ord, cell.value.color)
@@ -123,17 +136,37 @@ class GamePlay
                      else
                        board.get_cells_from_hash(moves)
                      end
-        attack_array << cell.value.check_move_filter(move_cells, next_player)
+        attack_array << cell.value.check_move_filter(move_cells)
       end
     end
     attack_array.flatten.uniq.each do |cell|
-      final_array << cell if cell.value.nil? || cell.value.color != active_player.color  
+      final_array << cell if cell.value.nil? || cell.value.color == 'White'
     end
-    if active_player.color == 'White'
-      self.white_check_cells = final_array.map(&:co_ord).sort
-    elsif active_player.color == 'Black'
-      self.black_check_cells = final_array.map(&:co_ord).sort
+    self.black_check_cells = final_array.map(&:co_ord).sort
+  end
+
+  def white_attacking_cells
+    self.white_check_cells = nil
+    attack_array = []
+    final_array = []
+    board.grid.each do |row|
+      row.each do |cell|
+        next if cell.value.nil? || cell.value.color == 'Black'
+
+        co_ord = board.get_cell_grid_co_ord(cell.co_ord)
+        moves = cell.value.all_move_coordinates_from_current_position(co_ord, cell.value.color)
+        move_cells = if cell.value.class == Knight
+                       board.get_cells_from_array(moves)
+                     else
+                       board.get_cells_from_hash(moves)
+                     end
+        attack_array << cell.value.check_move_filter(move_cells)
+      end
     end
+    attack_array.flatten.uniq.each do |cell|
+      final_array << cell if cell.value.nil? || cell.value.color == 'Black'
+    end
+    self.white_check_cells = final_array.map(&:co_ord).sort
   end
 
   def move_check
@@ -175,11 +208,12 @@ class GamePlay
     self.do_not_switch_player = false
   end
 
-  def re_check_actions(board_copy, player_copy)
+  def re_check_actions(board_copy, active_player_copy, next_player_copy)
     puts 'You must make a move that removes your King from check!'.colorize(color: :red)
     sleep 3
     self.board = board_copy
-    self.active_player = player_copy
+    self.active_player = active_player_copy
+    self.next_player = next_player_copy
     self.do_not_switch_player = true
   end
 
@@ -323,10 +357,6 @@ class GamePlay
       'Knight' => Knight.new(active_player.color) }.fetch(choice)
   end
 
-  def promotion_message
-    puts "Your pawn has landed on the last row of the board!\nAccording to the FIDE laws of chess, you must promote this piece!\nEnter 'queen', 'bishop', 'rook' or 'knight' to promote your pawn to that piece and finish the move".colorize(:green)
-  end
-
   def user_move_input
     active_player.enter_move
   rescue RuntimeError
@@ -382,11 +412,6 @@ class GamePlay
     player1.display_captured_pieces
     player2.display_captured_pieces
     board.display
-  end
-
-  def invalid_move_message
-    puts 'That is not valid, please re-enter your move'.colorize(:red)
-    sleep 3
   end
 
   def piece

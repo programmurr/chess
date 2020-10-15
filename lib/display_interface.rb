@@ -84,4 +84,13 @@ module DisplayInterface
     Dir.chdir('save_files') { puts Dir.glob('*.yaml').sort }
     puts
   end
+
+  def invalid_move_message
+    puts 'That is not valid, please re-enter your move'.colorize(:red)
+    sleep 3
+  end
+
+  def promotion_message
+    puts "Your pawn has landed on the last row of the board!\nAccording to the FIDE laws of chess, you must promote this piece!\nEnter 'queen', 'bishop', 'rook' or 'knight' to promote your pawn to that piece and finish the move".colorize(:green)
+  end
 end
