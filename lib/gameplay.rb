@@ -66,11 +66,7 @@ class GamePlay
         backup = backups
         player_move_actions
         calculate_cells_under_attack
-        if active_player.color == 'White' && move_check.check?(black_check_cells, white_king_cell)
-          reverse_actions(backup)
-          error_message
-          break
-        elsif active_player.color == 'Black' && move_check.check?(white_check_cells, black_king_cell)
+        if move_check.in_check?(black_check_cells, white_check_cells, white_king_cell, black_king_cell)
           reverse_actions(backup)
           error_message
           break
@@ -171,7 +167,9 @@ class GamePlay
   end
 
   def player_move_actions
-    active_player.move_piece(board)
+    start_cell = board.get_cell(active_player.move[0])
+    end_cell = board.get_cell(active_player.move[1])
+    active_player.move_piece(start_cell, end_cell)
     active_player.take_enemy_piece(board)
     active_player.move_counter += 1
   end
@@ -200,10 +198,10 @@ class GamePlay
     self.do_not_switch_player = false
   end
 
-  def reverse_actions(backups)
-    self.board = backups[0]
-    self.active_player = backups[1]
-    self.next_player = backups[2]
+  def reverse_actions(backup)
+    self.board = backup[0]
+    self.active_player = backup[1]
+    self.next_player = backup[2]
     self.do_not_switch_player = true
   end
 
@@ -238,7 +236,7 @@ class GamePlay
   def check?
     cells_under_attack = get_check_cells(active_player.color)
     king_cell = get_king_cell(next_player.color)
-    return true if move_check.check?(cells_under_attack, king_cell)
+    return true if move_check.new_check?(cells_under_attack, king_cell)
 
     false
   end

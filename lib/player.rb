@@ -17,13 +17,12 @@ class Player
     @move_counter = 0
   end
 
-  def move_piece(board)
-    start_cell = board.get_cell(move[0])
-    end_cell = board.get_cell(move[1])
+  def move_piece(start_cell, end_cell)
     self.temp_cell = end_cell.value
     end_cell.value = start_cell.value
     end_cell.value.number_of_moves += 1
     start_cell.value = nil
+    false_en_passant_guard(end_cell)
   end
 
   def take_enemy_piece(board)
@@ -68,6 +67,12 @@ class Player
   end
 
   private
+
+  def false_en_passant_guard(end_cell)
+    unless temp_cell.nil?
+      self.temp_cell = nil if temp_cell.class == InvisiblePawn && end_cell.value.class != Pawn
+    end
+  end
 
   def castle?(move)
     { 'castleh1' => true,

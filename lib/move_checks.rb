@@ -16,17 +16,28 @@ class MoveChecks
     false
   end
 
-  def check?(cells_under_attack, king_cell)
-    return false if cells_under_attack.nil?
+  def new_check?(cells_under_attack, king_cell)
     return true if cells_under_attack.include?(king_cell.co_ord)
 
     false
   end
 
+  def in_check?(black_check_cells, white_check_cells, white_king_cell, black_king_cell)
+    if player.color == 'White' && black_check_cells.include?(white_king_cell.co_ord)
+      true
+    elsif player.color == 'Black' && white_check_cells.include?(black_king_cell.co_ord)
+      true
+    else
+      false
+    end
+  end
+
+  # This only takes into account where the king can move to
+  # Does not allow for a friendly piece to jump in and block the attack when king is surrounded by friendly pieces
   def checkmate?(cells_under_attack, king_cell)
     array_co_ord = board.get_cell_grid_co_ord(king_cell.co_ord)
     adjascent_king_cells = king_cell.value.adjascent_cells(array_co_ord, board)
-    return true if check?(cells_under_attack, king_cell) && (adjascent_king_cells - cells_under_attack) == []
+    return true if new_check?(cells_under_attack, king_cell) && (adjascent_king_cells - cells_under_attack) == []
 
     false
   end
