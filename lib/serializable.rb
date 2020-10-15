@@ -2,6 +2,8 @@
 
 require 'yaml'
 
+# Triggered from the GamePlay and Load classes. Creates a unique file name
+#   and saves to a YAML. YAML chosen due to simplicity to implement over JSON
 module Serializable
   def serialize(file_name)
     File.open("save_files/#{file_name}.yaml", 'w') { |file| file.write(YAML.dump(self)) }
@@ -21,11 +23,9 @@ module Serializable
   def unique_file_name
     Dir.mkdir('save_files')
     count = Dir.glob('save_files/*.yaml').length
-    date_and_time = Time.new
-    "#{count} - #{active_player.name} and #{next_player.name}: #{date_and_time.strftime('%d-%m-%Y %I:%M %p')}"
+    "#{count} - #{active_player.name} and #{next_player.name}: #{Time.new.strftime('%d-%m-%Y %I:%M %p')}"
   rescue Errno::EEXIST
     count = Dir.glob('save_files/*.yaml').length
-    date_and_time = Time.new
-    "#{count} - #{active_player.name} and #{next_player.name}: #{date_and_time.strftime('%d-%m-%Y %I:%M %p')}"
+    "#{count} - #{active_player.name} and #{next_player.name}: #{Time.new.strftime('%d-%m-%Y %I:%M %p')}"
   end
 end

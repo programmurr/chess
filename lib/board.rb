@@ -214,12 +214,14 @@ class Board
   end
 
   def place_black_royalty
-    royalty = [Rook.new('Black'), Knight.new('Black'), Bishop.new('Black'), Queen.new('Black'), King.new('Black'), Bishop.new('Black'), Knight.new('Black'), Rook.new('Black')]
+    royalty = [Rook.new('Black'), Knight.new('Black'), Bishop.new('Black'), Queen.new('Black'),
+               King.new('Black'), Bishop.new('Black'), Knight.new('Black'), Rook.new('Black')]
     grid[0].map { |cell| cell.value = royalty.shift }
   end
 
   def place_white_royalty
-    royalty = [Rook.new('White'), Knight.new('White'), Bishop.new('White'), Queen.new('White'), King.new('White'), Bishop.new('White'), Knight.new('White'), Rook.new('White')]
+    royalty = [Rook.new('White'), Knight.new('White'), Bishop.new('White'), Queen.new('White'),
+               King.new('White'), Bishop.new('White'), Knight.new('White'), Rook.new('White')]
     grid[7].map { |cell| cell.value = royalty.shift }
   end
 

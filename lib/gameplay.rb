@@ -63,39 +63,31 @@ class GamePlay
       cells = change_move_array_to_cells
       piece.move_filter(cells, end_co_ordinate)
       if piece.valid_move?(cells, end_co_ordinate) && check_scenario == true
-        board_copy = Marshal.load(Marshal.dump(board))
-        active_player_copy = Marshal.load(Marshal.dump(active_player))
-        next_player_copy = Marshal.load(Marshal.dump(next_player))
+        backup = backups
         player_move_actions
         calculate_cells_under_attack
         if active_player.color == 'White' && move_check.check?(black_check_cells, white_king_cell)
-          re_check_actions(board_copy, active_player_copy, next_player_copy)
+          re_check_actions(backup)
+          remove_king_from_check
           break
         elsif active_player.color == 'Black' && move_check.check?(white_check_cells, black_king_cell)
-          re_check_actions(board_copy, active_player_copy, next_player_copy)
+          re_check_actions(backup)
+          remove_king_from_check
           break
         else
           exit_check_actions
           execute_promotion if move_check.promote_pawn?
         end
       elsif piece.valid_move?(cells, end_co_ordinate)
-        board_copy = Marshal.load(Marshal.dump(board))
-        active_player_copy = Marshal.load(Marshal.dump(active_player))
-        next_player_copy = Marshal.load(Marshal.dump(next_player))
+        backup = backups
         player_move_actions
         calculate_cells_under_attack
         if active_player.color == 'White' && move_check.check?(black_check_cells, white_king_cell)
-          self.board = board_copy
-          self.active_player = active_player_copy
-          self.next_player = next_player_copy
-          self.do_not_switch_player = true
+          re_check_actions(backup)
           cannot_threaten_king
           break
         elsif active_player.color == 'Black' && move_check.check?(white_check_cells, black_king_cell)
-          self.board = board_copy
-          self.active_player = active_player_copy
-          self.next_player = next_player_copy
-          self.do_not_switch_player = true
+          re_check_actions(backup)
           cannot_threaten_king
           break
         else
@@ -201,6 +193,13 @@ class GamePlay
 
   private
 
+  def backups
+    board_copy = Marshal.load(Marshal.dump(board))
+    active_player_copy = Marshal.load(Marshal.dump(active_player))
+    next_player_copy = Marshal.load(Marshal.dump(next_player))
+    [board_copy, active_player_copy, next_player_copy]
+  end
+
   def exit_check_actions
     king_cell = get_king_cell(active_player.color)
     king_cell.value.check = false
@@ -208,12 +207,10 @@ class GamePlay
     self.do_not_switch_player = false
   end
 
-  def re_check_actions(board_copy, active_player_copy, next_player_copy)
-    puts 'You must make a move that removes your King from check!'.colorize(color: :red)
-    sleep 3
-    self.board = board_copy
-    self.active_player = active_player_copy
-    self.next_player = next_player_copy
+  def re_check_actions(backups)
+    self.board = backups[0]
+    self.active_player = backups[1]
+    self.next_player = backups[2]
     self.do_not_switch_player = true
   end
 

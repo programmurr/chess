@@ -51,7 +51,7 @@ Player 2 captured pieces:
 			   a  b  c  d  e  f  g  h 
 
 The board will then be updated to show the move. If enemy pieces are taken, they
-will be display in the 'captured pieces section shown above.
+will be displayed in the 'captured pieces' section shown above.
 
 If the player attempts to make a move that is not allowed, an error message will
 appear and the player will have to enter their move again correctly.
