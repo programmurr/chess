@@ -10,22 +10,6 @@ describe MoveChecks do
     @board.place_royalty
   end
 
-  context '#check?' do
-    it 'returns true if the king cell co ord is in the list of co ords under attack' do
-      player = double
-      cells_under_attack = %w[b5 c6 d7 e8]
-      king = double('King', co_ord: 'e8')
-      expect(MoveChecks.new(player, @board).check?(cells_under_attack, king)).to eq true
-    end
-
-    it 'returns false if the king cell co ord is not in the list of co ords under attack' do
-      player = double
-      cells_under_attack = %w[b5 c6 d7 e8]
-      king = double('King', co_ord: 'a2')
-      expect(MoveChecks.new(player, @board).check?(cells_under_attack, king)).to eq false
-    end
-  end
-
   context '#promote_pawn?' do
     it 'returns true if there is a white Pawn present on board row 0' do
       @board.grid[0][0].value = Pawn.new('White')
@@ -196,7 +180,7 @@ describe MoveChecks do
       @board.grid[0][2].value = nil
       @board.grid[0][3].value = nil
       player = double('Player', move: 'castlea8', color: 'Black')
-      check_cells = nil 
+      check_cells = nil
       expect(MoveChecks.new(player, @board).castle?(check_cells)).to eq true
     end
 

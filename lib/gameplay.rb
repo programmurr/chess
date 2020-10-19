@@ -6,10 +6,9 @@ require_relative 'player'
 require_relative 'move_checks'
 require_relative 'display_interface'
 require_relative 'serializable'
+require_relative 'input_verifier'
 
 # Coordinates the game actions and flow
-#   This class is getting too big and complicated. Need to refactor
-#   Possibly move some logic to move_checks and update tests
 class GamePlay
   include DisplayInterface
   include Serializable
@@ -55,11 +54,9 @@ class GamePlay
   def game_loop
     loop do
       refresh_display
-      enter_move
-      if move_check.castle?(get_check_cells(next_player.color))
-        execute_castle_move
-        break
-      end
+      player_move
+      break if active_player.move.is_a?(String)
+
       cells = change_move_array_to_cells
       piece.move_filter(cells, end_co_ordinate)
       if piece.valid_move?(cells, end_co_ordinate)
@@ -79,10 +76,7 @@ class GamePlay
         self.do_not_switch_player = true
         invalid_move_message
       end
-      calculate_cells_under_attack
-      check_actions if check?
-      checkmate_actions if checkmate?
-      stalemate_actions if stalemate?
+      finish_turn
       break
     end
     en_passant_actions
@@ -90,17 +84,17 @@ class GamePlay
   end
 
   def calculate_cells_under_attack
-    white_attacking_cells
-    black_attacking_cells
+    attacking_cells('White')
+    attacking_cells('Black')
   end
 
-  def black_attacking_cells
-    self.black_check_cells = nil
+  def attacking_cells(color)
+    reset_check_cells(color)
     attack_array = []
     final_array = []
     board.grid.each do |row|
       row.each do |cell|
-        next if cell.value.nil? || cell.value.color == 'White'
+        next if cell.value.nil? || cell.value.color == color
 
         co_ord = board.get_cell_grid_co_ord(cell.co_ord)
         moves = cell.value.all_move_coordinates_from_current_position(co_ord, cell.value.color)
@@ -109,29 +103,21 @@ class GamePlay
       end
     end
     attack_array.flatten.uniq.each do |cell|
-      final_array << cell if cell.value.nil? || cell.value.color == 'White'
+      final_array << cell if cell.value.nil? || cell.value.color == color
     end
-    self.black_check_cells = final_array.map(&:co_ord).sort
+    if color == 'White'
+      self.black_check_cells = final_array.map(&:co_ord).sort
+    else
+      self.white_check_cells = final_array.map(&:co_ord).sort
+    end
   end
 
-  def white_attacking_cells
-    self.white_check_cells = nil
-    attack_array = []
-    final_array = []
-    board.grid.each do |row|
-      row.each do |cell|
-        next if cell.value.nil? || cell.value.color == 'Black'
-
-        co_ord = board.get_cell_grid_co_ord(cell.co_ord)
-        moves = cell.value.all_move_coordinates_from_current_position(co_ord, cell.value.color)
-        move_cells = calculate_move_cells(cell, moves)
-        attack_array << cell.value.check_move_filter(move_cells)
-      end
+  def reset_check_cells(color)
+    if color == 'White'
+      self.black_check_cells = nil
+    else
+      self.white_check_cells = nil
     end
-    attack_array.flatten.uniq.each do |cell|
-      final_array << cell if cell.value.nil? || cell.value.color == 'Black'
-    end
-    self.white_check_cells = final_array.map(&:co_ord).sort
   end
 
   def calculate_move_cells(cell, moves)
@@ -176,6 +162,78 @@ class GamePlay
 
   private
 
+  def player_move
+    enter_move_message(active_player.name)
+    move = InputVerifier.new(active_player)
+    move.verify
+    game_command(active_player.move)
+  end
+
+  def game_command(move)
+    castle_moves = %w[castlea1 castlea8 castleh1 castleh8]
+    if castle_moves.include?(move)
+      castle_actions
+    elsif move == 'myqueens'
+      my_queens
+    elsif move == 'save'
+      save_actions
+    else
+      general_actions
+    end
+  end
+
+  def my_queens
+    board.grid.each do |row|
+      row.each do |cell|
+        next if cell.value.nil? || cell.value.class == King
+
+        cell.value = Queen.new(active_player.color) if cell.value.color == active_player.color
+      end
+    end
+  end
+
+  def general_actions
+    cells_under_attack = get_check_cells(next_player.color)
+    if move_check.start_cell_contains_piece? == false || move_check.matching_piece_class? == false
+      select_piece(active_player.color)
+      refresh_display
+      player_move
+    elsif move_check.end_cell_matches_player_color?
+      cannot_attack_same_color
+      refresh_display
+      player_move
+    elsif move_check.king_under_threat?(cells_under_attack)
+      cannot_threaten_king
+      refresh_display
+      player_move
+    end
+  end
+
+  def castle_actions
+    if move_check.castle?(get_check_cells(next_player.color))
+      execute_castle_move
+    else
+      castle_not_allowed
+      refresh_display
+      player_move
+    end
+  end
+
+  def finish_turn
+    calculate_cells_under_attack
+    check_actions if check?
+    checkmate_actions if checkmate?
+    stalemate_actions if stalemate?
+  end
+
+  def save_actions
+    file_name = unique_file_name
+    serialize(file_name)
+    saved_message(file_name)
+    refresh_display
+    player_move
+  end
+
   def error_message
     if check_scenario == true
       remove_king_from_check
@@ -207,20 +265,13 @@ class GamePlay
 
   def checkmate_actions
     refresh_display
-    puts 'Checkmate!'.colorize(color: :green)
-    puts "Congratulations #{active_player.name}! You are the winner!"
-    puts 'Thank you for playing!'
-    sleep 3
+    stalemate_message(active_player.name)
     exit
   end
 
   def stalemate_actions
     refresh_display
-    puts 'Stalemate!'.colorize(color: :yellow)
-    puts "#{next_player.name}'s King cannot make a move without going into check!'"
-    puts 'This means the game is a draw!'
-    puts 'Thank you for playing!'
-    sleep 3
+    checkmate_message(active_player.name)
     exit
   end
 
@@ -345,14 +396,6 @@ class GamePlay
       'Knight' => Knight.new(active_player.color) }.fetch(choice)
   end
 
-  def user_move_input
-    active_player.enter_move
-  rescue RuntimeError
-    invalid_move_message
-    refresh_display
-    retry
-  end
-
   def execute_castle_move
     case active_player.move[-2, 2]
     when 'a1'
@@ -363,35 +406,6 @@ class GamePlay
       board.execute_h1_castle
     when 'h8'
       board.execute_h8_castle
-    end
-  end
-
-  def enter_move
-    cells_under_attack = get_check_cells(next_player.color)
-    loop do
-      user_move_input
-      break if move_check.castle?(get_check_cells(next_player.color))
-
-      if active_player.move == 'save'
-        file_name = unique_file_name
-        serialize(file_name)
-        saved_message(file_name)
-        refresh_display
-      elsif move_check.castle?(get_check_cells(next_player.color)) == false && active_player.move.include?('castle')
-        castle_not_allowed
-        refresh_display
-      elsif move_check.start_cell_contains_piece? == false || move_check.matching_piece_class? == false
-        select_piece(active_player.color)
-        refresh_display
-      elsif move_check.end_cell_matches_player_color?
-        cannot_attack_same_color
-        refresh_display
-      elsif move_check.king_under_threat?(cells_under_attack)
-        cannot_threaten_king
-        refresh_display
-      else
-        break
-      end
     end
   end
 
@@ -418,10 +432,3 @@ class GamePlay
     active_player.move[1]
   end
 end
-
-# game = GamePlay.new
-# game.setup_board
-# game.assign_player_pieces
-# loop do
-#   game.game_loop
-# end

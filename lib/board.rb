@@ -1,6 +1,5 @@
 # frozen_string_literal: false
 
-require 'pry'
 require 'colorize'
 require_relative 'piece'
 

@@ -1,6 +1,5 @@
 # frozen_string_literal: false
 
-require 'pry'
 require 'colorize'
 require_relative 'piece'
 
@@ -47,15 +46,6 @@ class Player
     puts
   end
 
-  def enter_move
-    enter_move_message
-    move = $stdin.gets.chomp.to_s.downcase
-    return self.move = move if castle?(move) || move == 'save'
-    raise 'That is not a valid coordinate, please re-enter'.colorize(:red) unless move.match?(/^[a-h][1-8][a-h][1-8]$/)
-
-    self.move = move.chars.each_slice(move.length / 2).map(&:join)
-  end
-
   def assign_black_piece
     self.piece = Piece.new('Black')
     self.color = 'Black'
@@ -72,18 +62,5 @@ class Player
     unless temp_cell.nil?
       self.temp_cell = nil if temp_cell.class == InvisiblePawn && end_cell.value.class != Pawn
     end
-  end
-
-  def castle?(move)
-    { 'castleh1' => true,
-      'castleh8' => true,
-      'castlea1' => true,
-      'castlea8' => true }.fetch(move)
-  rescue KeyError
-    false
-  end
-
-  def enter_move_message
-    puts "\n#{name}, enter the 'from' and 'to' coordinates for the piece you want to move e.g. 'a2a4'"
   end
 end

@@ -2,6 +2,7 @@
 
 require 'colorize'
 
+# Contains all the text and error messages used by the game
 module DisplayInterface
   def title
     puts '
@@ -33,41 +34,35 @@ module DisplayInterface
 
   def player1_enter_name
     puts
-    puts
-    puts 'Player 1 will be the white color and will go first.'
+    puts "\nPlayer 1 will be the white color and will go first."
     puts "\nPlayer 1, please type your name then press enter."
     puts
   end
 
   def player2_enter_name
     puts
-    puts
-    puts 'Player 2 will be the black color and will go second.'
+    puts "\nPlayer 2 will be the black color and will go second."
     puts "\nPlayer 2, please type your name then press enter."
     puts
   end
 
   def castle_not_allowed
-    puts
-    puts 'That castling move is not allowed'.colorize(color: :red)
+    puts "\nThat castling move is not allowed".colorize(color: :red)
     sleep 5
   end
 
   def select_piece(color)
-    puts
-    puts "Select a #{color} piece!".colorize(color: :red)
+    puts "\nSelect a #{color} piece!".colorize(color: :red)
     sleep 5
   end
 
   def cannot_attack_same_color
-    puts
-    puts 'You cannot land on pieces matching your color!'.colorize(color: :red)
+    puts "\nYou cannot land on pieces matching your color!".colorize(color: :red)
     sleep 5
   end
 
   def cannot_threaten_king
-    puts
-    puts 'You cannot put your King in a check situation!'.colorize(color: :red)
+    puts "\nYou cannot put your King in a check situation!".colorize(color: :red)
     sleep 5
   end
 
@@ -91,11 +86,31 @@ module DisplayInterface
   end
 
   def promotion_message
-    puts "Your pawn has landed on the last row of the board!\nAccording to the FIDE laws of chess, you must promote this piece!\nEnter 'queen', 'bishop', 'rook' or 'knight' to promote your pawn to that piece and finish the move".colorize(:green)
+    puts "\nYour pawn has landed on the last row of the board!".colorize(:green)
+    puts 'According to the FIDE laws of chess, you must promote this piece!'.colorize(:green)
+    puts "Enter 'queen', 'bishop', 'rook' or 'knight' to promote your pawn to that piece and finish the move".colorize(:green)
   end
 
   def remove_king_from_check
     puts 'You must make a move that removes your King from check!'.colorize(color: :red)
     sleep 3
+  end
+
+  def checkmate_message(name)
+    puts 'Checkmate!'.colorize(color: :green)
+    puts "Congratulations #{name}! You are the winner!"
+    puts 'Thank you for playing!'
+    sleep 3
+  end
+
+  def stalemate_message(name)
+    puts 'Checkmate!'.colorize(color: :green)
+    puts "Congratulations #{name}! You are the winner!"
+    puts 'Thank you for playing!'
+    sleep 3
+  end
+
+  def enter_move_message(name)
+    puts "\n#{name}, enter the 'from' and 'to' coordinates for the piece you want to move e.g. 'a2a4'"
   end
 end

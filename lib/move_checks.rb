@@ -32,8 +32,6 @@ class MoveChecks
     end
   end
 
-  # This only takes into account where the king can move to
-  # Does not allow for a friendly piece to jump in and block the attack when king is surrounded by friendly pieces
   def checkmate?(cells_under_attack, king_cell)
     array_co_ord = board.get_cell_grid_co_ord(king_cell.co_ord)
     adjascent_king_cells = king_cell.value.adjascent_cells(array_co_ord, board)
